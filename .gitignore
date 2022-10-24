@@ -1,4 +1,8 @@
 *.*/
 !.git
-&.uvguix*
+*.uvguix*
 Objects/*
+Listings/*
+!RTE/Device/STM32F103C8/*.h
+!RTE/Device/STM32F103C8/*.c
+!RTE/Device/STM32F103C8/*.s
