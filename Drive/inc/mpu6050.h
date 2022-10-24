@@ -2,15 +2,15 @@
 * 程序版本：V2.1
 * 程序日期：2021-12-8
 * 程序作者：719飞行器实验室： 
-*						张润
-*						杨晨阳
+*                        张润
+*                        杨晨阳
 ************************************************************************************************/
 #ifndef   _MPU6050_H
 #define   _MPU6050_H
 
 #include "main.h"
 
-#define MPU6050Addr 	0xD0
+#define MPU6050Addr     0xD0
 
 #define MPU6050_RA_SMPLRT_DIV       0x19
 #define MPU6050_RA_CONFIG           0x1A

@@ -2,14 +2,14 @@
 * 程序版本：V2.1
 * 程序日期：2021-12-8
 * 程序作者：719飞行器实验室： 
-*						张润
-*						杨晨阳
+*                        张润
+*                        杨晨阳
 ************************************************************************************************/
 #include "delay.h"
 
 
-static uint8_t   D_us=0;		//微秒系数
-static uint16_t  D_ms=0;		//毫秒系数
+static uint8_t   D_us=0;        //微秒系数
+static uint16_t  D_ms=0;        //毫秒系数
 
 /****************************************************************************************************
 * 函  数: void Delay_Init(void)
@@ -20,11 +20,11 @@ static uint16_t  D_ms=0;		//毫秒系数
 ****************************************************************************************************/
 void Delay_Init(void)
 {
-	SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK_Div8);
-	
-	D_us = SystemCoreClock/8000000;
-	D_ms = (uint16_t)D_us * 1000;
-	
+    SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK_Div8);
+    
+    D_us = SystemCoreClock/8000000;
+    D_ms = (uint16_t)D_us * 1000;
+    
 }
 
 /****************************************************************************************************
@@ -36,17 +36,17 @@ void Delay_Init(void)
 ****************************************************************************************************/
 void Delay_us(uint32_t nus)
 {
-	uint32_t temp;
-	SysTick->CTRL = 0x00;											//关闭SysTick定时器
-	SysTick->LOAD = nus*D_us; 								//延时重装载值	  		 
-	SysTick->VAL  = 0x00;        							//清空计数器
-	SysTick->CTRL|= 0x01 ;										//启动SysTick定时器  
-	do
-	{
-		temp=SysTick->CTRL;
-	}while((temp&0x01)&&!(temp&(1<<16)));	  	//等待延时结束  
-	SysTick->CTRL = 0x00;											//关闭SysTick定时器
-	SysTick->VAL  = 0X00;      								//清空计数器
+    uint32_t temp;
+    SysTick->CTRL = 0x00;                                            //关闭SysTick定时器
+    SysTick->LOAD = nus*D_us;                                 //延时重装载值               
+    SysTick->VAL  = 0x00;                                    //清空计数器
+    SysTick->CTRL|= 0x01 ;                                        //启动SysTick定时器  
+    do
+    {
+        temp=SysTick->CTRL;
+    }while((temp&0x01)&&!(temp&(1<<16)));          //等待延时结束  
+    SysTick->CTRL = 0x00;                                            //关闭SysTick定时器
+    SysTick->VAL  = 0X00;                                      //清空计数器
 }
 
 /****************************************************************************************************
@@ -58,17 +58,17 @@ void Delay_us(uint32_t nus)
 ****************************************************************************************************/
 void Delay_ms(uint32_t nms)
 {
-	uint32_t temp;
-	SysTick->CTRL = 0x00;										//关闭SysTick定时器
-	SysTick->LOAD = nms*D_ms; 							//延时重装载值	  		 
-	SysTick->VAL  = 0x00;        						//清空计数器
-	SysTick->CTRL|= 0x01 ;									//启动SysTick定时器  
-	do
-	{
-		temp=SysTick->CTRL;
-	}while((temp&0x01)&&!(temp&(1<<16)));	  //等待延时结束  
-	SysTick->CTRL = 0x00;										//关闭SysTick定时器
-	SysTick->VAL  = 0X00;      						//清空计数器	
+    uint32_t temp;
+    SysTick->CTRL = 0x00;                                        //关闭SysTick定时器
+    SysTick->LOAD = nms*D_ms;                             //延时重装载值               
+    SysTick->VAL  = 0x00;                                //清空计数器
+    SysTick->CTRL|= 0x01 ;                                    //启动SysTick定时器  
+    do
+    {
+        temp=SysTick->CTRL;
+    }while((temp&0x01)&&!(temp&(1<<16)));      //等待延时结束  
+    SysTick->CTRL = 0x00;                                        //关闭SysTick定时器
+    SysTick->VAL  = 0X00;                              //清空计数器    
 }
 
 

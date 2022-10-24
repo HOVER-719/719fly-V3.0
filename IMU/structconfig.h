@@ -2,8 +2,8 @@
 * 程序版本：V2.1
 * 程序日期：2021-12-8
 * 程序作者：719飞行器实验室： 
-*						张润
-*						杨晨阳
+*                        张润
+*                        杨晨阳
 ************************************************************************************************/
 #ifndef _STRUCTCONFIG_H
 #define _STRUCTCONFIG_H
@@ -40,7 +40,7 @@ extern uint8_t   SENSER_OFFSET_FLAG; //标志位组
 /**************************************************************************************************************************/
 
 //数据拆分宏定义，在发送大于1字节的数据类型时，比如int16、float等，需要把数据拆分成单独字节进行发送
-#define Byte0(data)       ( *( (char *)(&data)	  ) )
+#define Byte0(data)       ( *( (char *)(&data)      ) )
 #define Byte1(data)       ( *( (char *)(&data) + 1) )
 #define Byte2(data)       ( *( (char *)(&data) + 2) )
 #define Byte3(data)       ( *( (char *)(&data) + 3) )
@@ -48,35 +48,35 @@ extern uint8_t   SENSER_OFFSET_FLAG; //标志位组
 //三轴整型（MPU6050原始数据）
 typedef struct
 {
-	int16_t X;
-	int16_t Y;
-	int16_t Z;
+    int16_t X;
+    int16_t Y;
+    int16_t Z;
 }INT16_XYZ;
 
 //三轴浮点型
 typedef struct
 {
-	float X;
-	float Y;
-	float Z;
+    float X;
+    float Y;
+    float Z;
 }FLOAT_XYZ;
 
 //姿态解算后的角度
 typedef struct
 {
-	float rol;
-	float pit;
-	float yaw;
+    float rol;
+    float pit;
+    float yaw;
 }FLOAT_ANGLE;
 
 //遥控器的数据结构 
 typedef struct
 {
-	int16_t ROLL;
-	int16_t PITCH;
-	int16_t THROTTLE;
-	int16_t YAW;
-	int16_t BUTTON;
+    int16_t ROLL;
+    int16_t PITCH;
+    int16_t THROTTLE;
+    int16_t YAW;
+    int16_t BUTTON;
 }RC_TYPE;
 
 //FBM32的数据结构 
@@ -92,7 +92,7 @@ typedef struct FBMTYPE
   float  AltitudeFilter;
   uint16_t C0, C1, C2, C3, C6, C8, C9, C10, C11, C12;
   uint32_t C4, C5, C7;
-	
+    
 } FBMTYPE;
 
 //高度融合的数据结构
@@ -126,71 +126,71 @@ typedef struct PID
   float Iout;
   float Dout;
   float OutPut;   
-  uint8_t Ilimit_flag;    //积分分离	
+  uint8_t Ilimit_flag;    //积分分离    
 }PID_TYPE;   
 
 //保存的参数数据结构 
 typedef struct PIDSave
 {
-	//陀螺仪校准数据 
-	u16  ACC_OFFSET_X;
-	u16  ACC_OFFSET_Y;
-	u16  ACC_OFFSET_Z;
-	u16  GYRO_OFFSET_X;
-	u16  GYRO_OFFSET_Y;
-	u16  GYRO_OFFSET_Z;
-	//角度环 
-	u16  ROL_Angle_P;
-	u16  ROL_Angle_I;
-	u16  ROL_Angle_D;
-	u16  PIT_Angle_P;
-	u16  PIT_Angle_I;
-	u16  PIT_Angle_D;
-	u16  YAW_Angle_P;
-	u16  YAW_Angle_I;
-	u16  YAW_Angle_D;
-	//角速度环 
-	u16  ROL_Rate_P;
-	u16  ROL_Rate_I;
-	u16  ROL_Rate_D;
-	u16  PIT_Rate_P;
-	u16  PIT_Rate_I;
-	u16  PIT_Rate_D;
-	u16  YAW_Rate_P;
-	u16  YAW_Rate_I;
-	u16  YAW_Rate_D;
-	//高度环
-	u16  ALT_Rate_P;
-	u16  ALT_Rate_I;
-	u16  ALT_Rate_D;
-	u16  ALT_P;
-	u16  ALT_I;
-	u16  ALT_D;
-	u16  SI24R1addr;
+    //陀螺仪校准数据 
+    u16  ACC_OFFSET_X;
+    u16  ACC_OFFSET_Y;
+    u16  ACC_OFFSET_Z;
+    u16  GYRO_OFFSET_X;
+    u16  GYRO_OFFSET_Y;
+    u16  GYRO_OFFSET_Z;
+    //角度环 
+    u16  ROL_Angle_P;
+    u16  ROL_Angle_I;
+    u16  ROL_Angle_D;
+    u16  PIT_Angle_P;
+    u16  PIT_Angle_I;
+    u16  PIT_Angle_D;
+    u16  YAW_Angle_P;
+    u16  YAW_Angle_I;
+    u16  YAW_Angle_D;
+    //角速度环 
+    u16  ROL_Rate_P;
+    u16  ROL_Rate_I;
+    u16  ROL_Rate_D;
+    u16  PIT_Rate_P;
+    u16  PIT_Rate_I;
+    u16  PIT_Rate_D;
+    u16  YAW_Rate_P;
+    u16  YAW_Rate_I;
+    u16  YAW_Rate_D;
+    //高度环
+    u16  ALT_Rate_P;
+    u16  ALT_Rate_I;
+    u16  ALT_Rate_D;
+    u16  ALT_P;
+    u16  ALT_I;
+    u16  ALT_D;
+    u16  SI24R1addr;
 
 }PID_SAVE;
 
 //电池电压管理数据结构 
 typedef struct BATT_TYPE
 {
-	float BattAdc;
-	float BattRealV;
-	float BattMeasureV;
-	float BattAlarmV;
-	float BattFullV;
+    float BattAdc;
+    float BattRealV;
+    float BattMeasureV;
+    float BattAlarmV;
+    float BattFullV;
 }BATT_TYPE;
 
 //姿态解算
-extern FLOAT_XYZ 	 Gyr_degree,Gyr_rad;	              //把陀螺仪的各通道读出的数据，转换成弧度制 和 度
-extern INT16_XYZ   	 MPU6050_ACC_RAW,MPU6050_GYRO_RAW;	  //MPU最新一次原始数据
-extern INT16_XYZ	 GYRO_OFFSET_RAW,ACC_OFFSET_RAW;			//MPU零漂值
-extern FLOAT_XYZ 	 Acc_filt,Gry_filt;	                  //滤波后的各通道数据
-extern float       	 DCMgb[3][3];
-extern float       	 Zacc,accb[3];
+extern FLOAT_XYZ      Gyr_degree,Gyr_rad;                  //把陀螺仪的各通道读出的数据，转换成弧度制 和 度
+extern INT16_XYZ        MPU6050_ACC_RAW,MPU6050_GYRO_RAW;      //MPU最新一次原始数据
+extern INT16_XYZ     GYRO_OFFSET_RAW,ACC_OFFSET_RAW;            //MPU零漂值
+extern FLOAT_XYZ      Acc_filt,Gry_filt;                      //滤波后的各通道数据
+extern float            DCMgb[3][3];
+extern float            Zacc,accb[3];
 //高度解算
-extern uint8_t   ALTIUDE_OK,ALT_Updated;				  //气压计初始化高度标志
+extern uint8_t   ALTIUDE_OK,ALT_Updated;                  //气压计初始化高度标志
 extern FBMTYPE   FBM;                                     //气压计数据
-extern nav_t     nav;	
+extern nav_t     nav;    
 //遥控数据缓存
 extern uint8_t SI24R1addr;
 extern float Moto_PWM_1,Moto_PWM_2,Moto_PWM_3,Moto_PWM_4;
@@ -214,8 +214,8 @@ extern PID_TYPE PID_Y_a;
 
 //参数保存
 extern uint8_t        InitDefaultParam; //初始化默认参数
-extern PID_SAVE       PIDflash;   		//各轴PID参数保存实例
-extern FLOAT_ANGLE    Att_Angle;		//ATT函数计算出的姿态角
+extern PID_SAVE       PIDflash;           //各轴PID参数保存实例
+extern FLOAT_ANGLE    Att_Angle;        //ATT函数计算出的姿态角
 extern RC_TYPE        RC_Control;
 //功能键
 extern uint8_t Airplane_Enable,Run_flag; 
@@ -234,7 +234,7 @@ extern uint8_t muartWaitFlag;
 extern uint8_t lock;
 extern uint8_t loop;
 extern float   THROTTLE;
-extern 		BATT_TYPE BAT;
+extern         BATT_TYPE BAT;
 
 #endif
 

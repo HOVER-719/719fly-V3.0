@@ -12,10 +12,10 @@
 //        *               生命不息、奋斗不止；前人栽树，后人乘凉！！！
 //        *               开源不易，且学且珍惜，祝早日逆袭、进阶成功！！！
 //-----------------------------------------------------------------------------------------------------------------------/
-//	*		无名科创开源飞控 V1.1	武汉科技大学  By.YuYi
-//	*		CSDN博客: http://blog.csdn.net/u011992534
-//	*               优酷ID：NamelessCotrun无名小哥
-//	*               无名科创开源飞控QQ群：540707961
+//    *        无名科创开源飞控 V1.1    武汉科技大学  By.YuYi
+//    *        CSDN博客: http://blog.csdn.net/u011992534
+//    *               优酷ID：NamelessCotrun无名小哥
+//    *               无名科创开源飞控QQ群：540707961
 //        *               https://shop348646912.taobao.com/?spm=2013.1.1000126.2.5ce78a88ht1sO2
 //        *               百度贴吧:无名科创开源飞控
 //        *               修改日期:2017/10/30
@@ -65,12 +65,12 @@
 //*****************************************************************************/
 //void spl0601_write(unsigned char hwadr, unsigned char regadr, unsigned char val)
 //{
-////	hwI2C0_Device_Addr = hwadr;
-////	bI2C0_TxM_Data[0] = regadr;
-////	bI2C0_TxM_Data[1] = val;
+////    hwI2C0_Device_Addr = hwadr;
+////    bI2C0_TxM_Data[0] = regadr;
+////    bI2C0_TxM_Data[1] = val;
 ////
-////	I2C0_Engine(2,0,0);
-//	Single_WriteI2C(hwadr,regadr,val);
+////    I2C0_Engine(2,0,0);
+//    Single_WriteI2C(hwadr,regadr,val);
 //}
 
 ///*****************************************************************************
@@ -91,15 +91,15 @@
 //*****************************************************************************/
 //uint8 spl0601_read(unsigned char hwadr, unsigned char regadr)
 //{
-//	uint8 reg_data;
+//    uint8 reg_data;
 
-////	hwI2C0_Device_Addr = hwadr;
-////	bI2C0_TxM_Data[0] = regadr; //
-////	I2C0_Engine(1,1,1);
+////    hwI2C0_Device_Addr = hwadr;
+////    bI2C0_TxM_Data[0] = regadr; //
+////    I2C0_Engine(1,1,1);
 
-////	reg_data = bI2C0_RxM_Data[0];
-//	reg_data=Single_ReadI2C(hwadr,regadr);
-//	return reg_data;
+////    reg_data = bI2C0_RxM_Data[0];
+//    reg_data=Single_ReadI2C(hwadr,regadr);
+//    return reg_data;
 //}
 
 ///*****************************************************************************
@@ -462,10 +462,10 @@
 //    fPsc = p_spl0601->i32rawPressure / (float)p_spl0601->i32kP;
 //    qua2 = p_spl0601->calib_param.c10 + fPsc * (p_spl0601->calib_param.c20 + fPsc* p_spl0601->calib_param.c30);
 //    qua3 = fTsc * fPsc * (p_spl0601->calib_param.c11 + fPsc * p_spl0601->calib_param.c21);
-//		//qua3 = 0.9f *fTsc * fPsc * (p_spl0601->calib_param.c11 + fPsc * p_spl0601->calib_param.c21);
+//        //qua3 = 0.9f *fTsc * fPsc * (p_spl0601->calib_param.c11 + fPsc * p_spl0601->calib_param.c21);
 
 //    fPCompensate = p_spl0601->calib_param.c00 + fPsc * qua2 + fTsc * p_spl0601->calib_param.c01 + qua3;
-//		//fPCompensate = p_spl0601->calib_param.c00 + fPsc * qua2 + 0.9f *fTsc  * p_spl0601->calib_param.c01 + qua3;
+//        //fPCompensate = p_spl0601->calib_param.c00 + fPsc * qua2 + 0.9f *fTsc  * p_spl0601->calib_param.c01 + qua3;
 //    return fPCompensate;
 //}
 

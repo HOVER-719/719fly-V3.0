@@ -22,9 +22,9 @@
 #define RF_SETUP     0X06//射频寄存器 0:低噪声放大器增益 2:1 发射功率 3:传输效率
 #define STATUS       0X07//状态寄存器 0:TX FIFO寄存器满标志 3:1 接收数据通道号 4:达到最大重发中断
 //5：数据发送完成中断 6：数据接收中断
-#define MAX_TX  		         0x10  //最大重发次数
-#define TX_OK   		         0x20  //发送完成
-#define RX_OK   		         0x40  //接收完成
+#define MAX_TX                   0x10  //最大重发次数
+#define TX_OK                    0x20  //发送完成
+#define RX_OK                    0x40  //接收完成
 #define RX_P_NO              0x0E  //
 #define OBSERVE_TX   0X08//3:0 重发计数器(发送新数据包时复位) 7:4 数据包丢失计数器(写RF_CH时复位)
 #define CD           0X09//载波检测
@@ -63,18 +63,18 @@
 extern uint8_t SI24R1_TX_DATA[TX_PAYLO_WIDTH];
 extern uint8_t SI24R1_RX_DATA[TX_PAYLO_WIDTH];
 
-void SI24R1_Init(void);		
+void SI24R1_Init(void);        
 void SI24R1_Check(void);
 void SI24R1_Config(void);
 void SI24R1_GetAddr(void);
 void SI24R1set_Mode(uint8_t mode);
 uint8_t SI24R1_Write_Buf(uint8_t reg, uint8_t *pBuf, uint8_t len);
-uint8_t SI24R1_Read_Buf(uint8_t reg, uint8_t *pBuf, uint8_t len);			  
-uint8_t SI24R1_read_reg(uint8_t reg);					
-uint8_t SI24R1_write_reg(uint8_t reg, uint8_t value);		
+uint8_t SI24R1_Read_Buf(uint8_t reg, uint8_t *pBuf, uint8_t len);              
+uint8_t SI24R1_read_reg(uint8_t reg);                    
+uint8_t SI24R1_write_reg(uint8_t reg, uint8_t value);        
 
-void SI24R1_TxPacket(uint8_t *txbuf);				
-void SI24R1_RxPacket(uint8_t *rxbuf);	
+void SI24R1_TxPacket(uint8_t *txbuf);                
+void SI24R1_RxPacket(uint8_t *rxbuf);    
 void Remote_Connectiong(void);
 void SI24R1_GetAddr(void);
 void SI24R1_Test(void);
