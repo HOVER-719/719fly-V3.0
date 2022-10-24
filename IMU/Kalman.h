@@ -13,19 +13,19 @@ extern double zrate; // Unbiased rate calculated from the rate and the calculate
 void xInit_Kalman(void);
 
 double xgetAngle(double newAngle, double newRate, double dt);
- 
+
 //void xKalmanSetAngle(double newAngle);
 
 
 void yInit_Kalman(void);
 
 double ygetAngle(double newAngle, double newRate, double dt);
- 
+
 //void yKalmanSetAngle(double newAngle);
 
 void zInit_Kalman(void);
 
 double zgetAngle(double newAngle, double newRate, double dt);
- 
+
 //void zKalmanSetAngle(double newAngle);
 #endif

@@ -18,16 +18,16 @@ FLOAT_ANGLE Att_Angle;                        //飞机姿态数据
 FLOAT_XYZ     Gyr_rad,Gyr_radold;                  //把陀螺仪的各通道读出的数据，转换成弧度制
 FLOAT_XYZ     Acc_filt,Gry_filt,Acc_filtold;      //滤波后的各通道数据
 float   accb[3],DCMgb[3][3];                  //方向余弦阵（将 惯性坐标系 转化为 机体坐标系）
-uint8_t AccbUpdate = 0; 
+uint8_t AccbUpdate = 0;
 
 /****************************************************************************************************
-* 函  数：static float invSqrt(float x) 
-* 功　能: 快速计算 1/Sqrt(x)     
+* 函  数：static float invSqrt(float x)
+* 功　能: 快速计算 1/Sqrt(x)
 * 参  数：要计算的值
 * 返回值：计算的结果
 * 备  注：比普通Sqrt()函数要快四倍See: http://en.wikipedia.org/wiki/Fast_inverse_square_root
 *****************************************************************************************************/
-static float invSqrt(float x) 
+static float invSqrt(float x)
 {
     float halfx = 0.5f * x;
     float y = x;
@@ -47,38 +47,37 @@ static float invSqrt(float x)
 void Prepare_Data(void)
 {
     static uint8_t IIR_mode = 1;
-    
+
     MPU6050_Read();    //触发读取 ，立即返回
     MPU6050_Offset();  //对MPU6050进行处理，减去零偏。如果没有计算零偏(根据标志位判断)就计算零偏
-    
+
     sliding_average_filter(&MPU6050_ACC_RAW, &Acc_filt, 8);  //对加速度原始数据进行滑动窗口滤波
-    
-    //加速度AD值 转换成 米/平方秒 
+
+    //加速度AD值 转换成 米/平方秒
     Acc_filt.X = (float)Acc_filt.X * Acc_Gain * G;
     Acc_filt.Y = (float)Acc_filt.Y * Acc_Gain * G;
     Acc_filt.Z = (float)Acc_filt.Z * Acc_Gain * G;
 //    printf("ax=%0.2f ay=%0.2f az=%0.2f\r\n",Acc_filt.X,Acc_filt.Y,Acc_filt.Z);
 
-    //陀螺仪AD值 转换成 弧度/秒    
-    Gyr_rad.X = (float) MPU6050_GYRO_RAW.X * Gyro_Gr;  
+    //陀螺仪AD值 转换成 弧度/秒
+    Gyr_rad.X = (float) MPU6050_GYRO_RAW.X * Gyro_Gr;
     Gyr_rad.Y = (float) MPU6050_GYRO_RAW.Y * Gyro_Gr;
     Gyr_rad.Z = (float) MPU6050_GYRO_RAW.Z * Gyro_Gr;
-    
+
     if(IIR_mode)
     {
         Acc_filt.X = Acc_filt.X * Kp_New + Acc_filtold.X * Kp_Old;
         Acc_filt.Y = Acc_filt.Y * Kp_New + Acc_filtold.Y * Kp_Old;
         Acc_filt.Z = Acc_filt.Z * Kp_New + Acc_filtold.Z * Kp_Old;
-        
+
         Acc_filtold.X =  Acc_filt.X;
         Acc_filtold.Y =  Acc_filt.Y;
         Acc_filtold.Z =  Acc_filt.Z;
-        
     }
     accb[0] = Acc_filt.X;
     accb[1] = Acc_filt.Y;
     accb[2] = Acc_filt.Z;
-    
+
     if(accb[0]&&accb[1]&&accb[2])
     {
         AccbUpdate = 1;
@@ -126,56 +125,55 @@ void IMUupdate(FLOAT_XYZ *Gyr_rad,FLOAT_XYZ *Acc_filt,FLOAT_ANGLE *Att_Angle)
 
     double XnewAngle;
     double XnewRate;
-    
+
     double YnewAngle;
     double YnewRate;
-    
+
     if(ax*ay*az==0)
     return;
 
-    //加速度计测量的重力加速度向量(机体坐标系) 
-    norm = invSqrt(ax*ax + ay*ay + az*az); 
+    //加速度计测量的重力加速度向量(机体坐标系)
+    norm = invSqrt(ax*ax + ay*ay + az*az);
     ax = ax * norm;
     ay = ay * norm;
     az = az * norm;
     //    printf("ax=%0.2f ay=%0.2f az=%0.2f\r\n",ax,ay,az);
-
-    //陀螺仪积分估计重力向量(机体坐标系) 
-    vx = 2*(q1q3 - q0q2);                                                
+    //陀螺仪积分估计重力向量(机体坐标系)
+    vx = 2*(q1q3 - q0q2);
     vy = 2*(q0q1 + q2q3);
     vz = q0q0 - q1q1 - q2q2 + q3q3 ;
-    // printf("vx=%0.2f vy=%0.2f vz=%0.2f\r\n",vx,vy,vz); 
+    // printf("vx=%0.2f vy=%0.2f vz=%0.2f\r\n",vx,vy,vz);
 
-    //测量的重力向量与估算的重力向量差积求出向量间的误差 
-    ex = (ay*vz - az*vy); //+ (my*wz - mz*wy);                     
+    //测量的重力向量与估算的重力向量差积求出向量间的误差
+    ex = (ay*vz - az*vy); //+ (my*wz - mz*wy);
     ey = (az*vx - ax*vz); //+ (mz*wx - mx*wz);
     ez = (ax*vy - ay*vx); //+ (mx*wy - my*wx);
 
     //用上面求出误差进行积分
-    exInt = exInt + ex * Ki;                                 
+    exInt = exInt + ex * Ki;
     eyInt = eyInt + ey * Ki;
     ezInt = ezInt + ez * Ki;
 
     //将误差经PI控制器处理后补偿到陀螺仪
-    gx = gx + Kp*ex + exInt;                                     
+    gx = gx + Kp*ex + exInt;
     gy = gy + Kp*ey + eyInt;
     gz = gz + Kp*ez + ezInt;
     //这里的gz由于没有观测者进行矫正会产生漂移，表现出来的就是积分自增或自减，即yaw角度漂移，加入磁力计可避免此问题
 
-//使用1阶龙格库塔法求解四元素微分方程，对四元数进行更新，halfT为采样周期的一半（100Hz），单位为秒
+    //使用1阶龙格库塔法求解四元素微分方程，对四元数进行更新，halfT为采样周期的一半（100Hz），单位为秒
     q0 = q0 + (-q1*gx - q2*gy - q3*gz)*halfT;
     q1 = q1 + (q0*gx + q2*gz - q3*gy)*halfT;
     q2 = q2 + (q0*gy - q1*gz + q3*gx)*halfT;
     q3 = q3 + (q0*gz + q1*gy - q2*gx)*halfT;
 
-    //单位化四元数 
+    //单位化四元数
     norm = invSqrt(q0*q0 + q1*q1 + q2*q2 + q3*q3);
     q0 = q0 * norm;
     q1 = q1 * norm;
-    q2 = q2 * norm;  
+    q2 = q2 * norm;
     q3 = q3 * norm;
 
-    //矩阵R 将导航坐标系(n系)转换到机体坐标系(b系) 
+    //矩阵R 将导航坐标系(n系)转换到机体坐标系(b系)
     matrix[0] = q0q0 + q1q1 - q2q2 - q3q3;    // 11(前列后行)
     matrix[1] = 2.f * (q1q2 + q0q3);        // 12
     matrix[2] = 2.f * (q1q3 - q0q2);        // 13
@@ -186,29 +184,27 @@ void IMUupdate(FLOAT_XYZ *Gyr_rad,FLOAT_XYZ *Acc_filt,FLOAT_ANGLE *Att_Angle)
     matrix[7] = 2.f * (q2q3 - q0q1);        // 32
     matrix[8] = q0q0 - q1q1 - q2q2 + q3q3;    // 33
 
-    //四元数转换成欧拉角(Z->Y->X，即泰特布兰恩角次序) 
+    //四元数转换成欧拉角(Z->Y->X，即泰特布兰恩角次序)
     Att_Angle->yaw += Gyr_rad->Z *RadtoDeg*0.01f; // yaw(仅使用MPU6050存在漂移现象)
-//    Att_Angle->yaw = atan2(2.f * (q1q2 + q0q3), q0q0 + q1q1 - q2q2 - q3q3)*57.3f;     
-    Att_Angle->rol = -asin(2.f * (q1q3 - q0q2))* 57.3f;  // roll(负号要注意) 
+//    Att_Angle->yaw = atan2(2.f * (q1q2 + q0q3), q0q0 + q1q1 - q2q2 - q3q3)*57.3f;
+    Att_Angle->rol = -asin(2.f * (q1q3 - q0q2))* 57.3f;  // roll(负号要注意)
     Att_Angle->pit = -atan2(2.f * q2q3 + 2.f * q0q1, q0q0 - q1q1 - q2q2 + q3q3)*57.3f; // pitch
 
-  printf("pitch1: %f\r\n",Att_Angle->pit);
+    printf("pitch1: %f\r\n",Att_Angle->pit);
 
     XnewAngle = (double)Att_Angle->pit;
     XnewRate  = (double)Gyr_rad->X;
-    
+
     YnewAngle = (double)Att_Angle->rol;
-    YnewRate  = (double)Gyr_rad->Y;    
-    
-    
-    
-    Att_Angle->pit = (float)xgetAngle(XnewAngle, XnewRate, 0.001); 
-    Att_Angle->rol = (float)ygetAngle(YnewAngle, YnewRate, 0.001); 
+    YnewRate  = (double)Gyr_rad->Y;
+
+    Att_Angle->pit = (float)xgetAngle(XnewAngle, XnewRate, 0.001);
+    Att_Angle->rol = (float)ygetAngle(YnewAngle, YnewRate, 0.001);
 
     printf("pitch2: %f\r\n",Att_Angle->pit);
 //    printf("roll : %f\r\n",Att_Angle->rol);
 //    printf("yaw  : %f\r\n",Att_Angle->yaw);
-    
+
     for(i=0;i<9;i++)
     {
         *(&(DCMgb[0][0])+i) = matrix[i];

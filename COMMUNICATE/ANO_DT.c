@@ -1,7 +1,7 @@
 /*******************************************************************************************
 * 程序版本：V1.0
 * 程序日期：2020-9-20
-* 程序作者：719飞行器实验室： 
+* 程序作者：719飞行器实验室：
 *                        张润
 *                        杨晨阳
 *******************************************************************************************/
@@ -37,7 +37,6 @@ typedef struct FLAG_TYPE
 #define BYTE1(dwTemp)       ( *( (char *)(&dwTemp) + 1) )
 #define BYTE2(dwTemp)       ( *( (char *)(&dwTemp) + 2) )
 #define BYTE3(dwTemp)       ( *( (char *)(&dwTemp) + 3) )
-    
 u8 flag = 0;
 FLAG_TYPE f;                //需要发送数据的标志
 uint8_t data_to_send[50];    //发送数据缓存
@@ -87,43 +86,43 @@ void ANO_DT_Data_Exchange(void)
     {
         f.send_status = 0;
         ANO_DT_Send_Status(Att_Angle.rol,Att_Angle.pit,Att_Angle.yaw,0,0,Airplane_Enable);
-    }    
+    }
 //////////////////////////////////////// 发送传感器信息 //////////////////////////////////////////
     else if(f.send_senser)
     {
         f.send_senser = 0;
         ANO_DT_Send_Senser((s16)Acc_filt.X,(s16)Acc_filt.Y,(s16)Acc_filt.Z,
-                                             (s16)Gyr_rad.X*RadtoDeg,(s16)Gyr_rad.Y*RadtoDeg,(s16)Gyr_rad.Z*RadtoDeg,0,0,0,0);
+                                            (s16)Gyr_rad.X*RadtoDeg,(s16)Gyr_rad.Y*RadtoDeg,(s16)Gyr_rad.Z*RadtoDeg,0,0,0,0);
         #if defined (ROL_PID_DEBUG)   //ROLL角调试
             Data_Send_AngleRate(Gyr_rad.X*RadtoDeg,PID_ROL_Rate.Pout,PID_ROL_Rate.Iout,PID_ROL_Rate.Dout,
-                               PID_ROL_Angle.Error,PID_ROL_Angle.Pout,PID_ROL_Angle.Iout,PID_ROL_Angle.Dout);
-        
-        #elif defined (PIT_PID_DEBUG) //PITCH角调试    
+                                PID_ROL_Angle.Error,PID_ROL_Angle.Pout,PID_ROL_Angle.Iout,PID_ROL_Angle.Dout);
+
+        #elif defined (PIT_PID_DEBUG) //PITCH角调试
             Data_Send_AngleRate(Gyr_rad.Y*RadtoDeg,PID_PIT_Rate.Pout,PID_PIT_Rate.Iout,PID_PIT_Rate.Dout,
-                               PID_PIT_Angle.Error,PID_PIT_Angle.Pout,PID_PIT_Angle.Iout,PID_PIT_Angle.Dout);
-        
+                                PID_PIT_Angle.Error,PID_PIT_Angle.Pout,PID_PIT_Angle.Iout,PID_PIT_Angle.Dout);
+
         #elif defined (YAW_PID_DEBUG) //YAW角调试
             Data_Send_AngleRate(Gyr_rad.Z*RadtoDeg,PID_YAW_Rate.Pout,PID_YAW_Rate.Iout,PID_YAW_Rate.Dout,
                                                     PID_YAW_Angle.Error,PID_YAW_Angle.Pout,PID_YAW_Angle.Iout,PID_YAW_Angle.Dout);
-        
+
         #elif defined (ALT_PID_DEBUGE)//ALT环调试
             Data_Send_AngleRate(FBM.AltitudeFilter,PID_ALT.Error,PID_ALT.Pout,PID_ALT.Iout,PID_ALT.Dout,0,0,0);
         #else
-             Data_Send_Filter();
+            Data_Send_Filter();
         #endif
-    }     
+    }
 /////////////////////////////////////////////////////////////////////////////////////
     else if(f.send_rcdata)
     {
         f.send_rcdata = 0;
     //    ANO_DT_Send_RCData(RC_Control.THROTTLE,RC_Control.YAW,RC_Control.ROLL,RC_Control.PITCH,0,0,0,0,0,0);
-    }    
-/////////////////////////////////////////////////////////////////////////////////////    
+    }
+/////////////////////////////////////////////////////////////////////////////////////
     else if(f.send_motopwm)
     {
         f.send_motopwm = 0;
         //ANO_DT_Send_MotoPWM(Moto_PWM_1,Moto_PWM_2,Moto_PWM_3,Moto_PWM_4,5,6,7,8);
-    }    
+    }
 /////////////////////////////////////////////////////////////////////////////////////
     else if(f.send_power)
     {
@@ -135,26 +134,24 @@ void ANO_DT_Data_Exchange(void)
     {
         f.send_pid1 = 0;
         ANO_DT_Send_PID(1,PID_ROL_Rate.P,PID_ROL_Rate.I,PID_ROL_Rate.D,
-                          PID_PIT_Rate.P,PID_PIT_Rate.I,PID_PIT_Rate.D,
-                          PID_YAW_Rate.P,PID_YAW_Rate.I,PID_YAW_Rate.D);
+                        PID_PIT_Rate.P,PID_PIT_Rate.I,PID_PIT_Rate.D,
+                        PID_YAW_Rate.P,PID_YAW_Rate.I,PID_YAW_Rate.D);
 
-    }    
+    }
 /////////////////////////////////////////////////////////////////////////////////////
     else if(f.send_pid2)
     {
         f.send_pid2 = 0;
         ANO_DT_Send_PID(2,PID_ROL_Angle.P,PID_ROL_Angle.I,PID_ROL_Angle.D,
-                          PID_PIT_Angle.P,PID_PIT_Angle.I,PID_PIT_Angle.D,
-                          PID_YAW_Angle.P,PID_YAW_Angle.I,PID_YAW_Angle.D);
+                        PID_PIT_Angle.P,PID_PIT_Angle.I,PID_PIT_Angle.D,
+                        PID_YAW_Angle.P,PID_YAW_Angle.I,PID_YAW_Angle.D);
     }
 /////////////////////////////////////////////////////////////////////////////////////
     else if(f.send_pid3)
     {
         f.send_pid3 = 0;
-      ANO_DT_Send_PID(3,PID_ALT_Rate.P,PID_ALT_Rate.I,PID_ALT_Rate.D,
-                          PID_ALT.P,PID_ALT.I,PID_ALT.D,0,0,0);
-        
-        
+        ANO_DT_Send_PID(3,PID_ALT_Rate.P,PID_ALT_Rate.I,PID_ALT_Rate.D,
+                        PID_ALT.P,PID_ALT.I,PID_ALT.D,0,0,0);
     }else if(f.send_pid4)//清除上位机PID数据显示
     {
         f.send_pid4 = 0;
@@ -185,7 +182,7 @@ static void ANO_DT_Send_Check(uint8_t head, uint8_t check_sum)
     data_to_send[3]=2;
     data_to_send[4]=head;
     data_to_send[5]=check_sum;
-    
+
     for(i=0;i<6;i++)
         sum += data_to_send[i];
     data_to_send[6]=sum;
@@ -203,7 +200,7 @@ void ANO_DT_Data_Receive_Prepare(uint8_t data)
     static uint8_t RxBuffer[50];
     static uint8_t _data_len = 0,_data_cnt = 0;
     static uint8_t state = 0;
-    
+
     if(state==0&&data==0xAA)
     {
         state=1;
@@ -254,7 +251,7 @@ void ANO_DT_Data_Receive_Anl(uint8_t *data_buf,uint8_t num)
         sum += *(data_buf+i);
     if(!(sum==*(data_buf+num-1)))        return;        //判断sum
     if(!(*(data_buf)==0xAA && *(data_buf+1)==0xAF))        return;        //判断帧头
-    
+
     if(*(data_buf+2)==0X01)
     {
         if(*(data_buf+4)==0X01)
@@ -282,7 +279,6 @@ void ANO_DT_Data_Receive_Anl(uint8_t *data_buf,uint8_t num)
         }
         PID_WriteFlash(); //清除原来零偏
     }
-    
     if(*(data_buf+2)==0X02)
     {
         if(*(data_buf+4)==0X01)
@@ -292,9 +288,7 @@ void ANO_DT_Data_Receive_Anl(uint8_t *data_buf,uint8_t num)
             f.send_pid3 = 1;//读取PID3
         }
         if(*(data_buf+4)==0X02)
-        {
-            
-        }
+        {}
         if(*(data_buf+4)==0XA0)        //读取版本信息
         {
             f.send_version = 1;
@@ -331,12 +325,11 @@ void ANO_DT_Data_Receive_Anl(uint8_t *data_buf,uint8_t num)
         PID_YAW_Angle.P      = 0.001*( (vs16)(*(data_buf+16)<<8)|*(data_buf+17) );
         PID_YAW_Angle.I     = 0.001*( (vs16)(*(data_buf+18)<<8)|*(data_buf+19) );
         PID_YAW_Angle.D     = 0.001*( (vs16)(*(data_buf+20)<<8)|*(data_buf+21) );
-             
         ANO_DT_Send_Check(*(data_buf+2),sum);
         PID_WriteFlash();
     }
-  if(*(data_buf+2)==0X12)                                //PID3
-  {    
+    if(*(data_buf+2)==0X12)                                //PID3
+    {
         PID_ALT_Rate.P     = 0.001*( (vs16)(*(data_buf+4)<<8)|*(data_buf+5) );
         PID_ALT_Rate.I     = 0.001*( (vs16)(*(data_buf+6)<<8)|*(data_buf+7) );
         PID_ALT_Rate.D     = 0.001*( (vs16)(*(data_buf+8)<<8)|*(data_buf+9) );
@@ -348,7 +341,7 @@ void ANO_DT_Data_Receive_Anl(uint8_t *data_buf,uint8_t num)
 //        PID_ALT.D     = 0.001*( (vs16)(*(data_buf+20)<<8)|*(data_buf+21) );
         ANO_DT_Send_Check(*(data_buf+2),sum);
         PID_WriteFlash();
-  }
+    }
     if(*(data_buf+2)==0X13)                                //PID4
     {
         ANO_DT_Send_Check(*(data_buf+2),sum);
@@ -370,7 +363,7 @@ void ANO_DT_Data_Receive_Anl(uint8_t *data_buf,uint8_t num)
 //    data_to_send[_cnt++]=0xAA;
 //    data_to_send[_cnt++]=0x00;
 //    data_to_send[_cnt++]=0;
-//    
+//
 //    data_to_send[_cnt++]=hardware_type;
 //    data_to_send[_cnt++]=BYTE1(hardware_ver);
 //    data_to_send[_cnt++]=BYTE0(hardware_ver);
@@ -380,14 +373,14 @@ void ANO_DT_Data_Receive_Anl(uint8_t *data_buf,uint8_t num)
 //    data_to_send[_cnt++]=BYTE0(protocol_ver);
 //    data_to_send[_cnt++]=BYTE1(bootloader_ver);
 //    data_to_send[_cnt++]=BYTE0(bootloader_ver);
-//    
+//
 //    data_to_send[3] = _cnt-4;
-//    
+//
 //    uint8_t sum = 0;
 //    for(uint8_t i=0;i<_cnt;i++)
 //        sum += data_to_send[i];
 //    data_to_send[_cnt++]=sum;
-//    
+//
 //    ANO_DT_Send_Data(data_to_send, _cnt);
 //}
 
@@ -396,13 +389,12 @@ void ANO_DT_Send_Status(float angle_rol, float angle_pit, float angle_yaw, s32 a
     uint8_t _cnt=0,sum = 0,i;
     vs16 _temp;
     vs32 _temp2 = alt;
-    
-    data_to_send[_cnt++]=0xAA;    
     data_to_send[_cnt++]=0xAA;
-    data_to_send[_cnt++]=0x01;   
-    data_to_send[_cnt++]=0;      
-    
-    _temp = (int)(angle_rol*100); 
+    data_to_send[_cnt++]=0xAA;
+    data_to_send[_cnt++]=0x01;
+    data_to_send[_cnt++]=0;
+
+    _temp = (int)(angle_rol*100);
     data_to_send[_cnt++]=BYTE1(_temp);
     data_to_send[_cnt++]=BYTE0(_temp);
     _temp = (int)(angle_pit*100);
@@ -411,71 +403,70 @@ void ANO_DT_Send_Status(float angle_rol, float angle_pit, float angle_yaw, s32 a
     _temp = (int)(angle_yaw*100);
     data_to_send[_cnt++]=BYTE1(_temp);
     data_to_send[_cnt++]=BYTE0(_temp);
-    
+
     data_to_send[_cnt++]=BYTE3(_temp2);
     data_to_send[_cnt++]=BYTE2(_temp2);
     data_to_send[_cnt++]=BYTE1(_temp2);
     data_to_send[_cnt++]=BYTE0(_temp2);
-    
+
     data_to_send[_cnt++] = FLY_ENABLEl;
-    
+
     data_to_send[_cnt++] = armed;
-    
+
     data_to_send[3] = _cnt-4;
-    
+
     for(i=0;i<_cnt;i++)
         sum += data_to_send[i];
     data_to_send[_cnt++]=sum;
-    
+
     ANO_DT_Send_Data(data_to_send, _cnt);
 }
 void ANO_DT_Send_Senser(int16_t a_x,int16_t a_y,int16_t a_z,int16_t g_x,int16_t g_y,int16_t g_z,int16_t m_x,int16_t m_y,int16_t m_z,s32 bar)
 {
     uint8_t _cnt=0,sum = 0,i;
     vs16 _temp;
-    
+
     data_to_send[_cnt++]=0xAA;
     data_to_send[_cnt++]=0xAA;
     data_to_send[_cnt++]=0x02;
     data_to_send[_cnt++]=0;
-    
+
     _temp = a_x;
     data_to_send[_cnt++]=BYTE1(_temp);
     data_to_send[_cnt++]=BYTE0(_temp);
     _temp = a_y;
     data_to_send[_cnt++]=BYTE1(_temp);
     data_to_send[_cnt++]=BYTE0(_temp);
-    _temp = a_z;    
+    _temp = a_z;
     data_to_send[_cnt++]=BYTE1(_temp);
     data_to_send[_cnt++]=BYTE0(_temp);
-    
-    _temp = g_x;    
+
+    _temp = g_x;
     data_to_send[_cnt++]=BYTE1(_temp);
     data_to_send[_cnt++]=BYTE0(_temp);
-    _temp = g_y;    
+    _temp = g_y;
     data_to_send[_cnt++]=BYTE1(_temp);
     data_to_send[_cnt++]=BYTE0(_temp);
-    _temp = g_z;    
+    _temp = g_z;
     data_to_send[_cnt++]=BYTE1(_temp);
     data_to_send[_cnt++]=BYTE0(_temp);
-    
-    _temp = m_x;    
+
+    _temp = m_x;
     data_to_send[_cnt++]=BYTE1(_temp);
     data_to_send[_cnt++]=BYTE0(_temp);
-    _temp = m_y;    
+    _temp = m_y;
     data_to_send[_cnt++]=BYTE1(_temp);
     data_to_send[_cnt++]=BYTE0(_temp);
-    _temp = m_z;    
+    _temp = m_z;
     data_to_send[_cnt++]=BYTE1(_temp);
     data_to_send[_cnt++]=BYTE0(_temp);
-    
+
     data_to_send[3] = _cnt-4;
-    
-    
+
     for(i=0;i<_cnt;i++)
         sum += data_to_send[i];
     data_to_send[_cnt++] = sum;
-    
+
     ANO_DT_Send_Data(data_to_send, _cnt);
 }
 void ANO_DT_Send_RCData(u16 thr,u16 yaw,u16 rol,u16 pit,u16 aux1,u16 aux2,u16 aux3,u16 aux4,u16 aux5,u16 aux6)
@@ -487,11 +478,11 @@ void ANO_DT_Send_RCData(u16 thr,u16 yaw,u16 rol,u16 pit,u16 aux1,u16 aux2,u16 au
     data_to_send[_cnt++]=0x03;         //功能字
     data_to_send[_cnt++]=0;            //数据长度
     data_to_send[_cnt++]=BYTE1(thr);   //油门
-    data_to_send[_cnt++]=BYTE0(thr);   
+    data_to_send[_cnt++]=BYTE0(thr);
     data_to_send[_cnt++]=BYTE1(yaw);   //航向角
-    data_to_send[_cnt++]=BYTE0(yaw);   
+    data_to_send[_cnt++]=BYTE0(yaw);
     data_to_send[_cnt++]=BYTE1(rol);   //横滚
-    data_to_send[_cnt++]=BYTE0(rol); 
+    data_to_send[_cnt++]=BYTE0(rol);
     data_to_send[_cnt++]=BYTE1(pit);   //俯仰
     data_to_send[_cnt++]=BYTE0(pit);
     data_to_send[_cnt++]=BYTE1(aux1);
@@ -508,50 +499,48 @@ void ANO_DT_Send_RCData(u16 thr,u16 yaw,u16 rol,u16 pit,u16 aux1,u16 aux2,u16 au
     data_to_send[_cnt++]=BYTE0(aux6);
 
     data_to_send[3] = _cnt-4;         //数据帧长度赋值
-    
-    for(i=0;i<_cnt;i++)             
+    for(i=0;i<_cnt;i++)
         sum += data_to_send[i];         //数据校验求解
-    
+
     data_to_send[_cnt++]=sum;         //数据校验赋值
-    
+
     ANO_DT_Send_Data(data_to_send, _cnt); //帧发送
 }
 void ANO_DT_Send_Power(u16 votage, u16 current)
 {
     uint8_t _cnt=0,sum = 0,i;
     u16 temp;
-    
+
     data_to_send[_cnt++]=0xAA;
     data_to_send[_cnt++]=0xAA;
     data_to_send[_cnt++]=0x05;
     data_to_send[_cnt++]=0;
-    
+
     temp = votage;
     data_to_send[_cnt++]=BYTE1(temp);
     data_to_send[_cnt++]=BYTE0(temp);
     temp = current;
     data_to_send[_cnt++]=BYTE1(temp);
     data_to_send[_cnt++]=BYTE0(temp);
-    
+
     data_to_send[3] = _cnt-4;
-    
-  
+
     for(i=0;i<_cnt;i++)
         sum += data_to_send[i];
-    
+
     data_to_send[_cnt++]=sum;
-    
+
     ANO_DT_Send_Data(data_to_send, _cnt);
 }
 void ANO_DT_Send_MotoPWM(u16 m_1,u16 m_2,u16 m_3,u16 m_4,u16 m_5,u16 m_6,u16 m_7,u16 m_8)
 {
     uint8_t _cnt=0,    sum = 0,i;
-    
+
     data_to_send[_cnt++]=0xAA;
     data_to_send[_cnt++]=0xAA;
     data_to_send[_cnt++]=0x06;
     data_to_send[_cnt++]=0;
-    
+
     data_to_send[_cnt++]=BYTE1(m_1);
     data_to_send[_cnt++]=BYTE0(m_1);
     data_to_send[_cnt++]=BYTE1(m_2);
@@ -568,27 +557,26 @@ void ANO_DT_Send_MotoPWM(u16 m_1,u16 m_2,u16 m_3,u16 m_4,u16 m_5,u16 m_6,u16 m_7
     data_to_send[_cnt++]=BYTE0(m_7);
     data_to_send[_cnt++]=BYTE1(m_8);
     data_to_send[_cnt++]=BYTE0(m_8);
-    
+
     data_to_send[3] = _cnt-4;
-    
+
     for(i=0;i<_cnt;i++)
         sum += data_to_send[i];
-    
+
     data_to_send[_cnt++]=sum;
-    
+
     ANO_DT_Send_Data(data_to_send, _cnt);
 }
 void ANO_DT_Send_PID(uint8_t group,float p1_p,float p1_i,float p1_d,float p2_p,float p2_i,float p2_d,float p3_p,float p3_i,float p3_d)
 {
     uint8_t _cnt=0,sum = 0,i;
     vs16 _temp;
-    
+
     data_to_send[_cnt++]=0xAA;
     data_to_send[_cnt++]=0xAA;
     data_to_send[_cnt++]=0x10+group-1;
     data_to_send[_cnt++]=0;
-    
-    
+
     _temp = p1_p * 1000;
     data_to_send[_cnt++]=BYTE1(_temp);
     data_to_send[_cnt++]=BYTE0(_temp);
@@ -616,12 +604,11 @@ void ANO_DT_Send_PID(uint8_t group,float p1_p,float p1_i,float p1_d,float p2_p,f
     _temp = p3_d * 1000;
     data_to_send[_cnt++]=BYTE1(_temp);
     data_to_send[_cnt++]=BYTE0(_temp);
-    
+
     data_to_send[3] = _cnt-4;
-    
+
     for(i=0;i<_cnt;i++)
         sum += data_to_send[i];
-    
     data_to_send[_cnt++]=sum;
 
     ANO_DT_Send_Data(data_to_send, _cnt);
@@ -635,9 +622,9 @@ void Data_Send_AngleRate(float data1,float data2,float data3,float data4,float d
     float _temp;
     data_to_send[_cnt++]=0xAA;
     data_to_send[_cnt++]=0xAA;
-    data_to_send[_cnt++]=0xF1; 
+    data_to_send[_cnt++]=0xF1;
     data_to_send[_cnt++]=0;
-    
+
     _temp = data1;//RadtoDeg
     data_to_send[_cnt++]=BYTE3(_temp);
     data_to_send[_cnt++]=BYTE2(_temp);
@@ -678,15 +665,13 @@ void Data_Send_AngleRate(float data1,float data2,float data3,float data4,float d
     data_to_send[_cnt++]=BYTE2(_temp);
     data_to_send[_cnt++]=BYTE1(_temp);
     data_to_send[_cnt++]=BYTE0(_temp);
-    
+
 
     data_to_send[3] = _cnt-4;
 
     for(i=0;i<_cnt;i++)
         sum += data_to_send[i];
-        
     data_to_send[_cnt++] = sum;
-    
     ANO_DT_Send_Data(data_to_send, _cnt);
 }
 
@@ -707,23 +692,23 @@ void Data_Send_Filter(void)
     data_to_send[_cnt++]=BYTE2(_temp);
     data_to_send[_cnt++]=BYTE1(_temp);
     data_to_send[_cnt++]=BYTE0(_temp);
-    
+
     _temp = nav.z;
     data_to_send[_cnt++]=BYTE3(_temp);
     data_to_send[_cnt++]=BYTE2(_temp);
     data_to_send[_cnt++]=BYTE1(_temp);
     data_to_send[_cnt++]=BYTE0(_temp);
-    
+
     _temp = nav.vz;
     data_to_send[_cnt++]=BYTE3(_temp);
     data_to_send[_cnt++]=BYTE2(_temp);
     data_to_send[_cnt++]=BYTE1(_temp);
-    data_to_send[_cnt++]=BYTE0(_temp);    
-   _temp = nav.az;
+    data_to_send[_cnt++]=BYTE0(_temp);
+    _temp = nav.az;
     data_to_send[_cnt++]=BYTE3(_temp);
     data_to_send[_cnt++]=BYTE2(_temp);
     data_to_send[_cnt++]=BYTE1(_temp);
-    data_to_send[_cnt++]=BYTE0(_temp);    
+    data_to_send[_cnt++]=BYTE0(_temp);
     _temp = Acc_filt.Z;
     data_to_send[_cnt++]=BYTE3(_temp);
     data_to_send[_cnt++]=BYTE2(_temp);
@@ -736,13 +721,13 @@ void Data_Send_Filter(void)
     data_to_send[_cnt++]=BYTE3(_temp);
     data_to_send[_cnt++]=BYTE2(_temp);
     data_to_send[_cnt++]=BYTE1(_temp);
-    data_to_send[_cnt++]=BYTE0(_temp);    
+    data_to_send[_cnt++]=BYTE0(_temp);
     //_temp = Gyr_rad.Y*RadtoDeg;
     _temp = (float)MPU6050_ACC_RAW.Y*0.011964f;
     data_to_send[_cnt++]=BYTE3(_temp);
     data_to_send[_cnt++]=BYTE2(_temp);
     data_to_send[_cnt++]=BYTE1(_temp);
-    data_to_send[_cnt++]=BYTE0(_temp);    
+    data_to_send[_cnt++]=BYTE0(_temp);
     //_temp = Gyr_rad.Z*RadtoDeg;
     _temp = (float)MPU6050_ACC_RAW.Z*0.011964f;
     data_to_send[_cnt++]=BYTE3(_temp);
@@ -754,9 +739,7 @@ void Data_Send_Filter(void)
 
     for(i=0;i<_cnt;i++)
         sum += data_to_send[i];
-        
     data_to_send[_cnt++] = sum;
-    
     ANO_DT_Send_Data(data_to_send, _cnt);
 }
 /******************* (C) COPYRIGHT 2014 ANO TECH *****END OF FILE************/

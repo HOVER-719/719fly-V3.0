@@ -1,7 +1,7 @@
 /************************************************************************************************
 * 程序版本：V2.1
 * 程序日期：2021-12-8
-* 程序作者：719飞行器实验室： 
+* 程序作者：719飞行器实验室：
 *                        张润
 *                        杨晨阳
 ************************************************************************************************/
@@ -11,11 +11,11 @@
 
 #define SCL_H         GPIOB->BSRR = GPIO_Pin_6
 #define SCL_L         GPIOB->BRR  = GPIO_Pin_6
-#define SDA_H         GPIOB->BSRR = GPIO_Pin_7 
+#define SDA_H         GPIOB->BSRR = GPIO_Pin_7
 #define SDA_L         GPIOB->BRR  = GPIO_Pin_7
 #define SDA_read      ((GPIOB->IDR & GPIO_Pin_7)!=0)?1:0
 
-void IIC_GPIO_Init(void);        //初始化IIC的IO口                 
+void IIC_GPIO_Init(void);        //初始化IIC的IO口
 void IIC_Start(void);             //发送IIC开始信号
 void IIC_Stop(void);                 //发送IIC停止信号
 void IIC_Ack(void);                 //IIC发送ACK信号

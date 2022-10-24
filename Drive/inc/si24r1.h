@@ -63,18 +63,18 @@
 extern uint8_t SI24R1_TX_DATA[TX_PAYLO_WIDTH];
 extern uint8_t SI24R1_RX_DATA[TX_PAYLO_WIDTH];
 
-void SI24R1_Init(void);        
+void SI24R1_Init(void);
 void SI24R1_Check(void);
 void SI24R1_Config(void);
 void SI24R1_GetAddr(void);
 void SI24R1set_Mode(uint8_t mode);
 uint8_t SI24R1_Write_Buf(uint8_t reg, uint8_t *pBuf, uint8_t len);
-uint8_t SI24R1_Read_Buf(uint8_t reg, uint8_t *pBuf, uint8_t len);              
-uint8_t SI24R1_read_reg(uint8_t reg);                    
-uint8_t SI24R1_write_reg(uint8_t reg, uint8_t value);        
+uint8_t SI24R1_Read_Buf(uint8_t reg, uint8_t *pBuf, uint8_t len);
+uint8_t SI24R1_read_reg(uint8_t reg);
+uint8_t SI24R1_write_reg(uint8_t reg, uint8_t value);
 
-void SI24R1_TxPacket(uint8_t *txbuf);                
-void SI24R1_RxPacket(uint8_t *rxbuf);    
+void SI24R1_TxPacket(uint8_t *txbuf);
+void SI24R1_RxPacket(uint8_t *rxbuf);
 void Remote_Connectiong(void);
 void SI24R1_GetAddr(void);
 void SI24R1_Test(void);

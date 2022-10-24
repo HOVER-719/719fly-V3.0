@@ -1,7 +1,7 @@
 /************************************************************************************************
 * 程序版本：V2.1
 * 程序日期：2021-12-8
-* 程序作者：719飞行器实验室： 
+* 程序作者：719飞行器实验室：
 *                        张润
 *                        杨晨阳
 ************************************************************************************************/
@@ -39,27 +39,24 @@ extern uint8_t MPU6050_OffSet_Flag;
 * 功  能: USART1中断函数
 * 参  数: 无
 * 返回值: 无
-* 备  注: 
+* 备  注:
 ****************************************************************************************************/
 void USART1_IRQHandler(void)
 {
-    uint8_t clear = clear;                                                                                 //定义这个变量是针对编译出现“没有用到这个变量”的警告提示
-    
-    if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)                 //接收中断
-    { 
-        
-    }
+    uint8_t clear = clear;    //定义这个变量是针对编译出现“没有用到这个变量”的警告提示
+
+    if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)   //接收中断
+    {}
     else if(USART_GetITStatus(USART1, USART_IT_IDLE) != RESET)     //空闲中断
     {
-        clear = USART1->SR;                                                                                 //读SR寄存器
-        clear = USART1->DR;                                                                                 //读DR寄存器（先读SR,再度DR,就是为了清除IDIE中断）
-        
+        clear = USART1->SR;  //读SR寄存器
+        clear = USART1->DR;  //读DR寄存器（先读SR,再度DR,就是为了清除IDIE中断）
     }
     USART_ClearITPendingBit(USART1,USART_IT_RXNE);
 }
 
 /****************************************************************************************************
-* 函  数: void TIM4_IRQHandler(void) 
+* 函  数: void TIM4_IRQHandler(void)
 * 功  能: TIM4定时器中断，1ms进一次中断也就是1000Hz
 * 参  数: 无
 * 返回值: 无
@@ -74,8 +71,8 @@ void TIM4_IRQHandler(void)   //TIM4中断服务函数
     {
         ms2++;
         ms5++;
-        ms10++;    
-        ms20++;    
+        ms10++;
+        ms20++;
         ms100++;
         ms200++;
         ms400++;                                                                  //这里的数字决定了周期性任务在
@@ -92,7 +89,6 @@ void TIM4_IRQHandler(void)   //TIM4中断服务函数
         {
             ms10 = 0;
             IMU_Scan = 1;
-            
         }
         if(ms20 >= 20)                                                        //50Hz
         {
@@ -101,20 +97,16 @@ void TIM4_IRQHandler(void)   //TIM4中断服务函数
         if(ms100 >= 100)                                                    //10Hz
         {
                 ms100 = 0;
-            
                 LED_Scan = 1;
-            
                 if( Init_Flag == 0 )
                 {
                     Init_Time ++;
                 }
-                
                 if( Init_Time >= 100 && Att_Angle.pit < 0.3 && Att_Angle.rol <0.3 )////初始化等待时间结束，且IMU输出角度在正常范围内
                 {
                     Init_Time = 0;
                     Init_Flag = 1;//初始化标志位为1，开始打印
                 }
-                
                 if( Init_Flag == 1 )
                 {
 //                    printf("PIT = %5.2f",Att_Angle.pit);
@@ -127,9 +119,7 @@ void TIM4_IRQHandler(void)   //TIM4中断服务函数
                 {
                     printf("Loading\r\n");
                 }
-                
         }
-        
         if(ms200 >= 200)                                                    //5Hz
         {
             ms200 = 0;
@@ -153,12 +143,11 @@ void TIM4_IRQHandler(void)   //TIM4中断服务函数
 *****************************************************************************/
 void TIM2_IRQHandler (void)                                        //TIM2的中断服务函数  计数器溢出，4个输入捕获都指向该中断函数，用各自的标志位进行区分
 {
-    
     if(TIM_GetITStatus (TIM2 ,TIM_IT_Update) != RESET)
     {
         TIM_ClearITPendingBit (TIM2 ,TIM_FLAG_Update);
-    }    
-    
+    }
+
     if(TIM_GetITStatus (TIM2 ,TIM_IT_CC1) != RESET)
     {
         if(TIM_ICUserValueStructure_1.Capture_StartFlag ==0)
@@ -176,7 +165,7 @@ void TIM2_IRQHandler (void)                                        //TIM2的中�
         }
         TIM_ClearITPendingBit (TIM2 ,TIM_IT_CC1 );
     }
-    
+
     if(TIM_GetITStatus (TIM2 ,TIM_IT_CC2) != RESET)
     {
         if(TIM_ICUserValueStructure_2.Capture_StartFlag ==0)
@@ -194,7 +183,7 @@ void TIM2_IRQHandler (void)                                        //TIM2的中�
         }
         TIM_ClearITPendingBit (TIM2 ,TIM_IT_CC2 );
     }
-    
+
     if(TIM_GetITStatus (TIM2 ,TIM_IT_CC3) != RESET)
     {
         if(TIM_ICUserValueStructure_3.Capture_StartFlag ==0)
@@ -220,7 +209,7 @@ void TIM2_IRQHandler (void)                                        //TIM2的中�
             TIM_OC4PolarityConfig(TIM2 , TIM_ICPolarity_Falling);
             TIM_ICUserValueStructure_4.Capture_StartFlag = 1;
         }
-        
+
         else
         {
             TIM_ICUserValueStructure_4.Capture_CcrValue_b = TIM_GetCapture4 (TIM2 );
@@ -242,7 +231,7 @@ void TIM2_IRQHandler (void)                                        //TIM2的中�
 *****************************************************************************/
 void TIM1_CC_IRQHandler (void)                                                                                                                                                                                //TIM1输入捕获中断服务函数  由于是高级定时器所以中断服务函数划分比普通定时器（例如上面的TIM4）细致
 {
-    
+
 if(TIM_GetITStatus (TIM1 ,TIM_IT_CC1) != RESET)
     {
         if(TIM_ICUserValueStructure_5.Capture_StartFlag ==0)
@@ -261,7 +250,7 @@ if(TIM_GetITStatus (TIM1 ,TIM_IT_CC1) != RESET)
         }
         TIM_ClearITPendingBit (TIM1 ,TIM_IT_CC1 );
     }
-    
+
     if((TIM_ICUserValueStructure_5.Capture_CcrValue_b-TIM_ICUserValueStructure_5.Capture_CcrValue_a)<2100&& (TIM_ICUserValueStructure_5.Capture_CcrValue_b-TIM_ICUserValueStructure_5.Capture_CcrValue_a)>900)
             RC_Control.BUTTON = TIM_ICUserValueStructure_5.Capture_CcrValue_b-TIM_ICUserValueStructure_5.Capture_CcrValue_a;//计算脉宽并将其存入RC_Control？、        printf("%d\r\n",RC_Control.BUTTON);
 

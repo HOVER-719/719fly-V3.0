@@ -13,14 +13,14 @@
 #define M_PI_F 3.141592653589793f
 typedef struct
 {
- float Input_Butter[3];
- float Output_Butter[3];
+    float Input_Butter[3];
+    float Output_Butter[3];
 }Butter_BufferData;
 
 typedef struct
 {
-  float a[3];
-  float b[3];
+    float a[3];
+    float b[3];
 }Butter_Parameter;
 
 

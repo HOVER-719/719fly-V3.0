@@ -1,7 +1,7 @@
 /*******************************************************************************************
 * 程序版本：V1.0
 * 程序日期：2020-9-20
-* 程序作者：719飞行器实验室： 
+* 程序作者：719飞行器实验室：
 *                        张润
 *                        杨晨阳
 *******************************************************************************************/
@@ -35,26 +35,26 @@ uint8_t RX_ADDRESS[RX_ADR_WIDTH]={0x34,0x43,0x10,0x10,0x01}; //接收地址
 *****************************************************************************/
 void SI24R1_Init(void)
 {
-    GPIO_InitTypeDef GPIO_InitStruct; 
+    GPIO_InitTypeDef GPIO_InitStruct;
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB|RCC_APB2Periph_GPIOA,ENABLE);
-    
+
     /*   配置CSN引脚   */
     GPIO_InitStruct.GPIO_Pin=GPIO_Pin_12;
     GPIO_InitStruct.GPIO_Mode=GPIO_Mode_Out_PP;
     GPIO_InitStruct.GPIO_Speed=GPIO_Speed_50MHz;
     GPIO_Init(GPIOB,&GPIO_InitStruct);
     GPIO_ResetBits(GPIOB,GPIO_Pin_12);
-    
+
     /*  配置CE引脚  */
     GPIO_InitStruct.GPIO_Pin=GPIO_Pin_8;
     GPIO_InitStruct.GPIO_Mode=GPIO_Mode_Out_PP;
     GPIO_InitStruct.GPIO_Speed=GPIO_Speed_50MHz;
     GPIO_Init(GPIOA,&GPIO_InitStruct);
     GPIO_ResetBits(GPIOA,GPIO_Pin_8);
-        
+
     SPI_GPIO_Init(); //SPI2初始化
 
-    SI24R1_Check(); //检查SI24R1是否与MCU通信                                    
+    SI24R1_Check(); //检查SI24R1是否与MCU通信
 
     SI24R1_CSN_HIGH; //失能NRF
     SI24R1_CE_LOW;      //待机模式
@@ -71,12 +71,12 @@ void SI24R1_Init(void)
 uint8_t SI24R1_write_reg(uint8_t reg,uint8_t value)
 {
     uint8_t status;
-    
+
     SI24R1_CSN_LOW;
     status=SPI2_WriteReadByte(reg);
     SPI2_WriteReadByte(value);
     SI24R1_CSN_HIGH;
-    
+
     return status;
 }
 
@@ -90,12 +90,12 @@ uint8_t SI24R1_write_reg(uint8_t reg,uint8_t value)
 uint8_t SI24R1_read_reg(uint8_t reg)
 {
     uint8_t reg_val;
-    
+
     SI24R1_CSN_LOW;
     SPI2_WriteReadByte(reg);
     reg_val = SPI2_WriteReadByte(0xff);
     SI24R1_CSN_HIGH;
-    
+
     return reg_val;
 }
 
@@ -112,7 +112,7 @@ uint8_t SI24R1_Write_Buf(uint8_t reg, uint8_t *pBuf, uint8_t len)
 {
     uint8_t status;
     int i;
-    
+
     SI24R1_CSN_LOW;
     status = SPI2_WriteReadByte(reg);
     for( i=0;i<len;i++)
@@ -121,7 +121,7 @@ uint8_t SI24R1_Write_Buf(uint8_t reg, uint8_t *pBuf, uint8_t len)
         pBuf++;
     }
     SI24R1_CSN_HIGH;
-    
+
     return status;
 }
 
@@ -138,7 +138,7 @@ uint8_t SI24R1_Read_Buf(uint8_t reg, uint8_t *pBuf, uint8_t len)
 {
     uint8_t status;
     int i;
-    
+
     SI24R1_CSN_LOW;
     status = SPI2_WriteReadByte(reg);
     for(i = 0;i < len ;i++)
@@ -147,7 +147,7 @@ uint8_t SI24R1_Read_Buf(uint8_t reg, uint8_t *pBuf, uint8_t len)
         pBuf++;
     }
     SI24R1_CSN_HIGH;
-    
+
     return status;
 }
 
@@ -164,7 +164,7 @@ void SI24R1set_Mode(uint8_t mode)
     {
         SI24R1_CE_LOW;
         SI24R1_write_reg(W_REGISTER+CONFIG,IT_TX);
-        SI24R1_write_reg(W_REGISTER+STATUS,0X7E); //清除所有中断,防止一进去发送模式就触发中断    
+        SI24R1_write_reg(W_REGISTER+STATUS,0X7E); //清除所有中断,防止一进去发送模式就触发中断
         SI24R1_CE_HIGH;
 //        Delay_us(15);
     }
@@ -175,7 +175,7 @@ void SI24R1set_Mode(uint8_t mode)
         SI24R1_write_reg(W_REGISTER+STATUS,0X7E); //清除所有中断,防止一进去接收模式就触发中断
         SI24R1_CE_HIGH;
         Delay_us(200);
-    }        
+    }
 }
 
 /*****************************************************************************
@@ -189,33 +189,33 @@ void SI24R1_Config(void)
 {
     SI24R1_CE_LOW;
     SI24R1_write_reg(W_REGISTER+SETUP_AW, 0x03); //配置通信地址的长度，默认值时0x03,即地址长度为5字节
-    SI24R1_Write_Buf(W_REGISTER+TX_ADDR,(uint8_t*)TX_ADDRESS,TX_ADR_WIDTH); //写TX节点地址 
+    SI24R1_Write_Buf(W_REGISTER+TX_ADDR,(uint8_t*)TX_ADDRESS,TX_ADR_WIDTH); //写TX节点地址
     SI24R1_Write_Buf(W_REGISTER+RX_ADDR_P0,(uint8_t*)TX_ADDRESS,RX_ADR_WIDTH); //设置TX节点地址,主要为了使能ACK
     SI24R1_write_reg(W_REGISTER+SETUP_RETR,0x1A); //设置自动重发间隔时间:500us + 86us;最大自动重发次数:10次 0x1A
-    
-    SI24R1_write_reg(W_REGISTER+EN_RXADDR,0x01);//使能通道0的接收地址  
+
+    SI24R1_write_reg(W_REGISTER+EN_RXADDR,0x01);//使能通道0的接收地址
     SI24R1_write_reg(W_REGISTER+EN_AA,0x01); //使能通道0自动应答
-    SI24R1_write_reg(W_REGISTER+RX_PW_P0,RX_PAYLO_WIDTH);//选择通道0的有效数据宽度  
+    SI24R1_write_reg(W_REGISTER+RX_PW_P0,RX_PAYLO_WIDTH);//选择通道0的有效数据宽度
     SI24R1_Write_Buf(W_REGISTER+RX_ADDR_P0,(uint8_t*)RX_ADDRESS,RX_ADR_WIDTH); //写RX节点地址
     SI24R1_write_reg(W_REGISTER+RF_CH,30); //设置RF通道为40hz(1-64Hz都可以)
     SI24R1_write_reg(W_REGISTER+RF_SETUP,0x27); //设置TX发射参数,0db增益,2Mbps,低噪声增益关闭 （注意：低噪声增益关闭/开启直接影响通信,要开启都开启，要关闭都关闭0x0f）
-    
+
     SI24R1set_Mode(IT_RX); //默认为接收模式
-    
+
     SI24R1_CE_HIGH;
-}    
+}
 
 /*****************************************************************************
 * 函  数：uint8_t SI24R1_TxPacket(uint8_t *txbuf)
 * 功  能：SI24R1发送一包数据
 * 参  数：txbuf：要发送数据地址
-* 返回值：无 
+* 返回值：无
 * 备  注：无
 *****************************************************************************/
 void SI24R1_TxPacket(uint8_t *txbuf)
 {
-    SI24R1_CE_LOW;    
-    SI24R1_Write_Buf(W_REGISTER+TX_ADDR,(uint8_t*)TX_ADDRESS,TX_ADR_WIDTH);  //写TX节点地址 
+    SI24R1_CE_LOW;
+    SI24R1_Write_Buf(W_REGISTER+TX_ADDR,(uint8_t*)TX_ADDRESS,TX_ADR_WIDTH);  //写TX节点地址
     SI24R1_Write_Buf(W_REGISTER+RX_ADDR_P0,(uint8_t*)TX_ADDRESS,RX_ADR_WIDTH); //设置TX节点地址,主要为了使能ACK
     SI24R1_Write_Buf(W_RX_PAYLOAD,txbuf,TX_PAYLO_WIDTH); //写数据到TX_BUFF
     SI24R1_write_reg(W_REGISTER+CONFIG,0x0e);    //设置为发送模式,开启所有中断
@@ -249,12 +249,12 @@ void SI24R1_RxPacket(uint8_t *rxbuf)
 uint8_t SI24R1_testConnection(void)
 {
     uint8_t buf[5]={0XA5,0XA5,0XA5,0XA5,0XA5};
-    uint8_t i;      
-    SI24R1_Write_Buf(W_REGISTER+TX_ADDR,buf,5); //写入5个字节的地址.    
-    SI24R1_Read_Buf(TX_ADDR,buf,5); //读出写入的地址  
+    uint8_t i;
+    SI24R1_Write_Buf(W_REGISTER+TX_ADDR,buf,5); //写入5个字节的地址.
+    SI24R1_Read_Buf(TX_ADDR,buf,5); //读出写入的地址
     for(i=0;i<5;i++)
-    if(buf[i]!=0XA5)break;                                    
-    if(i!=5)return 0; //检测24L01错误    
+    if(buf[i]!=0XA5)break;
+    if(i!=5)return 0; //检测24L01错误
     return 1;    //检测到24L01
 }
 
@@ -278,7 +278,7 @@ void SI24R1_Check(void)
 * 函  数：void SI24R1_GetAddr(void)
 * 功  能：给飞机获取上的SI24R1获取一个地址
 * 参  数：无
-* 返回值：无 
+* 返回值：无
 * 备  注：此函数需要与遥控器的对频函数联合使用否者SI24R1通信不成功，
           如果自己做的的遥控器可直接用固定地址
 *****************************************************************************/
@@ -303,7 +303,7 @@ void SI24R1_GetAddr(void)
 * 函  数：void SI24R1_Test(void)
 * 功  能：SI24R1通信测试函数
 * 参  数：无
-* 返回值：无 
+* 返回值：无
 * 备  注：测试时用
 *****************************************************************************/
 void SI24R1_Test(void)
@@ -316,10 +316,10 @@ void SI24R1_Test(void)
     {
         key++;
         if(key>('~'))key=' ';
-        SI24R1_TX_DATA[t]=key;    
+        SI24R1_TX_DATA[t]=key;
     }
-    mode++; 
-    if(mode>'~')mode=' ';                
+    mode++;
+    if(mode>'~')mode=' ';
     SI24R1_TxPacket(SI24R1_TX_DATA);
 }
 

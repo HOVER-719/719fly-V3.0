@@ -1,7 +1,7 @@
 /*******************************************************************************************
 * 程序版本：V1.0
 * 程序日期：2020-9-20
-* 程序作者：719飞行器实验室： 
+* 程序作者：719飞行器实验室：
 *                        张润
 *                        杨晨阳
 *******************************************************************************************/
@@ -33,11 +33,11 @@ void BATT_Init(void)
 {
     GPIO_InitTypeDef GPIO_InitStruct;
     ADC_InitTypeDef   ADC_InitStruct;
-    
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA|RCC_APB2Periph_ADC1, ENABLE); 
+
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA|RCC_APB2Periph_ADC1, ENABLE);
     RCC_ADCCLKConfig(RCC_PCLK2_Div6);
-    
-    //模拟输入模式选择       
+
+    //模拟输入模式选择
     GPIO_InitStruct.GPIO_Pin=GPIO_Pin_1;
     GPIO_InitStruct.GPIO_Mode=GPIO_Mode_AIN; //模拟输入
     GPIO_Init(GPIOA, &GPIO_InitStruct);
@@ -49,9 +49,9 @@ void BATT_Init(void)
     ADC_InitStruct.ADC_ExternalTrigConv=ADC_ExternalTrigConv_None;        //外部触发失能
     ADC_InitStruct.ADC_ContinuousConvMode=DISABLE;                        //连续转换失能
     ADC_Init(ADC1,&ADC_InitStruct);
-    
+
     ADC_Cmd(ADC1, ENABLE); //使能ADC1
-    
+
     ADC_RegularChannelConfig(ADC1,ADC_Channel_1,1,ADC_SampleTime_239Cycles5);    //规则组转换通道
 }
 
@@ -68,7 +68,7 @@ uint16_t Get_BatteryAdc(uint8_t ch)
     ADC_SoftwareStartConvCmd(ADC1,ENABLE);    //软件触发转换使能
     while(!ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC));    //等待转换结束
     return ADC_GetConversionValue(ADC1);    //返回转换结果的值
-}        
+}
 
 /******************************************************************************************
 * 函  数：void BATT_GetVoltage(void)
@@ -121,7 +121,7 @@ void LowVoltage_Alarm(void)
             {
                 //Run_flag = 0;
                 cnt = 0;
-              BATT_LEDflag = 1;
+                BATT_LEDflag = 1;
             }
         }
         else
@@ -132,5 +132,3 @@ void LowVoltage_Alarm(void)
         }
     }
 }
-
-

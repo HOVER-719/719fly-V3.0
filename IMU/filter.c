@@ -1,7 +1,7 @@
 /************************************************************************************************
 * 程序版本：V2.1
 * 程序日期：2021-12-8
-* 程序作者：719飞行器实验室： 
+* 程序作者：719飞行器实验室：
 *                        张润
 *                        杨晨阳
 ************************************************************************************************/
@@ -46,16 +46,16 @@ float FindPos(float*a,int low,int high)
 * 返回值 ：无
 * 备  注 : 无
 *******************************************************************************/
- void QuiteSort(float* a,int low,int high)
- {
-     int pos;
-     if(low<high)
-     {
-         pos = FindPos(a,low,high); //排序一个位置
-         QuiteSort(a,low,pos-1);    //递归调用
-         QuiteSort(a,pos+1,high);
-     }
- }
+void QuiteSort(float* a,int low,int high)
+{
+    int pos;
+    if(low<high)
+    {
+        pos = FindPos(a,low,high); //排序一个位置
+        QuiteSort(a,low,pos-1);    //递归调用
+        QuiteSort(a,pos+1,high);
+    }
+}
 
 /*******************************************************************************
 * 函  数 ：float  SortAver_Filter(float value)
@@ -65,25 +65,25 @@ float FindPos(float*a,int low,int high)
 * 返回值 ：无
 * 备  注 : 无
 *******************************************************************************/
-void  SortAver_Filter(float value,float *filter,uint8_t n)
+void SortAver_Filter(float value,float *filter,uint8_t n)
 {
     static float buf[N] = {0.0};
     static uint8_t cnt =0,flag = 1;
     float temp=0;
     uint8_t i=0;
     buf[cnt++] = value;
-    if(cnt<n && flag) 
-        return;                                                  //数组填不满不计算    
-    else flag=0; 
+    if(cnt<n && flag)
+        return;     //数组填不满不计算
+    else flag=0;
     QuiteSort(buf,0,n-1);
     for(i=1;i<n-1;i++)
-     {
+    {
         temp += buf[i];
-     }
+    }
 
-     if(cnt>=n) cnt = 0;
+    if(cnt>=n) cnt = 0;
 
-     *filter = temp/(n-2);
+    *filter = temp/(n-2);
 }
 
 /*******************************************************************************
@@ -94,26 +94,25 @@ void  SortAver_Filter(float value,float *filter,uint8_t n)
 * 返回值 ：无
 * 备  注 : 无
 *******************************************************************************/
-void  SortAver_Filter1(float value,float *filter,uint8_t n)
+void SortAver_Filter1(float value,float *filter,uint8_t n)
 {
     static float buf[N];
     static uint8_t cnt =0 ,flag = 1;
     float temp=0;
     uint8_t i;
     buf[cnt++] = value;
-    if(cnt<n && flag) 
+    if(cnt<n && flag)
         return;                                           //数组填不满不计算
     else
         flag = 0;
     QuiteSort(buf,0,n-1);
     for(i=1;i<n-1;i++)
-     {
+    {
         temp += buf[i];
-     }
+    }
     if(cnt>=n) cnt = 0;
-     
-    *filter = temp/(n-2);
 
+    *filter = temp/(n-2);
 }
 
 /********************************************************************************
@@ -124,7 +123,7 @@ void  SortAver_Filter1(float value,float *filter,uint8_t n)
 * 返回值 ：无
 * 备  注 : 无
 ********************************************************************************/
-void  SortAver_FilterXYZ(INT16_XYZ *acc,FLOAT_XYZ *Acc_filt,uint8_t n)
+void SortAver_FilterXYZ(INT16_XYZ *acc,FLOAT_XYZ *Acc_filt,uint8_t n)
 {
     static float bufx[N],bufy[N],bufz[N];
     static uint8_t cnt =0,flag = 1;
@@ -134,32 +133,32 @@ void  SortAver_FilterXYZ(INT16_XYZ *acc,FLOAT_XYZ *Acc_filt,uint8_t n)
     bufy[cnt] = acc->Y;
     bufz[cnt] = acc->Z;
     cnt++;      //这个的位置必须在赋值语句后，否则bufx[0]不会被赋值
-    if(cnt<n && flag) 
+    if(cnt<n && flag)
         return;   //数组填不满不计算
     else
         flag = 0;
-    
+
     QuiteSort(bufx,0,n-1);
     QuiteSort(bufy,0,n-1);
     QuiteSort(bufz,0,n-1);
     for(i=1;i<n-1;i++)
-     {
+    {
         temp1 += bufx[i];
         temp2 += bufy[i];
         temp3 += bufz[i];
-     }
+    }
 
-     if(cnt>=n) cnt = 0;
-     Acc_filt->X  = temp1/(n-2);
-     Acc_filt->Y  = temp2/(n-2);
-     Acc_filt->Z  = temp3/(n-2);
+    if(cnt>=n) cnt = 0;
+    Acc_filt->X  = temp1/(n-2);
+    Acc_filt->Y  = temp2/(n-2);
+    Acc_filt->Z  = temp3/(n-2);
 }
 /************************************************************************************************
 * 函  数：void Aver_FilterXYZ6(INT16_XYZ *acc,INT16_XYZ *gry,FLOAT_XYZ *Acc_filt,FLOAT_XYZ *Gry_filt,uint8_t n)
 * 功  能：滑动窗口滤波六组数据
 * 参  数：*acc ,*gry 要滤波数据地址
 *         *Acc_filt,*Gry_filt 滤波后数据地址
-* 返回值：无 
+* 返回值：无
 * 备  注：本程序为STM32飞控新生比赛精简版
 ************************************************************************************************/
 void Aver_FilterXYZ6(INT16_XYZ *acc,INT16_XYZ *gry,FLOAT_XYZ *Acc_filt,FLOAT_XYZ *Gry_filt,uint8_t n)
@@ -175,7 +174,7 @@ void Aver_FilterXYZ6(INT16_XYZ *acc,INT16_XYZ *gry,FLOAT_XYZ *Acc_filt,FLOAT_XYZ
     bufgy[cnt] = gry->Y;
     bufgz[cnt] = gry->Z;
     cnt++;                                   //这个的位置必须在赋值语句后，否则bufax[0]不会被赋值
-    if(cnt<n && flag) 
+    if(cnt<n && flag)
         return;                                //数组填不满不计算
     else
         flag = 0;
@@ -184,20 +183,19 @@ void Aver_FilterXYZ6(INT16_XYZ *acc,INT16_XYZ *gry,FLOAT_XYZ *Acc_filt,FLOAT_XYZ
         temp1 += bufax[i];
         temp2 += bufay[i];
         temp3 += bufaz[i];
-        
+
         temp4 += bufgx[i];
         temp5 += bufgy[i];
         temp6 += bufgz[i];
     }
-     if(cnt>=n) cnt = 0;
-     Acc_filt->X  = temp1/n;
-     Acc_filt->Y  = temp2/n;
-     Acc_filt->Z  = temp3/n;
-    
-     Gry_filt->X  = temp4/n;
-     Gry_filt->Y  = temp5/n;
-     Gry_filt->Z  = temp6/n;
-    
+    if(cnt>=n) cnt = 0;
+    Acc_filt->X  = temp1/n;
+    Acc_filt->Y  = temp2/n;
+    Acc_filt->Z  = temp3/n;
+
+    Gry_filt->X  = temp4/n;
+    Gry_filt->Y  = temp5/n;
+    Gry_filt->Z  = temp6/n;
 }
 
 
@@ -206,47 +204,43 @@ void Aver_FilterXYZ6(INT16_XYZ *acc,INT16_XYZ *gry,FLOAT_XYZ *Acc_filt,FLOAT_XYZ
  *         *Acc_filt 滤波后数据地址 */
 void sliding_average_filter(INT16_XYZ *acc, FLOAT_XYZ *Acc_filt, uint8_t n)
 {
-  static int data_num = 0;
-  static float bufx[N],bufy[N],bufz[N];
-  float output1 = 0, output2 = 0, output3 = 0;
+    static int data_num = 0;
+    static float bufx[N],bufy[N],bufz[N];
+    float output1 = 0, output2 = 0, output3 = 0;
 
-  if (data_num < n) //不满窗口，先填充
-  {
-    bufx[data_num++] = acc->X;
-    bufy[data_num++] = acc->Y;
-    bufz[data_num++] = acc->Z;
-    output1 = acc->X;
-    output2 = acc->Y;
-    output3 = acc->Z;
+    if (data_num < n) //不满窗口，先填充
+    {
+        bufx[data_num++] = acc->X;
+        bufy[data_num++] = acc->Y;
+        bufz[data_num++] = acc->Z;
+        output1 = acc->X;
+        output2 = acc->Y;
+        output3 = acc->Z;
+    }
+    else
+    {
+        int i = 0;
+        float sum1 = 0.0, sum2 = 0.0, sum3 = 0.0;
+        memcpy(&bufx[0], &bufx[1], (n - 1) * 4); //将1之后的数据移到0之后，即移除头部
+        memcpy(&bufy[0], &bufy[1], (n - 1) * 4);
+        memcpy(&bufz[0], &bufz[1], (n - 1) * 4);
+        bufx[n-1] = acc->X;   //即添加尾部
+        bufy[n-1] = acc->Y;
+        bufz[n-1] = acc->Z;
+        for (i = 0; i < n; i++)
+        {
+            sum1 += bufx[i];
+            sum2 += bufy[i];
+            sum3 += bufz[i];
+        }
+        output1 = sum1 / n;
+        output2 = sum2 / n;
+        output3 = sum3 / n;
+    }
 
-  }
-  else
-  {
-    int i = 0;
-    float sum1 = 0.0, sum2 = 0.0, sum3 = 0.0;
-    memcpy(&bufx[0], &bufx[1], (n - 1) * 4); //将1之后的数据移到0之后，即移除头部
-    memcpy(&bufy[0], &bufy[1], (n - 1) * 4); 
-    memcpy(&bufz[0], &bufz[1], (n - 1) * 4); 
-    bufx[n-1] = acc->X;   //即添加尾部
-    bufy[n-1] = acc->Y;
-    bufz[n-1] = acc->Z;                    
-                
-    for (i = 0; i < n; i++){
-        sum1 += bufx[i];
-        sum2 += bufy[i];
-        sum3 += bufz[i];
-    } 
-
-    output1 = sum1 / n;
-    output2 = sum2 / n;
-    output3 = sum3 / n;
-
-  }
-
-  Acc_filt->X  = output1;
-  Acc_filt->Y  = output2;
-  Acc_filt->Z  = output3;
-  
+    Acc_filt->X  = output1;
+    Acc_filt->Y  = output2;
+    Acc_filt->Z  = output3;
 }
 
 /************************************************************************************************
@@ -254,7 +248,7 @@ void sliding_average_filter(INT16_XYZ *acc, FLOAT_XYZ *Acc_filt, uint8_t n)
 * 功  能：滑动窗口滤波三组数据
 * 参  数：*acc  要滤波数据地址
 *         *Acc_filt 滤波后数据地址
-* 返回值：无 
+* 返回值：无
 * 备  注：本程序为STM32飞控新生比赛精简版
 ************************************************************************************************/
 void Aver_FilterXYZ(INT16_XYZ *acc, FLOAT_XYZ *Acc_filt, uint8_t n)
@@ -266,7 +260,7 @@ void Aver_FilterXYZ(INT16_XYZ *acc, FLOAT_XYZ *Acc_filt, uint8_t n)
     bufay[cnt] = acc->Y;
     bufaz[cnt] = acc->Z;
     cnt++;                                                                  //这个的位置必须在赋值语句后，否则bufax[0]不会被赋值
-    if(cnt<n && flag) 
+    if(cnt<n && flag)
         return;                                                            //数组填不满不计算
     else
         flag = 0;
@@ -276,10 +270,10 @@ void Aver_FilterXYZ(INT16_XYZ *acc, FLOAT_XYZ *Acc_filt, uint8_t n)
         temp2 += bufay[i];
         temp3 += bufaz[i];
     }
-     if(cnt>=n)  cnt = 0;
-     Acc_filt->X  = temp1/n;
-     Acc_filt->Y  = temp2/n;
-     Acc_filt->Z  = temp3/n;
+    if(cnt>=n)  cnt = 0;
+    Acc_filt->X  = temp1/n;
+    Acc_filt->Y  = temp2/n;
+    Acc_filt->Z  = temp3/n;
 }
 /************************************************************************************************
 * 函  数：void Aver_Filter(float data,float *filt_data,uint8_t n
@@ -291,23 +285,23 @@ void Aver_FilterXYZ(INT16_XYZ *acc, FLOAT_XYZ *Acc_filt, uint8_t n)
 ************************************************************************************************/
 void Aver_Filter(float data,float *filt_data,uint8_t n)
 {
-  static float buf[N];
+    static float buf[N];
     static uint8_t cnt =0,flag = 1;
     float temp=0;
     uint8_t i;
     buf[cnt] = data;
     cnt++;
-    if(cnt<n && flag) 
+    if(cnt<n && flag)
         return;                                                           //数组填不满不计算
     else
         flag = 0;
-    
+
     for(i=0;i<n;i++)
     {
         temp += buf[i];
     }
     if(cnt>=n) cnt = 0;
-     *filt_data = temp/n;
+    *filt_data = temp/n;
 }
 /************************************************************************************************
 * 函  数：void Aver_Filter1(float data,float *filt_data,uint8_t n
@@ -319,12 +313,12 @@ void Aver_Filter(float data,float *filt_data,uint8_t n)
 ************************************************************************************************/
 void Aver_Filter1(float data,float *filt_data,uint8_t n)
 {
-  static float buf[N];
+    static float buf[N];
     static uint8_t cnt =0,flag = 1;
     float temp=0;
     uint8_t i;
     buf[cnt++] = data;
-    if(cnt<n && flag) 
+    if(cnt<n && flag)
         return;                                                               //数组填不满不计算
     else
         flag = 0;
@@ -346,7 +340,7 @@ typedef struct
 #define ABS(x) ( (x)>0?(x):-(x) )
 #define LIMIT( x,min,max ) ( (x) < (min)  ? (min) : ( (x) > (max) ? (max) : (x) ) )
 
-void LPF_1(float hz,float time,float in,float *out)  
+void LPF_1(float hz,float time,float in,float *out)
 {
     *out += ( 1 / ( 1 + 1 / ( hz *6.28f *time ) ) ) *( in - *out );
 }
@@ -354,30 +348,30 @@ void LPF_1(float hz,float time,float in,float *out)
 void limit_filter(float T,float hz,_lf_t *data,float in)
 {
     float abs_t;
-    LPF_1(hz,T,     in,&(data->lpf_1)); 
+    LPF_1(hz,T,     in,&(data->lpf_1));
     abs_t = ABS(data->lpf_1);
     data->out = LIMIT(in,-abs_t,abs_t);
 }
 
 /*************************************巴特沃斯滤波************************************************/
 Butter_Parameter Butter_80HZ_Parameter_Acce,Butter_60HZ_Parameter_Acce,Butter_51HZ_Parameter_Acce,
-                 Butter_30HZ_Parameter_Acce,Butter_20HZ_Parameter_Acce,Butter_15HZ_Parameter_Acce,
-                 Butter_10HZ_Parameter_Acce,Butter_5HZ_Parameter_Acce,Butter_2HZ_Parameter_Acce;
+                Butter_30HZ_Parameter_Acce,Butter_20HZ_Parameter_Acce,Butter_15HZ_Parameter_Acce,
+                Butter_10HZ_Parameter_Acce,Butter_5HZ_Parameter_Acce,Butter_2HZ_Parameter_Acce;
 
 /****************************************
- Butterworth低通滤波器参数初始化：http://blog.csdn.net/u011992534/article/details/73743955
+Butterworth低通滤波器参数初始化：http://blog.csdn.net/u011992534/article/details/73743955
 ***************************************/
 void Butterworth_Parameter_Init(void)
 {
-  Set_Cutoff_Frequency(200, 80,&Butter_80HZ_Parameter_Acce);
-  Set_Cutoff_Frequency(200, 60,&Butter_60HZ_Parameter_Acce);
-  Set_Cutoff_Frequency(200, 51,&Butter_51HZ_Parameter_Acce);
-  Set_Cutoff_Frequency(200, 30,&Butter_30HZ_Parameter_Acce);
-  Set_Cutoff_Frequency(200, 20,&Butter_20HZ_Parameter_Acce);
-  Set_Cutoff_Frequency(200, 15,&Butter_15HZ_Parameter_Acce);
-  Set_Cutoff_Frequency(200, 10,&Butter_10HZ_Parameter_Acce);
-  Set_Cutoff_Frequency(200, 5 ,&Butter_5HZ_Parameter_Acce);
-  Set_Cutoff_Frequency(200, 2 ,&Butter_2HZ_Parameter_Acce);
+    Set_Cutoff_Frequency(200, 80,&Butter_80HZ_Parameter_Acce);
+    Set_Cutoff_Frequency(200, 60,&Butter_60HZ_Parameter_Acce);
+    Set_Cutoff_Frequency(200, 51,&Butter_51HZ_Parameter_Acce);
+    Set_Cutoff_Frequency(200, 30,&Butter_30HZ_Parameter_Acce);
+    Set_Cutoff_Frequency(200, 20,&Butter_20HZ_Parameter_Acce);
+    Set_Cutoff_Frequency(200, 15,&Butter_15HZ_Parameter_Acce);
+    Set_Cutoff_Frequency(200, 10,&Butter_10HZ_Parameter_Acce);
+    Set_Cutoff_Frequency(200, 5 ,&Butter_5HZ_Parameter_Acce);
+    Set_Cutoff_Frequency(200, 2 ,&Butter_2HZ_Parameter_Acce);
 }
 
 /*************************************************
@@ -422,13 +416,16 @@ void Set_Cutoff_Frequency(float sample_frequent, float cutoff_frequent, Butter_P
     float fr = sample_frequent / cutoff_frequent;
     float ohm = tanf(M_PI_F / fr);
     float c = 1.0f + 2.0f * cosf(M_PI_F / 4.0f) * ohm + ohm * ohm;
-    if (cutoff_frequent <= 0.0f) {
+
+    if (cutoff_frequent <= 0.0f)
+    {
         return;
     }
+
     LPF->b[0] = ohm * ohm / c;
     LPF->b[1] = 2.0f * LPF->b[0];
     LPF->b[2] = LPF->b[0];
-  LPF->a[0] = 1.0f;
+    LPF->a[0] = 1.0f;
     LPF->a[1] = 2.0f * (ohm * ohm - 1.0f) / c;
     LPF->a[2] = (1.0f - 2.0f * cosf(M_PI_F / 4.0f) * ohm + ohm * ohm) / c;
 }

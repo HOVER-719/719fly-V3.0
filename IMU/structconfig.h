@@ -1,7 +1,7 @@
 /************************************************************************************************
 * 程序版本：V2.1
 * 程序日期：2021-12-8
-* 程序作者：719飞行器实验室： 
+* 程序作者：719飞行器实验室：
 *                        张润
 *                        杨晨阳
 ************************************************************************************************/
@@ -13,7 +13,7 @@
 
 /************************************************PID参数调试上位机波形显示*************************************************/
 /* 如果想观察哪个轴的PID波形，就取消掉哪个注释，但是一次只能取消掉一个注释 */
-//#define ROL_PID_DEBUG    
+//#define ROL_PID_DEBUG
 //#define PIT_PID_DEBUG
 #define YAW_PID_DEBUG
 //#define ALT_PID_DEBUGE
@@ -69,7 +69,7 @@ typedef struct
     float yaw;
 }FLOAT_ANGLE;
 
-//遥控器的数据结构 
+//遥控器的数据结构
 typedef struct
 {
     int16_t ROLL;
@@ -79,20 +79,19 @@ typedef struct
     int16_t BUTTON;
 }RC_TYPE;
 
-//FBM32的数据结构 
+//FBM32的数据结构
 typedef struct FBMTYPE
 {
-  int32_t  ADPress;
-  int32_t  ADTemp;
-  float  RP;
-  float  RT;
-  float  RPFilter;
-  float  InitPress;
-  float  Altitude;
-  float  AltitudeFilter;
-  uint16_t C0, C1, C2, C3, C6, C8, C9, C10, C11, C12;
-  uint32_t C4, C5, C7;
-    
+    int32_t  ADPress;
+    int32_t  ADTemp;
+    float  RP;
+    float  RT;
+    float  RPFilter;
+    float  InitPress;
+    float  Altitude;
+    float  AltitudeFilter;
+    uint16_t C0, C1, C2, C3, C6, C8, C9, C10, C11, C12;
+    uint32_t C4, C5, C7;
 } FBMTYPE;
 
 //高度融合的数据结构
@@ -109,37 +108,37 @@ typedef struct NAV_tt
     float az;
 } nav_t;
 
-//PID算法的数据结构 
+//PID算法的数据结构
 typedef struct PID
 {
-  float P;         //参数
-  float I;
-  float D;
-  float Error;     //比例项
-  float Integral;  //积分项
-  float Differ;    //微分项
-  float PreError;
-  float PrePreError;
-  float Ilimit; 
-  float Irang;
-  float Pout;
-  float Iout;
-  float Dout;
-  float OutPut;   
-  uint8_t Ilimit_flag;    //积分分离    
-}PID_TYPE;   
+    float P;         //参数
+    float I;
+    float D;
+    float Error;     //比例项
+    float Integral;  //积分项
+    float Differ;    //微分项
+    float PreError;
+    float PrePreError;
+    float Ilimit;
+    float Irang;
+    float Pout;
+    float Iout;
+    float Dout;
+    float OutPut;
+    uint8_t Ilimit_flag;    //积分分离
+}PID_TYPE;
 
-//保存的参数数据结构 
+//保存的参数数据结构
 typedef struct PIDSave
 {
-    //陀螺仪校准数据 
+    //陀螺仪校准数据
     u16  ACC_OFFSET_X;
     u16  ACC_OFFSET_Y;
     u16  ACC_OFFSET_Z;
     u16  GYRO_OFFSET_X;
     u16  GYRO_OFFSET_Y;
     u16  GYRO_OFFSET_Z;
-    //角度环 
+    //角度环
     u16  ROL_Angle_P;
     u16  ROL_Angle_I;
     u16  ROL_Angle_D;
@@ -149,7 +148,7 @@ typedef struct PIDSave
     u16  YAW_Angle_P;
     u16  YAW_Angle_I;
     u16  YAW_Angle_D;
-    //角速度环 
+    //角速度环
     u16  ROL_Rate_P;
     u16  ROL_Rate_I;
     u16  ROL_Rate_D;
@@ -170,7 +169,7 @@ typedef struct PIDSave
 
 }PID_SAVE;
 
-//电池电压管理数据结构 
+//电池电压管理数据结构
 typedef struct BATT_TYPE
 {
     float BattAdc;
@@ -190,7 +189,7 @@ extern float            Zacc,accb[3];
 //高度解算
 extern uint8_t   ALTIUDE_OK,ALT_Updated;                  //气压计初始化高度标志
 extern FBMTYPE   FBM;                                     //气压计数据
-extern nav_t     nav;    
+extern nav_t     nav;
 //遥控数据缓存
 extern uint8_t SI24R1addr;
 extern float Moto_PWM_1,Moto_PWM_2,Moto_PWM_3,Moto_PWM_4;
@@ -218,7 +217,7 @@ extern PID_SAVE       PIDflash;           //各轴PID参数保存实例
 extern FLOAT_ANGLE    Att_Angle;        //ATT函数计算出的姿态角
 extern RC_TYPE        RC_Control;
 //功能键
-extern uint8_t Airplane_Enable,Run_flag; 
+extern uint8_t Airplane_Enable,Run_flag;
 extern uint8_t BATT_LEDflag;
 extern uint8_t SI24R1_Controlflag;
 extern uint8_t Altitude_mode;

@@ -1,7 +1,7 @@
 /*******************************************************************************************
 * 程序版本：V1.0
 * 程序日期：2020-9-20
-* 程序作者：719飞行器实验室： 
+* 程序作者：719飞行器实验室：
 *                        张润
 *                        杨晨阳
 *******************************************************************************************/
@@ -21,10 +21,10 @@ void SPI_GPIO_Init(void)
 {
     SPI_InitTypeDef   SPI_InitStructure;
     GPIO_InitTypeDef  GPIO_InitStructure;
-    
+
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI2,ENABLE);
-    
+
     //配置SPI的SCK，MISO和MOSI引脚为复用推挽模式
     GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
@@ -41,7 +41,7 @@ void SPI_GPIO_Init(void)
     SPI_InitStructure.SPI_FirstBit=SPI_FirstBit_MSB;                    //数据高位先行
     SPI_InitStructure.SPI_CRCPolynomial=7;                                //CRC计算多项式
     SPI_Init(SPI2,&SPI_InitStructure);
-    
+
     SPI_Cmd(SPI2,ENABLE);    //SPI2使能
 }
 
@@ -54,11 +54,11 @@ void SPI_GPIO_Init(void)
 *****************************************************************************/
 uint8_t SPI2_WriteReadByte(uint8_t data)
 {
-     while(!SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_TXE));
-     SPI_I2S_SendData(SPI2, data);
-    
-     while(!SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_RXNE));
-     return SPI_I2S_ReceiveData(SPI2);
+    while(!SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_TXE));
+    SPI_I2S_SendData(SPI2, data);
+
+    while(!SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_RXNE));
+    return SPI_I2S_ReceiveData(SPI2);
 }
 
 

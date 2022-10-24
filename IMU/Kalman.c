@@ -20,7 +20,7 @@ void xInit_Kalman(void){
 //    xQ_angle = 0.001;
 //    xQ_bias = 0.003;
 //    xR_measure = 0.03;
-    
+
     xangle = 0; // 清零角度
     xbias = 0; //清零偏差
 
@@ -31,7 +31,7 @@ void xInit_Kalman(void){
 }
 
 
-double xgetAngle(double newAngle, double newRate, double dt) 
+double xgetAngle(double newAngle, double newRate, double dt)
 {
         // KasBot V2  -  Kalman filter module - http://www.x-firm.com/?page_id=145
         // See my blog post for more information: http://blog.tkjelectronics.dk/2012/09/a-practical-approach-to-kalman-filter-and-how-to-implement-it
@@ -78,7 +78,8 @@ double yK[2]; // Kalman gain - This is a 2x1 vector
 double yy; // Angle difference
 double yS; // Estimate error
 
-void yInit_Kalman(void){
+void yInit_Kalman(void)
+{
     yQ_angle = 0.0005;
     yQ_bias = 0.1;
     yR_measure = 0.000000001;
@@ -95,28 +96,28 @@ void yInit_Kalman(void){
 
 double ygetAngle(double newAngle, double newRate, double dt)
 {
-        yrate = newRate - ybias;
-        yangle += dt * yrate;
+    yrate = newRate - ybias;
+    yangle += dt * yrate;
 
-        yP[0][0] += dt * (dt*yP[1][1] - yP[0][1] - yP[1][0] + yQ_angle);
-        yP[0][1] -= dt * yP[1][1];
-        yP[1][0] -= dt * yP[1][1];
-        yP[1][1] += yQ_bias * dt;
+    yP[0][0] += dt * (dt*yP[1][1] - yP[0][1] - yP[1][0] + yQ_angle);
+    yP[0][1] -= dt * yP[1][1];
+    yP[1][0] -= dt * yP[1][1];
+    yP[1][1] += yQ_bias * dt;
 
-        yS = yP[0][0] + yR_measure;
-        yK[0] = yP[0][0] / yS;
-        yK[1] = yP[1][0] / yS;
+    yS = yP[0][0] + yR_measure;
+    yK[0] = yP[0][0] / yS;
+    yK[1] = yP[1][0] / yS;
 
-        yy = newAngle - yangle;
-        yangle += yK[0] * yy;
-        ybias += yK[1] * yy;
+    yy = newAngle - yangle;
+    yangle += yK[0] * yy;
+    ybias += yK[1] * yy;
 
-        yP[0][0] -= yK[0] * yP[0][0];
-        yP[0][1] -= yK[0] * yP[0][1];
-        yP[1][0] -= yK[1] * yP[0][0];
-        yP[1][1] -= yK[1] * yP[0][1];
+    yP[0][0] -= yK[0] * yP[0][0];
+    yP[0][1] -= yK[0] * yP[0][1];
+    yP[1][0] -= yK[1] * yP[0][0];
+    yP[1][1] -= yK[1] * yP[0][1];
 
-        return yangle;
+    return yangle;
 }
 
 
@@ -149,29 +150,29 @@ void zInit_Kalman(void)
 }
 
 
-double zgetAngle(double newAngle, double newRate, double dt) 
+double zgetAngle(double newAngle, double newRate, double dt)
 {
-        zrate = newRate - zbias;
-        zangle += dt * zrate;
+    zrate = newRate - zbias;
+    zangle += dt * zrate;
 
-        zP[0][0] += dt * (dt*zP[1][1] - zP[0][1] - zP[1][0] + zQ_angle);
-        zP[0][1] -= dt * zP[1][1];
-        zP[1][0] -= dt * zP[1][1];
-        zP[1][1] += zQ_bias * dt;
+    zP[0][0] += dt * (dt*zP[1][1] - zP[0][1] - zP[1][0] + zQ_angle);
+    zP[0][1] -= dt * zP[1][1];
+    zP[1][0] -= dt * zP[1][1];
+    zP[1][1] += zQ_bias * dt;
 
-        zS = zP[0][0] + zR_measure;
-        zK[0] = zP[0][0] / zS;
-        zK[1] = zP[1][0] / zS;
+    zS = zP[0][0] + zR_measure;
+    zK[0] = zP[0][0] / zS;
+    zK[1] = zP[1][0] / zS;
 
-        zy = newAngle - zangle;
-        zangle += zK[0] * zy;
-        zbias += zK[1] * zy;
+    zy = newAngle - zangle;
+    zangle += zK[0] * zy;
+    zbias += zK[1] * zy;
 
-        zP[0][0] -= zK[0] * zP[0][0];
-        zP[0][1] -= zK[0] * zP[0][1];
-        zP[1][0] -= zK[1] * zP[0][0];
-        zP[1][1] -= zK[1] * zP[0][1];
+    zP[0][0] -= zK[0] * zP[0][0];
+    zP[0][1] -= zK[0] * zP[0][1];
+    zP[1][0] -= zK[1] * zP[0][0];
+    zP[1][1] -= zK[1] * zP[0][1];
 
-        return zangle;
+    return zangle;
 }
 

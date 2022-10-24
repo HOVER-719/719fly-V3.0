@@ -59,7 +59,7 @@ uint8_t MPU6050_ReadByte(uint8_t reg,uint8_t *buf)
 * 函  数：uint8_t MPU6050_WriteMultBytes(uint8_t reg,uint8_t len,uint8_t *buf)
 * 功  能：从指定寄存器写入指定长度数据
 * 参  数：reg：寄存器地址
-*         len：写入数据长度 
+*         len：写入数据长度
 *         buf: 写入数据存放的地址
 * 返回值：0成功 1失败
 * 备  注：MPU6050代码移植只需把I2C驱动修改成自己的即可
@@ -76,7 +76,7 @@ uint8_t MPU6050_WriteMultBytes(uint8_t reg,uint8_t len,uint8_t *buf)
 * 函  数：uint8_t MPU6050_ReadMultBytes(uint8_t reg,uint8_t len,uint8_t *buf)
 * 功  能：从指定寄存器读取指定长度数据
 * 参  数：reg：寄存器地址
-*         len：读取数据长度 
+*         len：读取数据长度
 *         buf: 读取数据存放的地址
 * 返回值：0成功 0失败
 * 备  注：MPU6050代码移植只需把I2C驱动修改成自己的即可
@@ -110,11 +110,11 @@ uint8_t MPU6050_getDeviceID(void)
 * 返回值：1已连接 0未链接
 * 备  注：无
 *******************************************************************************/
-uint8_t MPU6050_testConnection(void) 
+uint8_t MPU6050_testConnection(void)
 {
-    if(MPU6050_getDeviceID() == 0x68)  
+    if(MPU6050_getDeviceID() == 0x68)
         return 1;
-    else 
+    else
         return 0;
 }
 
@@ -125,12 +125,11 @@ uint8_t MPU6050_testConnection(void)
 * 返回值：无
 * 备  注：无
 *******************************************************************************/
-void MPU6050_Check(void) 
-{ 
+void MPU6050_Check(void)
+{
     while(!MPU6050_testConnection())
     {
         printf("\rMPU6050 no connect...\r\n");
-        
     }
 }
 
@@ -144,7 +143,7 @@ void MPU6050_Check(void)
 void MPU6050_AccRead(int16_t *accData)
 {
     uint8_t buf[6];
-       MPU6050_ReadMultBytes(MPU6050_RA_ACCEL_XOUT_H,6,buf);
+    MPU6050_ReadMultBytes(MPU6050_RA_ACCEL_XOUT_H,6,buf);
     accData[0] = (int16_t)((buf[0] << 8) | buf[1]);
     accData[1] = (int16_t)((buf[2] << 8) | buf[3]);
     accData[2] = (int16_t)((buf[4] << 8) | buf[5]);
@@ -160,7 +159,7 @@ void MPU6050_AccRead(int16_t *accData)
 void MPU6050_GyroRead(int16_t *gyroData)
 {
     uint8_t buf[6];
-      MPU6050_ReadMultBytes(MPU6050_RA_GYRO_XOUT_H, 6, buf);
+    MPU6050_ReadMultBytes(MPU6050_RA_GYRO_XOUT_H, 6, buf);
     gyroData[0] = (int16_t)((buf[0] << 8) | buf[1]) ;
     gyroData[1] = (int16_t)((buf[2] << 8) | buf[3]) ;
     gyroData[2] = (int16_t)((buf[4] << 8) | buf[5]) ;
@@ -196,12 +195,11 @@ void MPU6050_Init(void)
     Delay_ms(100);
     MPU6050_WriteByte(MPU6050_RA_PWR_MGMT_1, 0x01);                         //唤醒MPU6050，并选择陀螺仪x轴PLL为时钟源
     MPU6050_WriteByte(MPU6050_RA_INT_ENABLE, 0x00);                         //禁止中断
-    MPU6050_WriteByte(MPU6050_RA_GYRO_CONFIG, 0x18);                         //陀螺仪满量程+-2000度/秒 (最低分辨率 = 2^15/2000 = 16.4LSB/度/秒 
+    MPU6050_WriteByte(MPU6050_RA_GYRO_CONFIG, 0x18);                         //陀螺仪满量程+-2000度/秒 (最低分辨率 = 2^15/2000 = 16.4LSB/度/秒
     MPU6050_WriteByte(MPU6050_RA_ACCEL_CONFIG, 0x08);                     //加速度满量程+-4g   (最低分辨率 = 2^15/4g = 8196LSB/g )
-    MPU6050_WriteByte(MPU6050_RA_CONFIG, MPU6050_DLPF_BW_98);        //设置陀螺的输出为1kHZ,DLPF=98Hz 
+    MPU6050_WriteByte(MPU6050_RA_CONFIG, MPU6050_DLPF_BW_98);        //设置陀螺的输出为1kHZ,DLPF=98Hz
     MPU6050_WriteByte(MPU6050_RA_SMPLRT_DIV, 0x00);                          //采样分频 (采样频率 = 陀螺仪输出频率 / (1+DIV)，采样频率1000hz）
     MPU6050_WriteByte(MPU6050_RA_INT_PIN_CFG, 0x02);                         //MPU 可直接访问MPU6050辅助I2C
-     
 }
 
 /******************************************************************************
@@ -214,8 +212,8 @@ void MPU6050_Init(void)
 void MPU6050_CalOff(void)
 {
 
-     SENSER_FLAG_SET(ACC_OFFSET);//加速度校准
-     SENSER_FLAG_SET(GYRO_OFFSET);//陀螺仪校准
+    SENSER_FLAG_SET(ACC_OFFSET);//加速度校准
+    SENSER_FLAG_SET(GYRO_OFFSET);//陀螺仪校准
 }
 
 /******************************************************************************
@@ -227,7 +225,7 @@ void MPU6050_CalOff(void)
 *******************************************************************************/
 void MPU6050_CalOff_Acc(void)
 {
-     SENSER_FLAG_SET(ACC_OFFSET);//加速度校准
+    SENSER_FLAG_SET(ACC_OFFSET);//加速度校准
 }
 
 /******************************************************************************
@@ -239,7 +237,7 @@ void MPU6050_CalOff_Acc(void)
 *******************************************************************************/
 void MPU6050_CalOff_Gyr(void)
 {
-     SENSER_FLAG_SET(GYRO_OFFSET);//陀螺仪校准
+    SENSER_FLAG_SET(GYRO_OFFSET);//陀螺仪校准
 }
 
 /******************************************************************************
@@ -282,7 +280,7 @@ uint8_t MPU6050_OffSet(INT16_XYZ value,INT16_XYZ *offset,uint16_t sensivity)
         offset->Z = 0;
     }
     tempgx += value.X;
-    tempgy += value.Y; 
+    tempgy += value.Y;
     tempgz += value.Z-sensivity;            //加速度计校准 sensivity 等于 MPU6050初始化时设置的灵敏度值（8196LSB/g）;陀螺仪校准 sensivity = 0；
 
     if(cnt_a==200)               //200个数值求平均
@@ -296,7 +294,7 @@ uint8_t MPU6050_OffSet(INT16_XYZ value,INT16_XYZ *offset,uint16_t sensivity)
     }
     cnt_a++;
     return 0;
-}    
+}
 
 /******************************************************************************
 * 函  数：void MPU6050_DataProcess(void)
@@ -308,41 +306,41 @@ uint8_t MPU6050_OffSet(INT16_XYZ value,INT16_XYZ *offset,uint16_t sensivity)
 *******************************************************************************/
 void MPU6050_Offset(void)
 {
-    //加速度去零偏AD值 
+    //加速度去零偏AD值
     MPU6050_ACC_RAW.X =((((int16_t)MPU6050_buff[0]) << 8) | MPU6050_buff[1]) - ACC_OFFSET_RAW.X;
     MPU6050_ACC_RAW.Y =((((int16_t)MPU6050_buff[2]) << 8) | MPU6050_buff[3]) - ACC_OFFSET_RAW.Y;
     MPU6050_ACC_RAW.Z =((((int16_t)MPU6050_buff[4]) << 8) | MPU6050_buff[5]) - ACC_OFFSET_RAW.Z;
 
-  Acce_Correct_Filter();
+    Acce_Correct_Filter();
 
-    //陀螺仪去零偏AD值 
+    //陀螺仪去零偏AD值
     MPU6050_GYRO_RAW.X =((((int16_t)MPU6050_buff[8]) << 8) | MPU6050_buff[9]) - GYRO_OFFSET_RAW.X;
     MPU6050_GYRO_RAW.Y =((((int16_t)MPU6050_buff[10]) << 8) | MPU6050_buff[11]) - GYRO_OFFSET_RAW.Y;
     MPU6050_GYRO_RAW.Z =((((int16_t)MPU6050_buff[12]) << 8) | MPU6050_buff[13]) - GYRO_OFFSET_RAW.Z;
-    
+
     if(GET_FLAG(GYRO_OFFSET)) //陀螺仪进行零偏校准
     {
         if(MPU6050_OffSet(MPU6050_GYRO_RAW,&GYRO_OFFSET_RAW,0))
         {
-             SENSER_FLAG_RESET(GYRO_OFFSET);
-           SENSER_FLAG_SET(ACC_OFFSET);//校准加速度
+            SENSER_FLAG_RESET(GYRO_OFFSET);
+            SENSER_FLAG_SET(ACC_OFFSET);//校准加速度
         }
     }
-    
-    if(GET_FLAG(ACC_OFFSET)) //加速度计进行零偏校准 
+
+    if(GET_FLAG(ACC_OFFSET)) //加速度计进行零偏校准
     {
         if(MPU6050_OffSet(MPU6050_ACC_RAW,&ACC_OFFSET_RAW,8196))
         {
-             SENSER_FLAG_RESET(ACC_OFFSET);
+            SENSER_FLAG_RESET(ACC_OFFSET);
         }
     }
 }
 
 void Acce_Correct_Filter(void)
 {
-   MPU6050_ACC_RAW.X = (int16_t)(LPButterworth(MPU6050_ACC_RAW.X,
+    MPU6050_ACC_RAW.X = (int16_t)(LPButterworth(MPU6050_ACC_RAW.X,
                     &Butter_Buffer_Correct[0],&Butter_1HZ_Parameter_Acce));
-   MPU6050_ACC_RAW.Y = (int16_t)(LPButterworth(MPU6050_ACC_RAW.Y,
+    MPU6050_ACC_RAW.Y = (int16_t)(LPButterworth(MPU6050_ACC_RAW.Y,
                     &Butter_Buffer_Correct[1],&Butter_1HZ_Parameter_Acce));
 //   MPU6050_ACC_RAW.Z = (int16_t)(LPButterworth(MPU6050_ACC_RAW.Z,
 //                    &Butter_Buffer_Correct[2],&Butter_1HZ_Parameter_Acce));

@@ -1,7 +1,7 @@
 /*******************************************************************************************
 * 程序版本：V1.0
 * 程序日期：2020-9-20
-* 程序作者：719飞行器实验室： 
+* 程序作者：719飞行器实验室：
 *                        张润
 *                        杨晨阳
 *******************************************************************************************/
@@ -31,11 +31,11 @@ void ParamsToTable(void)
     //零偏数据
     PIDflash.ACC_OFFSET_X = ACC_OFFSET_RAW.X;
     PIDflash.ACC_OFFSET_Y = ACC_OFFSET_RAW.Y;
-    PIDflash.ACC_OFFSET_Z = ACC_OFFSET_RAW.Z; 
+    PIDflash.ACC_OFFSET_Z = ACC_OFFSET_RAW.Z;
     PIDflash.GYRO_OFFSET_X = GYRO_OFFSET_RAW.X;
     PIDflash.GYRO_OFFSET_Y = GYRO_OFFSET_RAW.Y;
     PIDflash.GYRO_OFFSET_Z = GYRO_OFFSET_RAW.Z;
-    
+
     //角度环数据PID参数
     PIDflash.ROL_Angle_P = (u16)(10*1000);
     PIDflash.ROL_Angle_I = (u16)(0*1000);
@@ -46,7 +46,7 @@ void ParamsToTable(void)
     PIDflash.YAW_Angle_P = (u16)(0*1000);
     PIDflash.YAW_Angle_I = (u16)(0*1000);
     PIDflash.YAW_Angle_D = (u16)(0*1000);
-    
+
     //角速度环PID参数
     PIDflash.ROL_Rate_P  = (u16)(0*1000);
     PIDflash.ROL_Rate_I  = (u16)(0*1000);
@@ -57,7 +57,7 @@ void ParamsToTable(void)
     PIDflash.YAW_Rate_P  = (u16)(0*1000);
     PIDflash.YAW_Rate_I  = (u16)(0*1000);
     PIDflash.YAW_Rate_D  = (u16)(0*1000);
-    
+
     //高度环PID
     PIDflash.ALT_Rate_P = (u16)(PID_ALT_Rate.P*1000);
     PIDflash.ALT_Rate_I = (u16)(PID_ALT_Rate.I*1000);
@@ -65,9 +65,9 @@ void ParamsToTable(void)
     PIDflash.ALT_P = (u16)(PID_ALT.P*1000);
     PIDflash.ALT_I = (u16)(PID_ALT.I*1000);
     PIDflash.ALT_D = (u16)(PID_ALT.D*1000);
-    
+
     //随机获取的NRF地址最低字节
-    //PIDflash.SI24R1addr = SI24R1addr;    
+    //PIDflash.SI24R1addr = SI24R1addr;
 }
 
 /******************************************************************************************
@@ -86,7 +86,6 @@ void TableToParams(void)
     GYRO_OFFSET_RAW.X = PIDflash.GYRO_OFFSET_X;
     GYRO_OFFSET_RAW.Y = PIDflash.GYRO_OFFSET_Y;
     GYRO_OFFSET_RAW.Z = PIDflash.GYRO_OFFSET_Z;
-    
     //角度环数据PID参数
     PID_ROL_Angle.P = PIDflash.ROL_Angle_P/1000.0f;
     PID_ROL_Angle.I = PIDflash.ROL_Angle_I/1000.0f;
@@ -97,8 +96,7 @@ void TableToParams(void)
     PID_YAW_Angle.P = PIDflash.YAW_Angle_P/1000.0f;
     PID_YAW_Angle.I = PIDflash.YAW_Angle_I/1000.0f;
     PID_YAW_Angle.D = PIDflash.YAW_Angle_D/1000.0f;
-        
-    //角速度环PID参数    
+    //角速度环PID参数
     PID_ROL_Rate.P = PIDflash.ROL_Rate_P/1000.0f;
     PID_ROL_Rate.I = PIDflash.ROL_Rate_I/1000.0f;
     PID_ROL_Rate.D = PIDflash.ROL_Rate_D/1000.0f;
@@ -108,7 +106,6 @@ void TableToParams(void)
     PID_YAW_Rate.P = PIDflash.YAW_Rate_P/1000.0f;
     PID_YAW_Rate.I = PIDflash.YAW_Rate_I/1000.0f;
     PID_YAW_Rate.D = PIDflash.YAW_Rate_D/1000.0f;
-    
     //高度环PID
     PID_ALT_Rate.P = PIDflash.ALT_Rate_P/1000.0f;
     PID_ALT_Rate.I = PIDflash.ALT_Rate_I/1000.0f;
@@ -116,7 +113,6 @@ void TableToParams(void)
     PID_ALT.P = PIDflash.ALT_P/1000.0f;
     PID_ALT.I = PIDflash.ALT_I/1000.0f;
     PID_ALT.D = PIDflash.ALT_D/1000.0f;
-    
     //随机获取的NRF地址最低字节
     //SI24R1addr = PIDflash.SI24R1addr;
 }
@@ -129,7 +125,7 @@ void TableToParams(void)
 * 备  注：如果由于误操作将Flash中的数据都擦除了可调用此函数重新初始化或者写入Flash
 *******************************************************************************************/
 void DefaultParams(void)
-{          
+{
     //零偏数据
     PIDflash.ACC_OFFSET_X  = 0;
     PIDflash.ACC_OFFSET_Y  = 0;
@@ -137,7 +133,6 @@ void DefaultParams(void)
     PIDflash.GYRO_OFFSET_X = 0;
     PIDflash.GYRO_OFFSET_Y = 0;
     PIDflash.GYRO_OFFSET_Z = 0;
-    
     //角度环数据PID参数
     PIDflash.ROL_Angle_P = 1800;
     PIDflash.ROL_Angle_I = 8;
@@ -148,7 +143,6 @@ void DefaultParams(void)
     PIDflash.YAW_Angle_P = 3500;
     PIDflash.YAW_Angle_I = 0;
     PIDflash.YAW_Angle_D = 1000;
-    
     //角速度环PID参数
     PIDflash.ROL_Rate_P  = 930;
     PIDflash.ROL_Rate_I  = 5;
@@ -159,14 +153,13 @@ void DefaultParams(void)
     PIDflash.YAW_Rate_P  = 2000;
     PIDflash.YAW_Rate_I  = 50;
     PIDflash.YAW_Rate_D  = 1000;
-    
     //高度环PID
     PIDflash.ALT_Rate_P = 0;
     PIDflash.ALT_Rate_I = 0;
     PIDflash.ALT_Rate_D = 0;
     PIDflash.ALT_P = 0;
     PIDflash.ALT_I = 0;
-    PIDflash.ALT_D = 0;                
+    PIDflash.ALT_D = 0;
 }
 
 /************************************************************************
@@ -185,7 +178,6 @@ void ParamsClearAll(void)
     PIDflash.GYRO_OFFSET_X = 0;
     PIDflash.GYRO_OFFSET_Y = 0;
     PIDflash.GYRO_OFFSET_Z = 0;
-    
     //角度环数据PID参数
     PIDflash.ROL_Angle_P = 0;
     PIDflash.ROL_Angle_I = 0;
@@ -197,17 +189,16 @@ void ParamsClearAll(void)
     PIDflash.YAW_Angle_I = 0;
     PIDflash.YAW_Angle_D = 0;
 
-    //角速度环PID参数    
+    //角速度环PID参数
     PIDflash.ROL_Rate_P = 0;
-    PIDflash.ROL_Rate_I = 0; 
+    PIDflash.ROL_Rate_I = 0;
     PIDflash.ROL_Rate_D = 0;
-    PIDflash.PIT_Rate_P = 0; 
+    PIDflash.PIT_Rate_P = 0;
     PIDflash.PIT_Rate_I = 0;
-    PIDflash.PIT_Rate_D = 0; 
+    PIDflash.PIT_Rate_D = 0;
     PIDflash.YAW_Rate_P = 0;
-    PIDflash.YAW_Rate_I = 0; 
-    PIDflash.YAW_Rate_D = 0; 
-
+    PIDflash.YAW_Rate_I = 0;
+    PIDflash.YAW_Rate_D = 0;
   //高度环PID
     PIDflash.ALT_Rate_P = 0;
     PIDflash.ALT_Rate_I = 0;
@@ -215,7 +206,6 @@ void ParamsClearAll(void)
     PIDflash.ALT_P = 0;
     PIDflash.ALT_I = 0;
     PIDflash.ALT_D = 0;
-    
     //随机获取的NRF地址最低字节
     PIDflash.SI24R1addr = 0;
 }
@@ -269,7 +259,6 @@ void PID_ReadFlash(void)
     //读取参数失败
     if(PIDflash.PIT_Angle_P ==0xFFFF && PIDflash.ROL_Angle_P==0xFFFF && PIDflash.YAW_Angle_P==0xFFFF)
     {
-        
         DefaultParams_WriteFlash();
         printf("Flash Read Error!!!\r\n");
     }
@@ -325,5 +314,3 @@ void DefaultParams_WriteFlash(void)
     size = len/(4+(len%4)?1:0); //保存的数据长度
     STMFLASH_Write(FLASH_SAVE_ADDR,(uint32_t*)(&PIDflash),size);
 }
-
-
