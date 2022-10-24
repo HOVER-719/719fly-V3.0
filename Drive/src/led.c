@@ -1,19 +1,19 @@
 /************************************************************************************************
-* ³ÌÐò°æ±¾£ºV2.1
-* ³ÌÐòÈÕÆÚ£º2021-12-8
-* ³ÌÐò×÷Õß£º719·ÉÐÐÆ÷ÊµÑéÊÒ£º 
-*						ÕÅÈó
-*						Ñî³¿Ñô
+* ç¨‹åºç‰ˆæœ¬ï¼šV2.1
+* ç¨‹åºæ—¥æœŸï¼š2021-12-8
+* ç¨‹åºä½œè€…ï¼š719é£žè¡Œå™¨å®žéªŒå®¤ï¼š 
+*						å¼ æ¶¦
+*						æ¨æ™¨é˜³
 ************************************************************************************************/
 
 #include "led.h"
 uint8_t loop=0;
 /************************************************************************************************
-* º¯  Êý£ºvoid LED_Init(void)
-* ¹¦  ÄÜ£ºÓÃ»§Ö¸Ê¾µÆÒý½Å³õÊ¼»¯
-* ²Î  Êý£ºÎÞ
-* ·µ»ØÖµ£ºÎÞ
-* ±¸  ×¢: ÎÞ
+* å‡½  æ•°ï¼švoid LED_Init(void)
+* åŠŸ  èƒ½ï¼šç”¨æˆ·æŒ‡ç¤ºç¯å¼•è„šåˆå§‹åŒ–
+* å‚  æ•°ï¼šæ— 
+* è¿”å›žå€¼ï¼šæ— 
+* å¤‡  æ³¨: æ— 
 ************************************************************************************************/
 void LED_Init(void)
 {
@@ -23,12 +23,12 @@ void LED_Init(void)
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC,ENABLE);  
 	
 	GPIO_InitStruct.GPIO_Pin=GPIO_Pin_12|GPIO_Pin_13|GPIO_Pin_14; 
-	GPIO_InitStruct.GPIO_Mode=GPIO_Mode_Out_PP;											//ÍÆÍìÊä³ö
+	GPIO_InitStruct.GPIO_Mode=GPIO_Mode_Out_PP;											//æŽ¨æŒ½è¾“å‡º
 	GPIO_InitStruct.GPIO_Speed=GPIO_Speed_50MHz;  
 	GPIO_Init(GPIOB,&GPIO_InitStruct);
 	
 	GPIO_InitStruct.GPIO_Pin=GPIO_Pin_13;
-	GPIO_InitStruct.GPIO_Mode=GPIO_Mode_Out_PP;											//ÍÆÍìÊä³ö
+	GPIO_InitStruct.GPIO_Mode=GPIO_Mode_Out_PP;											//æŽ¨æŒ½è¾“å‡º
 	GPIO_InitStruct.GPIO_Speed=GPIO_Speed_50MHz;
 	GPIO_Init(GPIOC,&GPIO_InitStruct);
 	

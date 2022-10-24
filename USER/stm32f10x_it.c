@@ -1,9 +1,9 @@
 /************************************************************************************************
-* ³ÌĞò°æ±¾£ºV2.1
-* ³ÌĞòÈÕÆÚ£º2021-12-8
-* ³ÌĞò×÷Õß£º719·ÉĞĞÆ÷ÊµÑéÊÒ£º 
-*						ÕÅÈó
-*						Ñî³¿Ñô
+* ç¨‹åºç‰ˆæœ¬ï¼šV2.1
+* ç¨‹åºæ—¥æœŸï¼š2021-12-8
+* ç¨‹åºä½œè€…ï¼š719é£è¡Œå™¨å®éªŒå®¤ï¼š 
+*						å¼ æ¶¦
+*						æ¨æ™¨é˜³
 ************************************************************************************************/
 
 #include "stm32f10x.h"
@@ -15,7 +15,7 @@
 #include "rc.h"
 #include "string.h"
 
-//ÖÜÆÚĞÔÈÎÎñµÄÖ´ĞĞ±êÖ¾Î»
+//å‘¨æœŸæ€§ä»»åŠ¡çš„æ‰§è¡Œæ ‡å¿—ä½
 uint8_t LED_Scan = 0;
 uint8_t IMU_Scan = 0;
 uint8_t MPU_Scan = 0;
@@ -35,42 +35,42 @@ extern TIM_ICUserValueTypeDef TIM_ICUserValueStructure_5;
 extern uint8_t MPU6050_OffSet_Flag;
 
 /****************************************************************************************************
-* º¯  Êı: void USART1_IRQHandler(void)
-* ¹¦  ÄÜ: USART1ÖĞ¶Ïº¯Êı
-* ²Î  Êı: ÎŞ
-* ·µ»ØÖµ: ÎŞ
-* ±¸  ×¢: 
+* å‡½  æ•°: void USART1_IRQHandler(void)
+* åŠŸ  èƒ½: USART1ä¸­æ–­å‡½æ•°
+* å‚  æ•°: æ— 
+* è¿”å›å€¼: æ— 
+* å¤‡  æ³¨: 
 ****************************************************************************************************/
 void USART1_IRQHandler(void)
 {
-	uint8_t clear = clear; 																				//¶¨ÒåÕâ¸ö±äÁ¿ÊÇÕë¶Ô±àÒë³öÏÖ¡°Ã»ÓĞÓÃµ½Õâ¸ö±äÁ¿¡±µÄ¾¯¸æÌáÊ¾
+	uint8_t clear = clear; 																				//å®šä¹‰è¿™ä¸ªå˜é‡æ˜¯é’ˆå¯¹ç¼–è¯‘å‡ºç°â€œæ²¡æœ‰ç”¨åˆ°è¿™ä¸ªå˜é‡â€çš„è­¦å‘Šæç¤º
 	
-	if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET) 				//½ÓÊÕÖĞ¶Ï
+	if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET) 				//æ¥æ”¶ä¸­æ–­
 	{ 
 		
 	}
-	else if(USART_GetITStatus(USART1, USART_IT_IDLE) != RESET) 	//¿ÕÏĞÖĞ¶Ï
+	else if(USART_GetITStatus(USART1, USART_IT_IDLE) != RESET) 	//ç©ºé—²ä¸­æ–­
 	{
-		clear = USART1->SR; 																				//¶ÁSR¼Ä´æÆ÷
-		clear = USART1->DR; 																				//¶ÁDR¼Ä´æÆ÷£¨ÏÈ¶ÁSR,ÔÙ¶ÈDR,¾ÍÊÇÎªÁËÇå³ıIDIEÖĞ¶Ï£©
+		clear = USART1->SR; 																				//è¯»SRå¯„å­˜å™¨
+		clear = USART1->DR; 																				//è¯»DRå¯„å­˜å™¨ï¼ˆå…ˆè¯»SR,å†åº¦DR,å°±æ˜¯ä¸ºäº†æ¸…é™¤IDIEä¸­æ–­ï¼‰
 		
 	}
 	USART_ClearITPendingBit(USART1,USART_IT_RXNE);
 }
 
 /****************************************************************************************************
-* º¯  Êı: void TIM4_IRQHandler(void) 
-* ¹¦  ÄÜ: TIM4¶¨Ê±Æ÷ÖĞ¶Ï£¬1ms½øÒ»´ÎÖĞ¶ÏÒ²¾ÍÊÇ1000Hz
-* ²Î  Êı: ÎŞ
-* ·µ»ØÖµ: ÎŞ
-* ±¸  ×¢: ´Ëº¯ÊıÊÇÕû¸ö³ÌĞòµÄÔËĞĞÊ±»ù£¬²»Í¬µÄÖĞ¶ÏÊ±¼ä¶ÔÓ¦²»Í¬ÆµÂÊ£»
-*         ¶ÔÓÚÒ»Ğ©¼ÆËã¶Ôµ÷ÓÃÊ±¼äÒªÇó±È½ÏÑÏ¸ñÊ±¿ÉÓÃ´Ë·½·¨£»
-*         É¨ÃèÆµÂÊ = 1000Hz/·ÖÆµÏµÊı£»
+* å‡½  æ•°: void TIM4_IRQHandler(void) 
+* åŠŸ  èƒ½: TIM4å®šæ—¶å™¨ä¸­æ–­ï¼Œ1msè¿›ä¸€æ¬¡ä¸­æ–­ä¹Ÿå°±æ˜¯1000Hz
+* å‚  æ•°: æ— 
+* è¿”å›å€¼: æ— 
+* å¤‡  æ³¨: æ­¤å‡½æ•°æ˜¯æ•´ä¸ªç¨‹åºçš„è¿è¡Œæ—¶åŸºï¼Œä¸åŒçš„ä¸­æ–­æ—¶é—´å¯¹åº”ä¸åŒé¢‘ç‡ï¼›
+*         å¯¹äºä¸€äº›è®¡ç®—å¯¹è°ƒç”¨æ—¶é—´è¦æ±‚æ¯”è¾ƒä¸¥æ ¼æ—¶å¯ç”¨æ­¤æ–¹æ³•ï¼›
+*         æ‰«æé¢‘ç‡ = 1000Hz/åˆ†é¢‘ç³»æ•°ï¼›
 ****************************************************************************************************/
-void TIM4_IRQHandler(void)   //TIM4ÖĞ¶Ï·şÎñº¯Êı
+void TIM4_IRQHandler(void)   //TIM4ä¸­æ–­æœåŠ¡å‡½æ•°
 {
-	static uint16_t ms2 = 0,ms5 = 0,ms10 = 0,ms20 = 0,ms100 = 0,ms200 = 0,ms400 = 0; //·ÖÆµÏµÊı
-	if(TIM_GetITStatus(TIM4,TIM_IT_Update) != RESET)	//ÅĞ¶ÏÊÇ·ñ½øÈëTIM¸üĞÂÖĞ¶Ï
+	static uint16_t ms2 = 0,ms5 = 0,ms10 = 0,ms20 = 0,ms100 = 0,ms200 = 0,ms400 = 0; //åˆ†é¢‘ç³»æ•°
+	if(TIM_GetITStatus(TIM4,TIM_IT_Update) != RESET)	//åˆ¤æ–­æ˜¯å¦è¿›å…¥TIMæ›´æ–°ä¸­æ–­
 	{
 		ms2++;
 		ms5++;
@@ -78,7 +78,7 @@ void TIM4_IRQHandler(void)   //TIM4ÖĞ¶Ï·şÎñº¯Êı
 		ms20++;	
 		ms100++;
 		ms200++;
-		ms400++;  																//ÕâÀïµÄÊı×Ö¾ö¶¨ÁËÖÜÆÚĞÔÈÎÎñÔÚ
+		ms400++;  																//è¿™é‡Œçš„æ•°å­—å†³å®šäº†å‘¨æœŸæ€§ä»»åŠ¡åœ¨
 		if(ms2 >= 2)															//500Hz
 		{
 			ms2 = 0;
@@ -109,10 +109,10 @@ void TIM4_IRQHandler(void)   //TIM4ÖĞ¶Ï·şÎñº¯Êı
 					Init_Time ++;
 				}
 				
-				if( Init_Time >= 100 && Att_Angle.pit < 0.3 && Att_Angle.rol <0.3 )////³õÊ¼»¯µÈ´ıÊ±¼ä½áÊø£¬ÇÒIMUÊä³ö½Ç¶ÈÔÚÕı³£·¶Î§ÄÚ
+				if( Init_Time >= 100 && Att_Angle.pit < 0.3 && Att_Angle.rol <0.3 )////åˆå§‹åŒ–ç­‰å¾…æ—¶é—´ç»“æŸï¼Œä¸”IMUè¾“å‡ºè§’åº¦åœ¨æ­£å¸¸èŒƒå›´å†…
 				{
 					Init_Time = 0;
-					Init_Flag = 1;//³õÊ¼»¯±êÖ¾Î»Îª1£¬¿ªÊ¼´òÓ¡
+					Init_Flag = 1;//åˆå§‹åŒ–æ ‡å¿—ä½ä¸º1ï¼Œå¼€å§‹æ‰“å°
 				}
 				
 				if( Init_Flag == 1 )
@@ -121,7 +121,7 @@ void TIM4_IRQHandler(void)   //TIM4ÖĞ¶Ï·şÎñº¯Êı
 //					printf("ROL = %5.2f",Att_Angle.rol);
 //					printf("YAW = %5.2f\r\n",Att_Angle.yaw);
 //					printf("%f,%f,%f\r\n",PID_ROL_Rate.Pout,PID_ROL_Rate.Iout,PID_ROL_Rate.Dout);
-//          ´òÓ¡PIDÔÚROLL¡¢PITCH¡¢YAWÈı¸öÖáÉÏµÄ×÷ÓÃ
+//          æ‰“å°PIDåœ¨ROLLã€PITCHã€YAWä¸‰ä¸ªè½´ä¸Šçš„ä½œç”¨
 				}
 				else
 				{
@@ -140,18 +140,18 @@ void TIM4_IRQHandler(void)   //TIM4ÖĞ¶Ï·şÎñº¯Êı
 			ms400 = 0;
 		}
 	}
-	TIM_ClearITPendingBit(TIM4,TIM_IT_Update);	//Çå³ıTIM4¸üĞÂÖĞ¶Ï
+	TIM_ClearITPendingBit(TIM4,TIM_IT_Update);	//æ¸…é™¤TIM4æ›´æ–°ä¸­æ–­
 }
 
 
 /*****************************************************************************
-* º¯  Êı£ºvoid TIM2_IRQHandler (void)
-* ¹¦  ÄÜ£ºTIM2µÄÖĞ¶Ï·şÎñº¯Êı
-* ²Î  Êı£ºÎŞ
-* ·µ»ØÖµ£ºÎŞ
-* ±¸  ×¢:
+* å‡½  æ•°ï¼švoid TIM2_IRQHandler (void)
+* åŠŸ  èƒ½ï¼šTIM2çš„ä¸­æ–­æœåŠ¡å‡½æ•°
+* å‚  æ•°ï¼šæ— 
+* è¿”å›å€¼ï¼šæ— 
+* å¤‡  æ³¨:
 *****************************************************************************/
-void TIM2_IRQHandler (void)										//TIM2µÄÖĞ¶Ï·şÎñº¯Êı  ¼ÆÊıÆ÷Òç³ö£¬4¸öÊäÈë²¶»ñ¶¼Ö¸Ïò¸ÃÖĞ¶Ïº¯Êı£¬ÓÃ¸÷×ÔµÄ±êÖ¾Î»½øĞĞÇø·Ö
+void TIM2_IRQHandler (void)										//TIM2çš„ä¸­æ–­æœåŠ¡å‡½æ•°  è®¡æ•°å™¨æº¢å‡ºï¼Œ4ä¸ªè¾“å…¥æ•è·éƒ½æŒ‡å‘è¯¥ä¸­æ–­å‡½æ•°ï¼Œç”¨å„è‡ªçš„æ ‡å¿—ä½è¿›è¡ŒåŒºåˆ†
 {
 	
 	if(TIM_GetITStatus (TIM2 ,TIM_IT_Update) != RESET)
@@ -230,17 +230,17 @@ void TIM2_IRQHandler (void)										//TIM2µÄÖĞ¶Ï·şÎñº¯Êı  ¼ÆÊıÆ÷Òç³ö£¬4¸öÊäÈë²¶
 		}
 		TIM_ClearITPendingBit (TIM2 ,TIM_IT_CC4 );
 	}
-	Remote_Data_ReceiveAnalysis();																		//¼ÆËãÂö¿í²¢½«Æä´æÈëRC_Control£¬ÓÉÓÚÓĞ4¸öËùÒÔ·â³ÉÁËÒ»¸öº¯ÊıÒÔÇó¼ò½à
+	Remote_Data_ReceiveAnalysis();																		//è®¡ç®—è„‰å®½å¹¶å°†å…¶å­˜å…¥RC_Controlï¼Œç”±äºæœ‰4ä¸ªæ‰€ä»¥å°æˆäº†ä¸€ä¸ªå‡½æ•°ä»¥æ±‚ç®€æ´
 }
 
 /*****************************************************************************
-* º¯  Êı£ºvoid TIM1_CC_IRQHandler (void)
-* ¹¦  ÄÜ£ºTIM1µÄÖĞ¶Ï·şÎñº¯Êı
-* ²Î  Êı£ºÎŞ
-* ·µ»ØÖµ£ºÎŞ
-* ±¸  ×¢:
+* å‡½  æ•°ï¼švoid TIM1_CC_IRQHandler (void)
+* åŠŸ  èƒ½ï¼šTIM1çš„ä¸­æ–­æœåŠ¡å‡½æ•°
+* å‚  æ•°ï¼šæ— 
+* è¿”å›å€¼ï¼šæ— 
+* å¤‡  æ³¨:
 *****************************************************************************/
-void TIM1_CC_IRQHandler (void)																																												//TIM1ÊäÈë²¶»ñÖĞ¶Ï·şÎñº¯Êı  ÓÉÓÚÊÇ¸ß¼¶¶¨Ê±Æ÷ËùÒÔÖĞ¶Ï·şÎñº¯Êı»®·Ö±ÈÆÕÍ¨¶¨Ê±Æ÷£¨ÀıÈçÉÏÃæµÄTIM4£©Ï¸ÖÂ
+void TIM1_CC_IRQHandler (void)																																												//TIM1è¾“å…¥æ•è·ä¸­æ–­æœåŠ¡å‡½æ•°  ç”±äºæ˜¯é«˜çº§å®šæ—¶å™¨æ‰€ä»¥ä¸­æ–­æœåŠ¡å‡½æ•°åˆ’åˆ†æ¯”æ™®é€šå®šæ—¶å™¨ï¼ˆä¾‹å¦‚ä¸Šé¢çš„TIM4ï¼‰ç»†è‡´
 {
 	
 if(TIM_GetITStatus (TIM1 ,TIM_IT_CC1) != RESET)
@@ -263,7 +263,7 @@ if(TIM_GetITStatus (TIM1 ,TIM_IT_CC1) != RESET)
 	}
 	
 	if((TIM_ICUserValueStructure_5.Capture_CcrValue_b-TIM_ICUserValueStructure_5.Capture_CcrValue_a)<2100&& (TIM_ICUserValueStructure_5.Capture_CcrValue_b-TIM_ICUserValueStructure_5.Capture_CcrValue_a)>900)
-			RC_Control.BUTTON = TIM_ICUserValueStructure_5.Capture_CcrValue_b-TIM_ICUserValueStructure_5.Capture_CcrValue_a;//¼ÆËãÂö¿í²¢½«Æä´æÈëRC_Control£¿¡¢	    printf("%d\r\n",RC_Control.BUTTON);
+			RC_Control.BUTTON = TIM_ICUserValueStructure_5.Capture_CcrValue_b-TIM_ICUserValueStructure_5.Capture_CcrValue_a;//è®¡ç®—è„‰å®½å¹¶å°†å…¶å­˜å…¥RC_Controlï¼Ÿã€	    printf("%d\r\n",RC_Control.BUTTON);
 
 }
 

@@ -1,9 +1,9 @@
 /*******************************************************************************************
-* ³ÌĞò°æ±¾£ºV1.0
-* ³ÌĞòÈÕÆÚ£º2020-9-20
-* ³ÌĞò×÷Õß£º719·ÉĞĞÆ÷ÊµÑéÊÒ£º 
-*						ÕÅÈó
-*						Ñî³¿Ñô
+* ç¨‹åºç‰ˆæœ¬ï¼šV1.0
+* ç¨‹åºæ—¥æœŸï¼š2020-9-20
+* ç¨‹åºä½œè€…ï¼š719é£è¡Œå™¨å®éªŒå®¤ï¼š 
+*						å¼ æ¶¦
+*						æ¨æ™¨é˜³
 *******************************************************************************************/
 #include "stm32f10x.h"
 #include "exit.h"
@@ -11,32 +11,32 @@
 #include "stdio.h"
 
 /****************************************************************************************************
-* º¯  Êı: void Exit_Init(void)
-* ¹¦  ÄÜ: ÅäÖÃÓëSI24R1µÄIRQÏàÁ¬µÄIO
-* ²Î  Êı: ÎŞ
-* ·µ»ØÖµ£ºÎŞ
-* ±¸  ×¢: ÎŞ
+* å‡½  æ•°: void Exit_Init(void)
+* åŠŸ  èƒ½: é…ç½®ä¸SI24R1çš„IRQç›¸è¿çš„IO
+* å‚  æ•°: æ— 
+* è¿”å›å€¼ï¼šæ— 
+* å¤‡  æ³¨: æ— 
 ****************************************************************************************************/
 void Exit_Init(void)
 {
-	GPIO_InitTypeDef GPIO_InitStruct;   //¶¨ÒåGPIO½á¹¹Ìå±äÁ¿
-	EXTI_InitTypeDef EXTI_InitStruct;	//¶¨ÒåÍâ²¿ÖĞ¶Ï½á¹¹Ìå±äÁ¿
+	GPIO_InitTypeDef GPIO_InitStruct;   //å®šä¹‰GPIOç»“æ„ä½“å˜é‡
+	EXTI_InitTypeDef EXTI_InitStruct;	//å®šä¹‰å¤–éƒ¨ä¸­æ–­ç»“æ„ä½“å˜é‡
 	
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB|RCC_APB2Periph_AFIO,ENABLE);   //Ê¹ÄÜGPIOBµÄÊ±ÖÓ²¢¿ªÆô¸´ÓÃÊ±ÖÓ
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB|RCC_APB2Periph_AFIO,ENABLE);   //ä½¿èƒ½GPIOBçš„æ—¶é’Ÿå¹¶å¼€å¯å¤ç”¨æ—¶é’Ÿ
 	
-	GPIO_EXTILineConfig(GPIO_PortSourceGPIOB,GPIO_PinSource2);   //PB2ÖĞ¶ÏÏßÓ³Éä
+	GPIO_EXTILineConfig(GPIO_PortSourceGPIOB,GPIO_PinSource2);   //PB2ä¸­æ–­çº¿æ˜ å°„
 	
-	GPIO_InitStruct.GPIO_Pin=GPIO_Pin_2;   //ÅäÖÃGPIOµÚ2Òı½Å
-	GPIO_InitStruct.GPIO_Mode=GPIO_Mode_IPU;   //ÅäÖÃGPIOÎªÉÏÀ­ÊäÈë
-	GPIO_InitStruct.GPIO_Speed=GPIO_Speed_50MHz;   //ÅäÖÃGPIOËÙÂÊ
-	GPIO_Init(GPIOB,&GPIO_InitStruct);   //GPIO³õÊ¼»¯º¯Êı
+	GPIO_InitStruct.GPIO_Pin=GPIO_Pin_2;   //é…ç½®GPIOç¬¬2å¼•è„š
+	GPIO_InitStruct.GPIO_Mode=GPIO_Mode_IPU;   //é…ç½®GPIOä¸ºä¸Šæ‹‰è¾“å…¥
+	GPIO_InitStruct.GPIO_Speed=GPIO_Speed_50MHz;   //é…ç½®GPIOé€Ÿç‡
+	GPIO_Init(GPIOB,&GPIO_InitStruct);   //GPIOåˆå§‹åŒ–å‡½æ•°
 	
 	
-	EXTI_InitStruct.EXTI_Line=EXTI_Line2;   //ÖĞ¶ÏÏß2
-	EXTI_InitStruct.EXTI_Mode=EXTI_Mode_Interrupt;   //Íâ²¿ÖĞ¶ÏÄ£Ê½
-	EXTI_InitStruct.EXTI_Trigger=EXTI_Trigger_Falling;   //ÏÂ½µÑØ´¥·¢
-	EXTI_InitStruct.EXTI_LineCmd=ENABLE;   //ÖĞ¶ÏÏßÊ¹ÄÜ
-	EXTI_Init(&EXTI_InitStruct);   //Íâ²¿ÖĞ¶Ï³õÊ¼»¯º¯Êı
+	EXTI_InitStruct.EXTI_Line=EXTI_Line2;   //ä¸­æ–­çº¿2
+	EXTI_InitStruct.EXTI_Mode=EXTI_Mode_Interrupt;   //å¤–éƒ¨ä¸­æ–­æ¨¡å¼
+	EXTI_InitStruct.EXTI_Trigger=EXTI_Trigger_Falling;   //ä¸‹é™æ²¿è§¦å‘
+	EXTI_InitStruct.EXTI_LineCmd=ENABLE;   //ä¸­æ–­çº¿ä½¿èƒ½
+	EXTI_Init(&EXTI_InitStruct);   //å¤–éƒ¨ä¸­æ–­åˆå§‹åŒ–å‡½æ•°
 	
 }
 

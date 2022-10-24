@@ -1,21 +1,21 @@
 /*******************************************************************************************
-* ³ÌĞò°æ±¾£ºV1.0
-* ³ÌĞòÈÕÆÚ£º2020-9-20
-* ³ÌĞò×÷Õß£º719·ÉĞĞÆ÷ÊµÑéÊÒ£º 
-*						ÕÅÈó
-*						Ñî³¿Ñô
+* ç¨‹åºç‰ˆæœ¬ï¼šV1.0
+* ç¨‹åºæ—¥æœŸï¼š2020-9-20
+* ç¨‹åºä½œè€…ï¼š719é£è¡Œå™¨å®éªŒå®¤ï¼š 
+*						å¼ æ¶¦
+*						æ¨æ™¨é˜³
 *******************************************************************************************/
 #include "stm32f10x.h"
 
 
 /*****************************************************************************
-* º¯  Êı£ºvoid SPI_GPIO_Init(void)
-* ¹¦  ÄÜ£ºÅäÖÃSI24R1µÄ SCK¡¢MISO¡¢MOSIÒı½Å£¬ÒÔ¼°SPI2³õÊ¼»¯
-* ²Î  Êı£ºÎŞ
-* ·µ»ØÖµ£ºÎŞ
-* ±¸  ×¢£ºµ÷ÊÔSPIÍ¨ĞÅÊ±Ò»¶¨Òª·ÖÇåÖ÷»ú´Ó»úÄ£Ê½
-*         Ö÷»ú´Ó»úÄ£Ê½µÄ ¿ÕÏĞ×´Ì¬ µçÆ½
-*		  2.4GÄ£¿éÍ¨ĞÅÊ±£¬SPIËÙÂÊÒ»°ã²»´óÓÚ10Mbps
+* å‡½  æ•°ï¼švoid SPI_GPIO_Init(void)
+* åŠŸ  èƒ½ï¼šé…ç½®SI24R1çš„ SCKã€MISOã€MOSIå¼•è„šï¼Œä»¥åŠSPI2åˆå§‹åŒ–
+* å‚  æ•°ï¼šæ— 
+* è¿”å›å€¼ï¼šæ— 
+* å¤‡  æ³¨ï¼šè°ƒè¯•SPIé€šä¿¡æ—¶ä¸€å®šè¦åˆ†æ¸…ä¸»æœºä»æœºæ¨¡å¼
+*         ä¸»æœºä»æœºæ¨¡å¼çš„ ç©ºé—²çŠ¶æ€ ç”µå¹³
+*		  2.4Gæ¨¡å—é€šä¿¡æ—¶ï¼ŒSPIé€Ÿç‡ä¸€èˆ¬ä¸å¤§äº10Mbps
 *****************************************************************************/
 void SPI_GPIO_Init(void)
 {
@@ -25,32 +25,32 @@ void SPI_GPIO_Init(void)
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI2,ENABLE);
 	
-	//ÅäÖÃSPIµÄSCK£¬MISOºÍMOSIÒı½ÅÎª¸´ÓÃÍÆÍìÄ£Ê½
+	//é…ç½®SPIçš„SCKï¼ŒMISOå’ŒMOSIå¼•è„šä¸ºå¤ç”¨æ¨æŒ½æ¨¡å¼
 	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(GPIOB,&GPIO_InitStructure);
 
-	SPI_InitStructure.SPI_Mode=SPI_Mode_Master;	//ÅäÖÃÎªÖ÷»úÄ£Ê½
-	SPI_InitStructure.SPI_NSS=SPI_NSS_Soft;		//NSSÈí¼ş¹ÜÀí
-	SPI_InitStructure.SPI_CPHA=SPI_CPHA_1Edge;	//µÚÒ»¸öÊ±ÖÓÑØ²¶»ñ
-	SPI_InitStructure.SPI_CPOL=SPI_CPOL_Low;	//¿ÕÏĞ×´Ì¬ÎªµÍµçÆ½
-	SPI_InitStructure.SPI_DataSize=SPI_DataSize_8b;						//8Î»Êı¾İÖ¡
-	SPI_InitStructure.SPI_BaudRatePrescaler=SPI_BaudRatePrescaler_8; 	//SPI²¨ÌØÂÊ8·ÖÆµ 	36/8=4.5M
-	SPI_InitStructure.SPI_Direction=SPI_Direction_2Lines_FullDuplex;	//È«Ë«¹¤Ä£Ê½
-	SPI_InitStructure.SPI_FirstBit=SPI_FirstBit_MSB;					//Êı¾İ¸ßÎ»ÏÈĞĞ
-	SPI_InitStructure.SPI_CRCPolynomial=7;								//CRC¼ÆËã¶àÏîÊ½
+	SPI_InitStructure.SPI_Mode=SPI_Mode_Master;	//é…ç½®ä¸ºä¸»æœºæ¨¡å¼
+	SPI_InitStructure.SPI_NSS=SPI_NSS_Soft;		//NSSè½¯ä»¶ç®¡ç†
+	SPI_InitStructure.SPI_CPHA=SPI_CPHA_1Edge;	//ç¬¬ä¸€ä¸ªæ—¶é’Ÿæ²¿æ•è·
+	SPI_InitStructure.SPI_CPOL=SPI_CPOL_Low;	//ç©ºé—²çŠ¶æ€ä¸ºä½ç”µå¹³
+	SPI_InitStructure.SPI_DataSize=SPI_DataSize_8b;						//8ä½æ•°æ®å¸§
+	SPI_InitStructure.SPI_BaudRatePrescaler=SPI_BaudRatePrescaler_8; 	//SPIæ³¢ç‰¹ç‡8åˆ†é¢‘ 	36/8=4.5M
+	SPI_InitStructure.SPI_Direction=SPI_Direction_2Lines_FullDuplex;	//å…¨åŒå·¥æ¨¡å¼
+	SPI_InitStructure.SPI_FirstBit=SPI_FirstBit_MSB;					//æ•°æ®é«˜ä½å…ˆè¡Œ
+	SPI_InitStructure.SPI_CRCPolynomial=7;								//CRCè®¡ç®—å¤šé¡¹å¼
 	SPI_Init(SPI2,&SPI_InitStructure);
 	
-	SPI_Cmd(SPI2,ENABLE);	//SPI2Ê¹ÄÜ
+	SPI_Cmd(SPI2,ENABLE);	//SPI2ä½¿èƒ½
 }
 
 /*****************************************************************************
-* º¯  Êı£ºuint8_t SPI2_WriteReadByte(uint8_t data)
-* ¹¦  ÄÜ£ºSPI2¶ÁĞ´Ò»¸ö×Ö½Ú
-* ²Î  Êı£ºÎŞ
-* ·µ»ØÖµ£ºÎŞ
-* ±¸  ×¢£ºÎŞ
+* å‡½  æ•°ï¼šuint8_t SPI2_WriteReadByte(uint8_t data)
+* åŠŸ  èƒ½ï¼šSPI2è¯»å†™ä¸€ä¸ªå­—èŠ‚
+* å‚  æ•°ï¼šæ— 
+* è¿”å›å€¼ï¼šæ— 
+* å¤‡  æ³¨ï¼šæ— 
 *****************************************************************************/
 uint8_t SPI2_WriteReadByte(uint8_t data)
 {

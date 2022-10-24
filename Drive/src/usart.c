@@ -1,68 +1,68 @@
 /************************************************************************************************
-* ³ÌĞò°æ±¾£ºV2.1
-* ³ÌĞòÈÕÆÚ£º2021-12-8
-* ³ÌĞò×÷Õß£º719·ÉĞĞÆ÷ÊµÑéÊÒ£º 
-*						ÕÅÈó
-*						Ñî³¿Ñô
+* ç¨‹åºç‰ˆæœ¬ï¼šV2.1
+* ç¨‹åºæ—¥æœŸï¼š2021-12-8
+* ç¨‹åºä½œè€…ï¼š719é£è¡Œå™¨å®éªŒå®¤ï¼š 
+*						å¼ æ¶¦
+*						æ¨æ™¨é˜³
 ************************************************************************************************/
 
 #include "usart.h"
 
 
 /*****************************************************************************
-* º¯  Êı£ºvoid USART_init(uint32_t baudrate)
-* ¹¦  ÄÜ£ºUsart1ºÍUsart3³õÊ¼»¯ÎªË«¹¤Ä£Ê½
-* ²Î  Êı£ºbaudrate ²¨ÌØÂÊ
-* ·µ»ØÖµ£ºÎŞ
-* ±¸  ×¢£º¶ÔÓÚÁ¬ĞøµÄÊı¾İÖ¡µÄ½ÓÊÕ ½ÓÊÕÖĞ¶ÏÓë¿ÕÏĞÖĞ¶ÏÅäºÏÄÜ½â¾ö¶ª°üÎÊÌâ£¬
-          ¾ßÌå½ÓÊÕ·½Ê½¼ûstm32f1x_it.c ÖĞµÄ´®¿ÚÖĞ¶Ï´¦Àí;   
+* å‡½  æ•°ï¼švoid USART_init(uint32_t baudrate)
+* åŠŸ  èƒ½ï¼šUsart1å’ŒUsart3åˆå§‹åŒ–ä¸ºåŒå·¥æ¨¡å¼
+* å‚  æ•°ï¼šbaudrate æ³¢ç‰¹ç‡
+* è¿”å›å€¼ï¼šæ— 
+* å¤‡  æ³¨ï¼šå¯¹äºè¿ç»­çš„æ•°æ®å¸§çš„æ¥æ”¶ æ¥æ”¶ä¸­æ–­ä¸ç©ºé—²ä¸­æ–­é…åˆèƒ½è§£å†³ä¸¢åŒ…é—®é¢˜ï¼Œ
+          å…·ä½“æ¥æ”¶æ–¹å¼è§stm32f1x_it.c ä¸­çš„ä¸²å£ä¸­æ–­å¤„ç†;   
 *****************************************************************************/
 void USART_init(uint32_t baudrate)
 {
-	GPIO_InitTypeDef GPIO_InitStruct;   //¶¨ÒåGPIO½á¹¹Ìå±äÁ¿
-	USART_InitTypeDef USART_InitStruct;   //¶¨Òå´®¿Ú½á¹¹Ìå±äÁ¿
+	GPIO_InitTypeDef GPIO_InitStruct;   //å®šä¹‰GPIOç»“æ„ä½“å˜é‡
+	USART_InitTypeDef USART_InitStruct;   //å®šä¹‰ä¸²å£ç»“æ„ä½“å˜é‡
 	
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA|RCC_APB2Periph_GPIOB|RCC_APB2Periph_USART1,ENABLE);   //Ê¹ÄÜGPIOA¡¢GPIOB¡¢USART1µÄÊ±ÖÓ
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3,ENABLE);  //Ê¹ÄÜUSART3µÄÊ±ÖÓ
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA|RCC_APB2Periph_GPIOB|RCC_APB2Periph_USART1,ENABLE);   //ä½¿èƒ½GPIOAã€GPIOBã€USART1çš„æ—¶é’Ÿ
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3,ENABLE);  //ä½¿èƒ½USART3çš„æ—¶é’Ÿ
 	
-	/**ÒÔÏÂÎªUSART1£¬ÓÃÓÚÓëTFminiÍ¨ĞÅ**/
-	GPIO_InitStruct.GPIO_Pin=GPIO_Pin_9;   //ÅäÖÃTXÒı½Å
-	GPIO_InitStruct.GPIO_Mode=GPIO_Mode_AF_PP;   //ÅäÖÃPA9Îª¸´ÓÃÍÆÍìÊä³ö
-	GPIO_InitStruct.GPIO_Speed=GPIO_Speed_50MHz;   //ÅäÖÃPA9ËÙÂÊ
-	GPIO_Init(GPIOA,&GPIO_InitStruct);   //GPIO³õÊ¼»¯º¯Êı
+	/**ä»¥ä¸‹ä¸ºUSART1ï¼Œç”¨äºä¸TFminié€šä¿¡**/
+	GPIO_InitStruct.GPIO_Pin=GPIO_Pin_9;   //é…ç½®TXå¼•è„š
+	GPIO_InitStruct.GPIO_Mode=GPIO_Mode_AF_PP;   //é…ç½®PA9ä¸ºå¤ç”¨æ¨æŒ½è¾“å‡º
+	GPIO_InitStruct.GPIO_Speed=GPIO_Speed_50MHz;   //é…ç½®PA9é€Ÿç‡
+	GPIO_Init(GPIOA,&GPIO_InitStruct);   //GPIOåˆå§‹åŒ–å‡½æ•°
 	
-	GPIO_InitStruct.GPIO_Pin=GPIO_Pin_10;   //ÅäÖÃRXÒı½Å
-	GPIO_InitStruct.GPIO_Mode=GPIO_Mode_IN_FLOATING;   //ÅäÖÃPA10Îª¸¡¿ÕÊäÈë
-	GPIO_InitStruct.GPIO_Speed=GPIO_Speed_50MHz;   //ÅäÖÃPA10ËÙÂÊ
-	GPIO_Init(GPIOA,&GPIO_InitStruct);   //GPIO³õÊ¼»¯º¯Êı
+	GPIO_InitStruct.GPIO_Pin=GPIO_Pin_10;   //é…ç½®RXå¼•è„š
+	GPIO_InitStruct.GPIO_Mode=GPIO_Mode_IN_FLOATING;   //é…ç½®PA10ä¸ºæµ®ç©ºè¾“å…¥
+	GPIO_InitStruct.GPIO_Speed=GPIO_Speed_50MHz;   //é…ç½®PA10é€Ÿç‡
+	GPIO_Init(GPIOA,&GPIO_InitStruct);   //GPIOåˆå§‹åŒ–å‡½æ•°
 
-	USART_InitStruct.USART_Mode=USART_Mode_Tx;   //·¢ËÍÄ£Ê½
-	USART_InitStruct.USART_Parity=USART_Parity_No;   //ÎŞÆæÅ¼Ğ£Ñé
-	USART_InitStruct.USART_BaudRate=baudrate;   //²¨ÌØÂÊ
-	USART_InitStruct.USART_StopBits=USART_StopBits_1;   //Í£Ö¹Î»1Î»
-	USART_InitStruct.USART_WordLength=USART_WordLength_8b;   //×Ö³¤8Î»
-	USART_InitStruct.USART_HardwareFlowControl=USART_HardwareFlowControl_None;   //ÎŞÓ²¼şÊı¾İÁ÷¿ØÖÆ
-	USART_Init(USART1,&USART_InitStruct);   //´®¿Ú³õÊ¼»¯º¯Êı
+	USART_InitStruct.USART_Mode=USART_Mode_Tx;   //å‘é€æ¨¡å¼
+	USART_InitStruct.USART_Parity=USART_Parity_No;   //æ— å¥‡å¶æ ¡éªŒ
+	USART_InitStruct.USART_BaudRate=baudrate;   //æ³¢ç‰¹ç‡
+	USART_InitStruct.USART_StopBits=USART_StopBits_1;   //åœæ­¢ä½1ä½
+	USART_InitStruct.USART_WordLength=USART_WordLength_8b;   //å­—é•¿8ä½
+	USART_InitStruct.USART_HardwareFlowControl=USART_HardwareFlowControl_None;   //æ— ç¡¬ä»¶æ•°æ®æµæ§åˆ¶
+	USART_Init(USART1,&USART_InitStruct);   //ä¸²å£åˆå§‹åŒ–å‡½æ•°
 	
-	USART_ITConfig(USART1,USART_IT_RXNE,ENABLE);		//´®¿Ú½ÓÊÕÖĞ¶Ï
-	//USART_ITConfig(USART1,USART_IT_IDLE,ENABLE);		//´®¿Ú¿ÕÏĞÖĞ¶Ï
+	USART_ITConfig(USART1,USART_IT_RXNE,ENABLE);		//ä¸²å£æ¥æ”¶ä¸­æ–­
+	//USART_ITConfig(USART1,USART_IT_IDLE,ENABLE);		//ä¸²å£ç©ºé—²ä¸­æ–­
 	
-	USART_Cmd(USART1,ENABLE);   //Ê¹ÄÜUSART1
+	USART_Cmd(USART1,ENABLE);   //ä½¿èƒ½USART1
 	
 	
 }
 
 /*****************************************************************************
-* º¯  Êı£ºint fputc(int ch, FILE *f)
-* ¹¦  ÄÜ£ºÖØ¶¨Ïò printf()º¯Êı
-* ²Î  Êı£ºch Òª·¢ËÍµÄÊı¾İ
-* ·µ»ØÖµ£ºÎŞ
-* ±¸  ×¢£ºÎŞ
+* å‡½  æ•°ï¼šint fputc(int ch, FILE *f)
+* åŠŸ  èƒ½ï¼šé‡å®šå‘ printf()å‡½æ•°
+* å‚  æ•°ï¼šch è¦å‘é€çš„æ•°æ®
+* è¿”å›å€¼ï¼šæ— 
+* å¤‡  æ³¨ï¼šæ— 
 *****************************************************************************/
-//¼ÓÈëÒÔÏÂ´úÂë,Ö§³Öprintfº¯Êı,¶ø²»ĞèÒªÑ¡Ôñuse MicroLIB	  
+//åŠ å…¥ä»¥ä¸‹ä»£ç ,æ”¯æŒprintfå‡½æ•°,è€Œä¸éœ€è¦é€‰æ‹©use MicroLIB	  
 #if 1
 #pragma import(__use_no_semihosting)             
-//±ê×¼¿âĞèÒªµÄÖ§³Öº¯Êı                 
+//æ ‡å‡†åº“éœ€è¦çš„æ”¯æŒå‡½æ•°                 
 struct __FILE 
 { 
 	int handle; 
@@ -70,27 +70,27 @@ struct __FILE
 }; 
 
 FILE __stdout;       
-//¶¨Òå_sys_exit()ÒÔ±ÜÃâÊ¹ÓÃ°ëÖ÷»úÄ£Ê½    
+//å®šä¹‰_sys_exit()ä»¥é¿å…ä½¿ç”¨åŠä¸»æœºæ¨¡å¼    
 void _sys_exit(int x) 
 { 
 	x = x; 
 } 
-//ÖØ¶¨Òåfputcº¯Êı 
+//é‡å®šä¹‰fputcå‡½æ•° 
 int fputc(int ch, FILE *f)
 {      
-	while((USART1->SR&0X40)==0);//Ñ­»··¢ËÍ,Ö±µ½·¢ËÍÍê±Ï   
+	while((USART1->SR&0X40)==0);//å¾ªç¯å‘é€,ç›´åˆ°å‘é€å®Œæ¯•   
     USART1->DR = (u8) ch;      
 	return ch;
 }
 #endif 
 
 /*****************************************************************************
-* º¯  Êı£ºvoid usart_send(uint8_t *data,uint8_t len)
-* ¹¦  ÄÜ£ºUsart1·¢ËÍÖ¸¶¨³¤¶ÈÊı¾İ
-* ²Î  Êı£º*data Òª·¢ËÍÊı¾İµÄµØÖ·
-*         len   Òª·¢ËÍÊı¾İµÄ³¤¶È
-* ·µ»ØÖµ£ºÎŞ
-* ±¸  ×¢£ºÎŞ
+* å‡½  æ•°ï¼švoid usart_send(uint8_t *data,uint8_t len)
+* åŠŸ  èƒ½ï¼šUsart1å‘é€æŒ‡å®šé•¿åº¦æ•°æ®
+* å‚  æ•°ï¼š*data è¦å‘é€æ•°æ®çš„åœ°å€
+*         len   è¦å‘é€æ•°æ®çš„é•¿åº¦
+* è¿”å›å€¼ï¼šæ— 
+* å¤‡  æ³¨ï¼šæ— 
 *****************************************************************************/
 void usart_send(uint8_t *data,uint8_t len)
 {

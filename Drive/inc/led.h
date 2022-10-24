@@ -1,23 +1,23 @@
 /************************************************************************************************
-* ³ÌÐò°æ±¾£ºV3.0
-* ³ÌÐòÈÕÆÚ£º2022-9-6
-* ³ÌÐò×÷Õß£º719·ÉÐÐÆ÷ÊµÑéÊÒ£º 
-*						ÕÅÈó
-*						Ñî³¿Ñô
-*						ÕÅÌìÅô
+* ç¨‹åºç‰ˆæœ¬ï¼šV3.0
+* ç¨‹åºæ—¥æœŸï¼š2022-9-6
+* ç¨‹åºä½œè€…ï¼š719é£žè¡Œå™¨å®žéªŒå®¤ï¼š 
+*						å¼ æ¶¦
+*						æ¨æ™¨é˜³
+*						å¼ å¤©é¹
 ************************************************************************************************/
 #ifndef   _LED_H
 #define   _LED_H
 
 #include "main.h"
-#define LEDR_L GPIOB->BSRR |= GPIO_Pin_12 //ÅäÖÃLEDÒý½ÅÎª ¸ßµçÆ½
-#define LEDR_H GPIOB->BRR  |= GPIO_Pin_12 //ÅäÖÃLEDÒý½ÅÎª µÍµçÆ½
+#define LEDR_L GPIOB->BSRR |= GPIO_Pin_12 //é…ç½®LEDå¼•è„šä¸º é«˜ç”µå¹³
+#define LEDR_H GPIOB->BRR  |= GPIO_Pin_12 //é…ç½®LEDå¼•è„šä¸º ä½Žç”µå¹³
 
-#define LEDG_L GPIOB->BSRR |= GPIO_Pin_13 //ÅäÖÃLEDÒý½ÅÎª ¸ßµçÆ½
-#define LEDG_H GPIOB->BRR  |= GPIO_Pin_13 //ÅäÖÃLEDÒý½ÅÎª µÍµçÆ½
+#define LEDG_L GPIOB->BSRR |= GPIO_Pin_13 //é…ç½®LEDå¼•è„šä¸º é«˜ç”µå¹³
+#define LEDG_H GPIOB->BRR  |= GPIO_Pin_13 //é…ç½®LEDå¼•è„šä¸º ä½Žç”µå¹³
 
-#define LEDB_L GPIOB->BSRR |= GPIO_Pin_14 //ÅäÖÃLEDÒý½ÅÎª ¸ßµçÆ½
-#define LEDB_H GPIOB->BRR  |= GPIO_Pin_14 //ÅäÖÃLEDÒý½ÅÎª µÍµçÆ½
+#define LEDB_L GPIOB->BSRR |= GPIO_Pin_14 //é…ç½®LEDå¼•è„šä¸º é«˜ç”µå¹³
+#define LEDB_H GPIOB->BRR  |= GPIO_Pin_14 //é…ç½®LEDå¼•è„šä¸º ä½Žç”µå¹³
 
 void LED_Init(void);
 void LEDR_1(void);

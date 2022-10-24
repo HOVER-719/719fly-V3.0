@@ -1,20 +1,20 @@
 /************************************************************************************************
-* ³ÌÐò°æ±¾£ºV3.0
-* ³ÌÐòÈÕÆÚ£º2022-9-6
-* ³ÌÐò×÷Õß£º719·ÉÐÐÆ÷ÊµÑéÊÒ£º 
-*						ÕÅÈó
-*						Ñî³¿Ñô
-*						ÕÅÌìÅô
+* ç¨‹åºç‰ˆæœ¬ï¼šV3.0
+* ç¨‹åºæ—¥æœŸï¼š2022-9-6
+* ç¨‹åºä½œè€…ï¼š719é£žè¡Œå™¨å®žéªŒå®¤ï¼š 
+*						å¼ æ¶¦
+*						æ¨æ™¨é˜³
+*						å¼ å¤©é¹
 ************************************************************************************************/
 
 #include "MPU6050.h"
 #include "filter.h"
 #include "Kalman.h"
 
-static uint8_t    MPU6050_buff[14];                  	//¼ÓËÙ¶È ÍÓÂÝÒÇ ÎÂ¶È Ô­Ê¼Êý¾Ý
-INT16_XYZ	 GYRO_OFFSET_RAW,ACC_OFFSET_RAW;		 				//ÁãÆ¯Êý¾Ý
-INT16_XYZ	 MPU6050_ACC_RAW,MPU6050_GYRO_RAW;	     		//¶ÁÈ¡ÖµÔ­Ê¼Êý¾Ý
-uint8_t    SENSER_OFFSET_FLAG = 1;                    //´«¸ÐÆ÷Ð£×¼±êÖ¾Î»
+static uint8_t    MPU6050_buff[14];                  	//åŠ é€Ÿåº¦ é™€èžºä»ª æ¸©åº¦ åŽŸå§‹æ•°æ®
+INT16_XYZ	 GYRO_OFFSET_RAW,ACC_OFFSET_RAW;		 				//é›¶æ¼‚æ•°æ®
+INT16_XYZ	 MPU6050_ACC_RAW,MPU6050_GYRO_RAW;	     		//è¯»å–å€¼åŽŸå§‹æ•°æ®
+uint8_t    SENSER_OFFSET_FLAG = 1;                    //ä¼ æ„Ÿå™¨æ ¡å‡†æ ‡å¿—ä½
 
 Butter_BufferData Butter_Buffer_Correct[3];
 Butter_Parameter Butter_1HZ_Parameter_Acce = {
@@ -24,12 +24,12 @@ Butter_Parameter Butter_1HZ_Parameter_Acce = {
 };
 
 /*****************************************************************************
-* º¯  Êý£ºuint8_t MPU6050_WriteByte(uint8_t addr,uint8_t reg,uint8_t data)
-* ¹¦  ÄÜ£ºÐ´Ò»¸ö×Ö½ÚÊý¾Ýµ½ MPU6050 ¼Ä´æÆ÷
-* ²Î  Êý£ºreg£º ¼Ä´æÆ÷µØÖ·
-*         data: ÒªÐ´ÈëµÄÊý¾Ý
-* ·µ»ØÖµ£º0³É¹¦ 1Ê§°Ü
-* ±¸  ×¢£ºMPU6050´úÂëÒÆÖ²Ö»Ðè°ÑI2CÇý¶¯ÐÞ¸Ä³É×Ô¼ºµÄ¼´¿É
+* å‡½  æ•°ï¼šuint8_t MPU6050_WriteByte(uint8_t addr,uint8_t reg,uint8_t data)
+* åŠŸ  èƒ½ï¼šå†™ä¸€ä¸ªå­—èŠ‚æ•°æ®åˆ° MPU6050 å¯„å­˜å™¨
+* å‚  æ•°ï¼šregï¼š å¯„å­˜å™¨åœ°å€
+*         data: è¦å†™å…¥çš„æ•°æ®
+* è¿”å›žå€¼ï¼š0æˆåŠŸ 1å¤±è´¥
+* å¤‡  æ³¨ï¼šMPU6050ä»£ç ç§»æ¤åªéœ€æŠŠI2Cé©±åŠ¨ä¿®æ”¹æˆè‡ªå·±çš„å³å¯
 *****************************************************************************/
 uint8_t MPU6050_WriteByte(uint8_t reg,uint8_t data)
 {
@@ -40,12 +40,12 @@ uint8_t MPU6050_WriteByte(uint8_t reg,uint8_t data)
 }
 
 /*****************************************************************************
-* º¯  Êý£ºuint8_t MPU6050_ReadByte(uint8_t reg,uint8_t *buf)
-* ¹¦  ÄÜ£º´ÓÖ¸¶¨MPU6050¼Ä´æÆ÷¶ÁÈ¡Ò»¸ö×Ö½ÚÊý¾Ý
-* ²Î  Êý£ºreg£º ¼Ä´æÆ÷µØÖ·
-*         buf:  ¶ÁÈ¡Êý¾Ý´æ·ÅµÄµØÖ·
-* ·µ»ØÖµ£º1Ê§°Ü 0³É¹¦
-* ±¸  ×¢£ºMPU6050´úÂëÒÆÖ²Ö»Ðè°ÑI2CÇý¶¯ÐÞ¸Ä³É×Ô¼ºµÄ¼´¿É
+* å‡½  æ•°ï¼šuint8_t MPU6050_ReadByte(uint8_t reg,uint8_t *buf)
+* åŠŸ  èƒ½ï¼šä»ŽæŒ‡å®šMPU6050å¯„å­˜å™¨è¯»å–ä¸€ä¸ªå­—èŠ‚æ•°æ®
+* å‚  æ•°ï¼šregï¼š å¯„å­˜å™¨åœ°å€
+*         buf:  è¯»å–æ•°æ®å­˜æ”¾çš„åœ°å€
+* è¿”å›žå€¼ï¼š1å¤±è´¥ 0æˆåŠŸ
+* å¤‡  æ³¨ï¼šMPU6050ä»£ç ç§»æ¤åªéœ€æŠŠI2Cé©±åŠ¨ä¿®æ”¹æˆè‡ªå·±çš„å³å¯
 *****************************************************************************/
 uint8_t MPU6050_ReadByte(uint8_t reg,uint8_t *buf)
 {
@@ -56,13 +56,13 @@ uint8_t MPU6050_ReadByte(uint8_t reg,uint8_t *buf)
 }
 
 /*****************************************************************************
-* º¯  Êý£ºuint8_t MPU6050_WriteMultBytes(uint8_t reg,uint8_t len,uint8_t *buf)
-* ¹¦  ÄÜ£º´ÓÖ¸¶¨¼Ä´æÆ÷Ð´ÈëÖ¸¶¨³¤¶ÈÊý¾Ý
-* ²Î  Êý£ºreg£º¼Ä´æÆ÷µØÖ·
-*         len£ºÐ´ÈëÊý¾Ý³¤¶È 
-*         buf: Ð´ÈëÊý¾Ý´æ·ÅµÄµØÖ·
-* ·µ»ØÖµ£º0³É¹¦ 1Ê§°Ü
-* ±¸  ×¢£ºMPU6050´úÂëÒÆÖ²Ö»Ðè°ÑI2CÇý¶¯ÐÞ¸Ä³É×Ô¼ºµÄ¼´¿É
+* å‡½  æ•°ï¼šuint8_t MPU6050_WriteMultBytes(uint8_t reg,uint8_t len,uint8_t *buf)
+* åŠŸ  èƒ½ï¼šä»ŽæŒ‡å®šå¯„å­˜å™¨å†™å…¥æŒ‡å®šé•¿åº¦æ•°æ®
+* å‚  æ•°ï¼šregï¼šå¯„å­˜å™¨åœ°å€
+*         lenï¼šå†™å…¥æ•°æ®é•¿åº¦ 
+*         buf: å†™å…¥æ•°æ®å­˜æ”¾çš„åœ°å€
+* è¿”å›žå€¼ï¼š0æˆåŠŸ 1å¤±è´¥
+* å¤‡  æ³¨ï¼šMPU6050ä»£ç ç§»æ¤åªéœ€æŠŠI2Cé©±åŠ¨ä¿®æ”¹æˆè‡ªå·±çš„å³å¯
 *****************************************************************************/
 uint8_t MPU6050_WriteMultBytes(uint8_t reg,uint8_t len,uint8_t *buf)
 {
@@ -73,13 +73,13 @@ uint8_t MPU6050_WriteMultBytes(uint8_t reg,uint8_t len,uint8_t *buf)
 }
 
 /*****************************************************************************
-* º¯  Êý£ºuint8_t MPU6050_ReadMultBytes(uint8_t reg,uint8_t len,uint8_t *buf)
-* ¹¦  ÄÜ£º´ÓÖ¸¶¨¼Ä´æÆ÷¶ÁÈ¡Ö¸¶¨³¤¶ÈÊý¾Ý
-* ²Î  Êý£ºreg£º¼Ä´æÆ÷µØÖ·
-*         len£º¶ÁÈ¡Êý¾Ý³¤¶È 
-*         buf: ¶ÁÈ¡Êý¾Ý´æ·ÅµÄµØÖ·
-* ·µ»ØÖµ£º0³É¹¦ 0Ê§°Ü
-* ±¸  ×¢£ºMPU6050´úÂëÒÆÖ²Ö»Ðè°ÑI2CÇý¶¯ÐÞ¸Ä³É×Ô¼ºµÄ¼´¿É
+* å‡½  æ•°ï¼šuint8_t MPU6050_ReadMultBytes(uint8_t reg,uint8_t len,uint8_t *buf)
+* åŠŸ  èƒ½ï¼šä»ŽæŒ‡å®šå¯„å­˜å™¨è¯»å–æŒ‡å®šé•¿åº¦æ•°æ®
+* å‚  æ•°ï¼šregï¼šå¯„å­˜å™¨åœ°å€
+*         lenï¼šè¯»å–æ•°æ®é•¿åº¦ 
+*         buf: è¯»å–æ•°æ®å­˜æ”¾çš„åœ°å€
+* è¿”å›žå€¼ï¼š0æˆåŠŸ 0å¤±è´¥
+* å¤‡  æ³¨ï¼šMPU6050ä»£ç ç§»æ¤åªéœ€æŠŠI2Cé©±åŠ¨ä¿®æ”¹æˆè‡ªå·±çš„å³å¯
 *****************************************************************************/
 uint8_t MPU6050_ReadMultBytes(uint8_t reg,uint8_t len,uint8_t *buf)
 {
@@ -90,11 +90,11 @@ uint8_t MPU6050_ReadMultBytes(uint8_t reg,uint8_t len,uint8_t *buf)
 }
 
 /******************************************************************************
-* º¯  Êý£ºuint8_tMPU6050_getDeviceID(void)
-* ¹¦  ÄÜ£º¶ÁÈ¡  MPU6050 WHO_AM_I ±êÊ¶½«·µ»Ø 0x68
-* ²Î  Êý£ºÎÞ
-* ·µ»ØÖµ£º·µ»Ø¶ÁÈ¡Êý¾Ý
-* ±¸  ×¢£ºÎÞ
+* å‡½  æ•°ï¼šuint8_tMPU6050_getDeviceID(void)
+* åŠŸ  èƒ½ï¼šè¯»å–  MPU6050 WHO_AM_I æ ‡è¯†å°†è¿”å›ž 0x68
+* å‚  æ•°ï¼šæ— 
+* è¿”å›žå€¼ï¼šè¿”å›žè¯»å–æ•°æ®
+* å¤‡  æ³¨ï¼šæ— 
 *******************************************************************************/
 uint8_t MPU6050_getDeviceID(void)
 {
@@ -104,11 +104,11 @@ uint8_t MPU6050_getDeviceID(void)
 }
 
 /******************************************************************************
-* º¯  Êý£ºuint8_tMPU6050_testConnection(void)
-* ¹¦  ÄÜ£º¼ì²âMPU6050 ÊÇ·ñÒÑ¾­Á¬½Ó
-* ²Î  Êý£ºÎÞ
-* ·µ»ØÖµ£º1ÒÑÁ¬½Ó 0Î´Á´½Ó
-* ±¸  ×¢£ºÎÞ
+* å‡½  æ•°ï¼šuint8_tMPU6050_testConnection(void)
+* åŠŸ  èƒ½ï¼šæ£€æµ‹MPU6050 æ˜¯å¦å·²ç»è¿žæŽ¥
+* å‚  æ•°ï¼šæ— 
+* è¿”å›žå€¼ï¼š1å·²è¿žæŽ¥ 0æœªé“¾æŽ¥
+* å¤‡  æ³¨ï¼šæ— 
 *******************************************************************************/
 uint8_t MPU6050_testConnection(void) 
 {
@@ -119,11 +119,11 @@ uint8_t MPU6050_testConnection(void)
 }
 
 /******************************************************************************
-* º¯  Êý£ºvoid MPU6050_Check()
-* ¹¦  ÄÜ£º¼ì²âIIC×ÜÏßÉÏµÄMPU6050ÊÇ·ñ´æÔÚ
-* ²Î  Êý£ºÎÞ
-* ·µ»ØÖµ£ºÎÞ
-* ±¸  ×¢£ºÎÞ
+* å‡½  æ•°ï¼švoid MPU6050_Check()
+* åŠŸ  èƒ½ï¼šæ£€æµ‹IICæ€»çº¿ä¸Šçš„MPU6050æ˜¯å¦å­˜åœ¨
+* å‚  æ•°ï¼šæ— 
+* è¿”å›žå€¼ï¼šæ— 
+* å¤‡  æ³¨ï¼šæ— 
 *******************************************************************************/
 void MPU6050_Check(void) 
 { 
@@ -135,11 +135,11 @@ void MPU6050_Check(void)
 }
 
 /******************************************************************************
-* º¯  Êý£ºvoid MPU6050_AccRead(int16_t *accData)
-* ¹¦  ÄÜ£º¶ÁÈ¡¼ÓËÙ¶ÈµÄÔ­Ê¼Êý¾Ý
-* ²Î  Êý£º*accData Ô­Ê¼Êý¾ÝµÄÖ¸Õë
-* ·µ»ØÖµ£ºÎÞ
-* ±¸  ×¢£ºÎÞ
+* å‡½  æ•°ï¼švoid MPU6050_AccRead(int16_t *accData)
+* åŠŸ  èƒ½ï¼šè¯»å–åŠ é€Ÿåº¦çš„åŽŸå§‹æ•°æ®
+* å‚  æ•°ï¼š*accData åŽŸå§‹æ•°æ®çš„æŒ‡é’ˆ
+* è¿”å›žå€¼ï¼šæ— 
+* å¤‡  æ³¨ï¼šæ— 
 *******************************************************************************/
 void MPU6050_AccRead(int16_t *accData)
 {
@@ -151,11 +151,11 @@ void MPU6050_AccRead(int16_t *accData)
 }
 
 /******************************************************************************
-* º¯  Êý£ºvoid MPU6050_GyroRead(int16_t *gyroData)
-* ¹¦  ÄÜ£º¶ÁÈ¡ÍÓÂÝÒÇµÄÔ­Ê¼Êý¾Ý
-* ²Î  Êý£º*gyroData Ô­Ê¼Êý¾ÝµÄÖ¸Õë
-* ·µ»ØÖµ£ºÎÞ
-* ±¸  ×¢£ºÎÞ
+* å‡½  æ•°ï¼švoid MPU6050_GyroRead(int16_t *gyroData)
+* åŠŸ  èƒ½ï¼šè¯»å–é™€èžºä»ªçš„åŽŸå§‹æ•°æ®
+* å‚  æ•°ï¼š*gyroData åŽŸå§‹æ•°æ®çš„æŒ‡é’ˆ
+* è¿”å›žå€¼ï¼šæ— 
+* å¤‡  æ³¨ï¼šæ— 
 *******************************************************************************/
 void MPU6050_GyroRead(int16_t *gyroData)
 {
@@ -167,11 +167,11 @@ void MPU6050_GyroRead(int16_t *gyroData)
 }
 
 /******************************************************************************
-* º¯  Êý£ºvoid MPU6050_TempRead(float *tempdata)
-* ¹¦  ÄÜ£ºÎÂ¶ÈÖµ¶ÁÈ¡
-* ²Î  Êý£º*tempdata ÎÂ¶ÈÊý¾ÝµÄÖ¸Õë
-* ·µ»ØÖµ£ºÎÞ
-* ±¸  ×¢£ºÎÞ
+* å‡½  æ•°ï¼švoid MPU6050_TempRead(float *tempdata)
+* åŠŸ  èƒ½ï¼šæ¸©åº¦å€¼è¯»å–
+* å‚  æ•°ï¼š*tempdata æ¸©åº¦æ•°æ®çš„æŒ‡é’ˆ
+* è¿”å›žå€¼ï¼šæ— 
+* å¤‡  æ³¨ï¼šæ— 
 *******************************************************************************/
 void MPU6050_TempRead(float *tempdata)
 {
@@ -183,90 +183,90 @@ void MPU6050_TempRead(float *tempdata)
 }
 
 /******************************************************************************
-* º¯  Êý£ºvoid MPU6050_Init(void)
-* ¹¦  ÄÜ£º³õÊ¼»¯MPU6050½øÈë¹¤×÷×´Ì¬
-* ²Î  Êý£ºÎÞ
-* ·µ»ØÖµ£ºÎÞ
-* ±¸  ×¢£ºDLPF ×îºÃÉèÎª²ÉÑùÆµÂÊµÄÒ»°ë£¡£¡£¡
+* å‡½  æ•°ï¼švoid MPU6050_Init(void)
+* åŠŸ  èƒ½ï¼šåˆå§‹åŒ–MPU6050è¿›å…¥å·¥ä½œçŠ¶æ€
+* å‚  æ•°ï¼šæ— 
+* è¿”å›žå€¼ï¼šæ— 
+* å¤‡  æ³¨ï¼šDLPF æœ€å¥½è®¾ä¸ºé‡‡æ ·é¢‘çŽ‡çš„ä¸€åŠï¼ï¼ï¼
 *******************************************************************************/
 void MPU6050_Init(void)
 {
-	MPU6050_Check(); 																						//¼ì²éMPU6050ÊÇ·ñÁ¬½Ó
-	MPU6050_WriteByte(MPU6050_RA_PWR_MGMT_1, 0x80); 						//¸´Î»MPU6050
+	MPU6050_Check(); 																						//æ£€æŸ¥MPU6050æ˜¯å¦è¿žæŽ¥
+	MPU6050_WriteByte(MPU6050_RA_PWR_MGMT_1, 0x80); 						//å¤ä½MPU6050
 	Delay_ms(100);
-	MPU6050_WriteByte(MPU6050_RA_PWR_MGMT_1, 0x01); 						//»½ÐÑMPU6050£¬²¢Ñ¡ÔñÍÓÂÝÒÇxÖáPLLÎªÊ±ÖÓÔ´
-	MPU6050_WriteByte(MPU6050_RA_INT_ENABLE, 0x00); 						//½ûÖ¹ÖÐ¶Ï
-	MPU6050_WriteByte(MPU6050_RA_GYRO_CONFIG, 0x18); 						//ÍÓÂÝÒÇÂúÁ¿³Ì+-2000¶È/Ãë (×îµÍ·Ö±æÂÊ = 2^15/2000 = 16.4LSB/¶È/Ãë 
-	MPU6050_WriteByte(MPU6050_RA_ACCEL_CONFIG, 0x08); 					//¼ÓËÙ¶ÈÂúÁ¿³Ì+-4g   (×îµÍ·Ö±æÂÊ = 2^15/4g = 8196LSB/g )
-	MPU6050_WriteByte(MPU6050_RA_CONFIG, MPU6050_DLPF_BW_98);		//ÉèÖÃÍÓÂÝµÄÊä³öÎª1kHZ,DLPF=98Hz 
-	MPU6050_WriteByte(MPU6050_RA_SMPLRT_DIV, 0x00);  						//²ÉÑù·ÖÆµ (²ÉÑùÆµÂÊ = ÍÓÂÝÒÇÊä³öÆµÂÊ / (1+DIV)£¬²ÉÑùÆµÂÊ1000hz£©
-	MPU6050_WriteByte(MPU6050_RA_INT_PIN_CFG, 0x02); 						//MPU ¿ÉÖ±½Ó·ÃÎÊMPU6050¸¨ÖúI2C
+	MPU6050_WriteByte(MPU6050_RA_PWR_MGMT_1, 0x01); 						//å”¤é†’MPU6050ï¼Œå¹¶é€‰æ‹©é™€èžºä»ªxè½´PLLä¸ºæ—¶é’Ÿæº
+	MPU6050_WriteByte(MPU6050_RA_INT_ENABLE, 0x00); 						//ç¦æ­¢ä¸­æ–­
+	MPU6050_WriteByte(MPU6050_RA_GYRO_CONFIG, 0x18); 						//é™€èžºä»ªæ»¡é‡ç¨‹+-2000åº¦/ç§’ (æœ€ä½Žåˆ†è¾¨çŽ‡ = 2^15/2000 = 16.4LSB/åº¦/ç§’ 
+	MPU6050_WriteByte(MPU6050_RA_ACCEL_CONFIG, 0x08); 					//åŠ é€Ÿåº¦æ»¡é‡ç¨‹+-4g   (æœ€ä½Žåˆ†è¾¨çŽ‡ = 2^15/4g = 8196LSB/g )
+	MPU6050_WriteByte(MPU6050_RA_CONFIG, MPU6050_DLPF_BW_98);		//è®¾ç½®é™€èžºçš„è¾“å‡ºä¸º1kHZ,DLPF=98Hz 
+	MPU6050_WriteByte(MPU6050_RA_SMPLRT_DIV, 0x00);  						//é‡‡æ ·åˆ†é¢‘ (é‡‡æ ·é¢‘çŽ‡ = é™€èžºä»ªè¾“å‡ºé¢‘çŽ‡ / (1+DIV)ï¼Œé‡‡æ ·é¢‘çŽ‡1000hzï¼‰
+	MPU6050_WriteByte(MPU6050_RA_INT_PIN_CFG, 0x02); 						//MPU å¯ç›´æŽ¥è®¿é—®MPU6050è¾…åŠ©I2C
 	 
 }
 
 /******************************************************************************
-* º¯  Êý£ºvoid MPU6050_CalOff(void)
-* ¹¦  ÄÜ£ºÍÓÂÝÒÇ¼ÓËÙ¶ÈÐ£×¼
-* ²Î  Êý£ºÎÞ
-* ·µ»ØÖµ£ºÎÞ
-* ±¸  ×¢£ºÎÞ
+* å‡½  æ•°ï¼švoid MPU6050_CalOff(void)
+* åŠŸ  èƒ½ï¼šé™€èžºä»ªåŠ é€Ÿåº¦æ ¡å‡†
+* å‚  æ•°ï¼šæ— 
+* è¿”å›žå€¼ï¼šæ— 
+* å¤‡  æ³¨ï¼šæ— 
 *******************************************************************************/
 void MPU6050_CalOff(void)
 {
 
-	 SENSER_FLAG_SET(ACC_OFFSET);//¼ÓËÙ¶ÈÐ£×¼
-	 SENSER_FLAG_SET(GYRO_OFFSET);//ÍÓÂÝÒÇÐ£×¼
+	 SENSER_FLAG_SET(ACC_OFFSET);//åŠ é€Ÿåº¦æ ¡å‡†
+	 SENSER_FLAG_SET(GYRO_OFFSET);//é™€èžºä»ªæ ¡å‡†
 }
 
 /******************************************************************************
-* º¯  Êý£ºvoid MPU6050_CalOff_Acc(void)
-* ¹¦  ÄÜ£º¼ÓËÙ¶È¼ÆÐ£×¼
-* ²Î  Êý£ºÎÞ
-* ·µ»ØÖµ£ºÎÞ
-* ±¸  ×¢£ºÎÞ
+* å‡½  æ•°ï¼švoid MPU6050_CalOff_Acc(void)
+* åŠŸ  èƒ½ï¼šåŠ é€Ÿåº¦è®¡æ ¡å‡†
+* å‚  æ•°ï¼šæ— 
+* è¿”å›žå€¼ï¼šæ— 
+* å¤‡  æ³¨ï¼šæ— 
 *******************************************************************************/
 void MPU6050_CalOff_Acc(void)
 {
-	 SENSER_FLAG_SET(ACC_OFFSET);//¼ÓËÙ¶ÈÐ£×¼
+	 SENSER_FLAG_SET(ACC_OFFSET);//åŠ é€Ÿåº¦æ ¡å‡†
 }
 
 /******************************************************************************
-* º¯  Êý£ºvoid MPU6050_CalOff_Gyr(void)
-* ¹¦  ÄÜ£ºÍÓÂÝÒÇÐ£×¼
-* ²Î  Êý£ºÎÞ
-* ·µ»ØÖµ£ºÎÞ
-* ±¸  ×¢£ºÎÞ
+* å‡½  æ•°ï¼švoid MPU6050_CalOff_Gyr(void)
+* åŠŸ  èƒ½ï¼šé™€èžºä»ªæ ¡å‡†
+* å‚  æ•°ï¼šæ— 
+* è¿”å›žå€¼ï¼šæ— 
+* å¤‡  æ³¨ï¼šæ— 
 *******************************************************************************/
 void MPU6050_CalOff_Gyr(void)
 {
-	 SENSER_FLAG_SET(GYRO_OFFSET);//ÍÓÂÝÒÇÐ£×¼
+	 SENSER_FLAG_SET(GYRO_OFFSET);//é™€èžºä»ªæ ¡å‡†
 }
 
 /******************************************************************************
-* º¯  Êý£ºvoid MPU6050_Read(void)
-* ¹¦  ÄÜ£º¶ÁÈ¡ÍÓÂÝÒÇ¼ÓËÙ¶È¼ÆµÄÔ­Ê¼Êý¾Ý
-* ²Î  Êý£ºÎÞ
-* ·µ»ØÖµ£ºÎÞ
-* ±¸  ×¢£ºÎÞ
+* å‡½  æ•°ï¼švoid MPU6050_Read(void)
+* åŠŸ  èƒ½ï¼šè¯»å–é™€èžºä»ªåŠ é€Ÿåº¦è®¡çš„åŽŸå§‹æ•°æ®
+* å‚  æ•°ï¼šæ— 
+* è¿”å›žå€¼ï¼šæ— 
+* å¤‡  æ³¨ï¼šæ— 
 *******************************************************************************/
 void MPU6050_Read(void)
 {
-	MPU6050_ReadMultBytes(MPU6050_RA_ACCEL_XOUT_H, 14, MPU6050_buff);// ²éÑ¯·¨¶ÁÈ¡MPU6050µÄÔ­Ê¼Êý¾Ý
+	MPU6050_ReadMultBytes(MPU6050_RA_ACCEL_XOUT_H, 14, MPU6050_buff);// æŸ¥è¯¢æ³•è¯»å–MPU6050çš„åŽŸå§‹æ•°æ®
 }
 
 /******************************************************************************
-* º¯  Êý£ºuint8_t MPU6050_OffSet(INT16_XYZ value,INT16_XYZ *offset,uint16_t sensivity)
-* ¹¦  ÄÜ£ºMPU6050ÁãÆ«Ð£×¼
-* ²Î  Êý£ºvalue£º 	 MPU6050Ô­Ê¼Êý¾Ý
-*         offset£º	 Ð£×¼ºóµÄÁãÆ«Öµ
-*         sensivity£º¼ÓËÙ¶È¼ÆµÄÁéÃô¶È
-* ·µ»ØÖµ£º1Ð£×¼Íê³É 0Ð£×¼Î´Íê³É
-* ±¸  ×¢£ºÎÞ
+* å‡½  æ•°ï¼šuint8_t MPU6050_OffSet(INT16_XYZ value,INT16_XYZ *offset,uint16_t sensivity)
+* åŠŸ  èƒ½ï¼šMPU6050é›¶åæ ¡å‡†
+* å‚  æ•°ï¼švalueï¼š 	 MPU6050åŽŸå§‹æ•°æ®
+*         offsetï¼š	 æ ¡å‡†åŽçš„é›¶åå€¼
+*         sensivityï¼šåŠ é€Ÿåº¦è®¡çš„çµæ•åº¦
+* è¿”å›žå€¼ï¼š1æ ¡å‡†å®Œæˆ 0æ ¡å‡†æœªå®Œæˆ
+* å¤‡  æ³¨ï¼šæ— 
 *******************************************************************************/
 uint8_t MPU6050_OffSet(INT16_XYZ value,INT16_XYZ *offset,uint16_t sensivity)
 {
 	static int32_t tempgx=0,tempgy=0,tempgz=0;
-	static uint16_t cnt_a=0;//Ê¹ÓÃstaticÐÞÊÎµÄ¾Ö²¿±äÁ¿£¬±íÃ÷´Î±äÁ¿¾ßÓÐ¾²Ì¬´æ´¢ÖÜÆÚ£¬Ò²¾ÍÊÇËµ¸Ãº¯ÊýÖ´ÐÐÍêºó²»ÊÍ·ÅÄÚ´æ
+	static uint16_t cnt_a=0;//ä½¿ç”¨staticä¿®é¥°çš„å±€éƒ¨å˜é‡ï¼Œè¡¨æ˜Žæ¬¡å˜é‡å…·æœ‰é™æ€å­˜å‚¨å‘¨æœŸï¼Œä¹Ÿå°±æ˜¯è¯´è¯¥å‡½æ•°æ‰§è¡Œå®ŒåŽä¸é‡Šæ”¾å†…å­˜
 	if(cnt_a==0)
 	{
 		value.X=0;
@@ -283,9 +283,9 @@ uint8_t MPU6050_OffSet(INT16_XYZ value,INT16_XYZ *offset,uint16_t sensivity)
 	}
 	tempgx += value.X;
 	tempgy += value.Y; 
-	tempgz += value.Z-sensivity;			//¼ÓËÙ¶È¼ÆÐ£×¼ sensivity µÈÓÚ MPU6050³õÊ¼»¯Ê±ÉèÖÃµÄÁéÃô¶ÈÖµ£¨8196LSB/g£©;ÍÓÂÝÒÇÐ£×¼ sensivity = 0£»
+	tempgz += value.Z-sensivity;			//åŠ é€Ÿåº¦è®¡æ ¡å‡† sensivity ç­‰äºŽ MPU6050åˆå§‹åŒ–æ—¶è®¾ç½®çš„çµæ•åº¦å€¼ï¼ˆ8196LSB/gï¼‰;é™€èžºä»ªæ ¡å‡† sensivity = 0ï¼›
 
-	if(cnt_a==200)               //200¸öÊýÖµÇóÆ½¾ù
+	if(cnt_a==200)               //200ä¸ªæ•°å€¼æ±‚å¹³å‡
 	{
 		offset->X=tempgx/cnt_a;
 		offset->Y=tempgy/cnt_a;
@@ -299,37 +299,37 @@ uint8_t MPU6050_OffSet(INT16_XYZ value,INT16_XYZ *offset,uint16_t sensivity)
 }	
 
 /******************************************************************************
-* º¯  Êý£ºvoid MPU6050_DataProcess(void)
-* ¹¦  ÄÜ£º¶ÔMPU6050½øÐÐÈ¥ÁãÆ«´¦Àí
-* ²Î  Êý£ºÎÞ
-* ·µ»ØÖµ£ºÎÞ
-* ±¸  ×¢£ºÎÞ
+* å‡½  æ•°ï¼švoid MPU6050_DataProcess(void)
+* åŠŸ  èƒ½ï¼šå¯¹MPU6050è¿›è¡ŒåŽ»é›¶åå¤„ç†
+* å‚  æ•°ï¼šæ— 
+* è¿”å›žå€¼ï¼šæ— 
+* å¤‡  æ³¨ï¼šæ— 
 
 *******************************************************************************/
 void MPU6050_Offset(void)
 {
-	//¼ÓËÙ¶ÈÈ¥ÁãÆ«ADÖµ 
+	//åŠ é€Ÿåº¦åŽ»é›¶åADå€¼ 
 	MPU6050_ACC_RAW.X =((((int16_t)MPU6050_buff[0]) << 8) | MPU6050_buff[1]) - ACC_OFFSET_RAW.X;
 	MPU6050_ACC_RAW.Y =((((int16_t)MPU6050_buff[2]) << 8) | MPU6050_buff[3]) - ACC_OFFSET_RAW.Y;
 	MPU6050_ACC_RAW.Z =((((int16_t)MPU6050_buff[4]) << 8) | MPU6050_buff[5]) - ACC_OFFSET_RAW.Z;
 
   Acce_Correct_Filter();
 
-	//ÍÓÂÝÒÇÈ¥ÁãÆ«ADÖµ 
+	//é™€èžºä»ªåŽ»é›¶åADå€¼ 
 	MPU6050_GYRO_RAW.X =((((int16_t)MPU6050_buff[8]) << 8) | MPU6050_buff[9]) - GYRO_OFFSET_RAW.X;
 	MPU6050_GYRO_RAW.Y =((((int16_t)MPU6050_buff[10]) << 8) | MPU6050_buff[11]) - GYRO_OFFSET_RAW.Y;
 	MPU6050_GYRO_RAW.Z =((((int16_t)MPU6050_buff[12]) << 8) | MPU6050_buff[13]) - GYRO_OFFSET_RAW.Z;
 	
-	if(GET_FLAG(GYRO_OFFSET)) //ÍÓÂÝÒÇ½øÐÐÁãÆ«Ð£×¼
+	if(GET_FLAG(GYRO_OFFSET)) //é™€èžºä»ªè¿›è¡Œé›¶åæ ¡å‡†
 	{
 		if(MPU6050_OffSet(MPU6050_GYRO_RAW,&GYRO_OFFSET_RAW,0))
 		{
 			 SENSER_FLAG_RESET(GYRO_OFFSET);
-		   SENSER_FLAG_SET(ACC_OFFSET);//Ð£×¼¼ÓËÙ¶È
+		   SENSER_FLAG_SET(ACC_OFFSET);//æ ¡å‡†åŠ é€Ÿåº¦
 		}
 	}
 	
-	if(GET_FLAG(ACC_OFFSET)) //¼ÓËÙ¶È¼Æ½øÐÐÁãÆ«Ð£×¼ 
+	if(GET_FLAG(ACC_OFFSET)) //åŠ é€Ÿåº¦è®¡è¿›è¡Œé›¶åæ ¡å‡† 
 	{
 		if(MPU6050_OffSet(MPU6050_ACC_RAW,&ACC_OFFSET_RAW,8196))
 		{

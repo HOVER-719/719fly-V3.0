@@ -1,17 +1,17 @@
 #include "kalman.h"
 
-double xQ_angle; // ´¦Àí¼ÓËÙ¶È¼ÆµÄÀëÉ¢ÔëÉù
-double xQ_bias; // ´¦ÀíÍÓÂİÒÇµÄÀëÉ¢Æ«²îÔëÉù
-double xR_measure; // ²âÁ¿ÔëÉù - this is actually the variance of the measurement noise
+double xQ_angle; // å¤„ç†åŠ é€Ÿåº¦è®¡çš„ç¦»æ•£å™ªå£°
+double xQ_bias; // å¤„ç†é™€èºä»ªçš„ç¦»æ•£åå·®å™ªå£°
+double xR_measure; // æµ‹é‡å™ªå£° - this is actually the variance of the measurement noise
 
-double xangle; // Í¨¹ı¿¨¶ûÂüÂË²¨Æ÷¼ÆËã½Ç¶È- part of the 2x1 state vector
-double xbias; // Í¨¹ı¿¨¶ûÂüÂË²¨Æ÷¼ÆËãÍÓÂİÒÇÆ«²î- part of the 2x1 state vector
+double xangle; // é€šè¿‡å¡å°”æ›¼æ»¤æ³¢å™¨è®¡ç®—è§’åº¦- part of the 2x1 state vector
+double xbias; // é€šè¿‡å¡å°”æ›¼æ»¤æ³¢å™¨è®¡ç®—é™€èºä»ªåå·®- part of the 2x1 state vector
 double xrate; // Unbiased rate calculated from the rate and the calculated bias - you have to call getAngle to update the rate
 
-double xP[2][2]; // Îó²îĞ­·½²î¾ØÕó- This is a 2x2 matrix£¨¾ØÕó£©
-double xK[2]; //¿¨¶ûÂüÔöÒæ - This is a 2x1 vector£¨ÏòÁ¿£©
-double xy; // ½Ç¶È²î£¬¼ÓËÙ¶È¼ÆÍ¨¹ıÈı½Çº¯Êı¼ÆËãµÄ½Ç¶È¼õÈ¥ÎŞÆ«ÍÓÂİÒÇÊı¾İ»ı·ÖµÃµ½µÄ½Ç¶È µÄ²î
-double xS; // ¹À¼ÆÎó²î
+double xP[2][2]; // è¯¯å·®åæ–¹å·®çŸ©é˜µ- This is a 2x2 matrixï¼ˆçŸ©é˜µï¼‰
+double xK[2]; //å¡å°”æ›¼å¢ç›Š - This is a 2x1 vectorï¼ˆå‘é‡ï¼‰
+double xy; // è§’åº¦å·®ï¼ŒåŠ é€Ÿåº¦è®¡é€šè¿‡ä¸‰è§’å‡½æ•°è®¡ç®—çš„è§’åº¦å‡å»æ— åé™€èºä»ªæ•°æ®ç§¯åˆ†å¾—åˆ°çš„è§’åº¦ çš„å·®
+double xS; // ä¼°è®¡è¯¯å·®
 
 void xInit_Kalman(void){
 	xQ_angle = 0.00005;
@@ -21,8 +21,8 @@ void xInit_Kalman(void){
 //	xQ_bias = 0.003;
 //	xR_measure = 0.03;
 	
-	xangle = 0; // ÇåÁã½Ç¶È
-	xbias = 0; //ÇåÁãÆ«²î
+	xangle = 0; // æ¸…é›¶è§’åº¦
+	xbias = 0; //æ¸…é›¶åå·®
 
 	xP[0][0] = 0; // Since we assume that the bias is 0 and we know the starting angle (use setAngle), the error covariance matrix is set like so - see: http://en.wikipedia.org/wiki/Kalman_filter#Example_application.2C_technical
 	xP[0][1] = 0;
@@ -35,27 +35,27 @@ double xgetAngle(double newAngle, double newRate, double dt)
 {
 		// KasBot V2  -  Kalman filter module - http://www.x-firm.com/?page_id=145
 		// See my blog post for more information: http://blog.tkjelectronics.dk/2012/09/a-practical-approach-to-kalman-filter-and-how-to-implement-it
-		xrate = newRate - xbias;  //newRate  ½ÇËÙ¶È
+		xrate = newRate - xbias;  //newRate  è§’é€Ÿåº¦
 		xangle += dt * xrate;
 
-		//¸üĞÂÎó²îĞ­·½²î
+		//æ›´æ–°è¯¯å·®åæ–¹å·®
 		xP[0][0] += dt * (dt*xP[1][1] - xP[0][1] - xP[1][0] + xQ_angle);
 		xP[0][1] -= dt * xP[1][1];
 		xP[1][0] -= dt * xP[1][1];
 		xP[1][1] += xQ_bias * dt;
 
-		// ÀëÉ¢¿¨¶ûÂüÂË²¨Æ÷²âÁ¿¸üĞÂ·½³ÌÊ½ - ²âÁ¿¸üĞÂ("Correct")
-		// ¼ÆËã¿¨¶ûÂüÔöÒæ - Compute the Kalman gain
+		// ç¦»æ•£å¡å°”æ›¼æ»¤æ³¢å™¨æµ‹é‡æ›´æ–°æ–¹ç¨‹å¼ - æµ‹é‡æ›´æ–°("Correct")
+		// è®¡ç®—å¡å°”æ›¼å¢ç›Š - Compute the Kalman gain
 		xS = xP[0][0] + xR_measure;
 		xK[0] = xP[0][0] / xS;
 		xK[1] = xP[1][0] / xS;
 
-		// ¼ÆËã½Ç¶ÈºÍÆ«²î - Update estimate with measurement zk (newAngle)
+		// è®¡ç®—è§’åº¦å’Œåå·® - Update estimate with measurement zk (newAngle)
 		xy = newAngle - xangle;
 		xangle += xK[0] * xy;
 		xbias += xK[1] * xy;
 
-		// ¼ÆËã Îó²îĞ­·½²î - Update the error covariance
+		// è®¡ç®— è¯¯å·®åæ–¹å·® - Update the error covariance
 		xP[0][0] -= xK[0] * xP[0][0];
 		xP[0][1] -= xK[0] * xP[0][1];
 		xP[1][0] -= xK[1] * xP[0][0];

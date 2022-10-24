@@ -1,34 +1,34 @@
 /************************************************************************************************
-* ³ÌĞò°æ±¾£ºV2.1
-* ³ÌĞòÈÕÆÚ£º2021-12-8
-* ³ÌĞò×÷Õß£º719·ÉĞĞÆ÷ÊµÑéÊÒ£º 
-*						ÕÅÈó
-*						Ñî³¿Ñô
+* ç¨‹åºç‰ˆæœ¬ï¼šV2.1
+* ç¨‹åºæ—¥æœŸï¼š2021-12-8
+* ç¨‹åºä½œè€…ï¼š719é£è¡Œå™¨å®éªŒå®¤ï¼š 
+*						å¼ æ¶¦
+*						æ¨æ™¨é˜³
 ************************************************************************************************/
 #include "stm32f10x.h"
 
 
 /*****************************************************************************
-* º¯  Êı£ºvoid TIM_Init(void)
-* ¹¦  ÄÜ£ºTIM4³õÊ¼»¯Îª1ms¼ÆÊıÒ»´Î,ÏµÍ³Ê±»ù  
-* ²Î  Êı£ºÎŞ
-* ·µ»ØÖµ£ºÎŞ
-* ±¸  ×¢£º¸üĞÂÖĞ¶ÏÊ±¼ä Tout = (ARR+1)*(PSC+1)/CK_INT
+* å‡½  æ•°ï¼švoid TIM_Init(void)
+* åŠŸ  èƒ½ï¼šTIM4åˆå§‹åŒ–ä¸º1msè®¡æ•°ä¸€æ¬¡,ç³»ç»Ÿæ—¶åŸº  
+* å‚  æ•°ï¼šæ— 
+* è¿”å›å€¼ï¼šæ— 
+* å¤‡  æ³¨ï¼šæ›´æ–°ä¸­æ–­æ—¶é—´ Tout = (ARR+1)*(PSC+1)/CK_INT
 *****************************************************************************/
 void TIM_Init(void)
 {
-	TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStruct;   				//¶¨Òå¶¨Ê±Æ÷½á¹¹Ìå±äÁ¿
+	TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStruct;   				//å®šä¹‰å®šæ—¶å™¨ç»“æ„ä½“å˜é‡
 	
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4,ENABLE);   		//Ê¹ÄÜTIM4µÄÊ±ÖÓ
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4,ENABLE);   		//ä½¿èƒ½TIM4çš„æ—¶é’Ÿ
 	
-	TIM_TimeBaseInitStruct.TIM_Period=1000-1;   							//ÉèÖÃ×Ô¶¯ÖØ×°ÔØµÄÖÜÆÚÖµ
-	TIM_TimeBaseInitStruct.TIM_Prescaler=72-1;   							//ÉèÖÃÔ¤·ÖÆµÖµ
-	TIM_TimeBaseInitStruct.TIM_ClockDivision=0;   						//ÉèÖÃÊ±ÖÓ·Ö¸î
-	TIM_TimeBaseInitStruct.TIM_CounterMode=TIM_CounterMode_Up;//ÏòÉÏ¼ÆÊıÄ£Ê½
-	TIM_TimeBaseInit(TIM4,&TIM_TimeBaseInitStruct);   				//¶¨Ê±Æ÷³õÊ¼»¯º¯Êı
+	TIM_TimeBaseInitStruct.TIM_Period=1000-1;   							//è®¾ç½®è‡ªåŠ¨é‡è£…è½½çš„å‘¨æœŸå€¼
+	TIM_TimeBaseInitStruct.TIM_Prescaler=72-1;   							//è®¾ç½®é¢„åˆ†é¢‘å€¼
+	TIM_TimeBaseInitStruct.TIM_ClockDivision=0;   						//è®¾ç½®æ—¶é’Ÿåˆ†å‰²
+	TIM_TimeBaseInitStruct.TIM_CounterMode=TIM_CounterMode_Up;//å‘ä¸Šè®¡æ•°æ¨¡å¼
+	TIM_TimeBaseInit(TIM4,&TIM_TimeBaseInitStruct);   				//å®šæ—¶å™¨åˆå§‹åŒ–å‡½æ•°
 	
-	TIM_ITConfig(TIM4,TIM_IT_Update,ENABLE);   								//TIM4ÖĞ¶ÏÊ¹ÄÜ
+	TIM_ITConfig(TIM4,TIM_IT_Update,ENABLE);   								//TIM4ä¸­æ–­ä½¿èƒ½
 	
-	TIM_Cmd(TIM4,ENABLE);   																	//TIM4Ê¹ÄÜ
+	TIM_Cmd(TIM4,ENABLE);   																	//TIM4ä½¿èƒ½
 }
 

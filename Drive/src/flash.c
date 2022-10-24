@@ -1,9 +1,9 @@
 ///*******************************************************************************************
-//* ³ÌĞò°æ±¾£ºV1.0
-//* ³ÌĞòÈÕÆÚ£º2020-9-20
-//* ³ÌĞò×÷Õß£º719·ÉĞĞÆ÷ÊµÑéÊÒ£º 
-//*						ÕÅÈó
-//*						Ñî³¿Ñô
+//* ç¨‹åºç‰ˆæœ¬ï¼šV1.0
+//* ç¨‹åºæ—¥æœŸï¼š2020-9-20
+//* ç¨‹åºä½œè€…ï¼š719é£è¡Œå™¨å®éªŒå®¤ï¼š 
+//*						å¼ æ¶¦
+//*						æ¨æ™¨é˜³
 //*******************************************************************************************/
 //#include "stm32f10x.h"
 //#include "flash.h"
@@ -12,11 +12,11 @@
 
 
 ///******************************************************************************
-//* º¯  Êı£ºu32 STMFLASH_ReadWord(u32 faddr)
-//* ¹¦¡¡ÄÜ£º¶ÁÈ¡Ö¸¶¨µØÖ·µÄ×Ö(32Î»Êı¾İ) 
-//* ²Î  Êı£ºfaddr:¶ÁµØÖ· 
-//* ·µ»ØÖµ£º¶ÔÓ¦Êı¾İ
-//* ±¸  ×¢£ºÎŞ
+//* å‡½  æ•°ï¼šu32 STMFLASH_ReadWord(u32 faddr)
+//* åŠŸã€€èƒ½ï¼šè¯»å–æŒ‡å®šåœ°å€çš„å­—(32ä½æ•°æ®) 
+//* å‚  æ•°ï¼šfaddr:è¯»åœ°å€ 
+//* è¿”å›å€¼ï¼šå¯¹åº”æ•°æ®
+//* å¤‡  æ³¨ï¼šæ— 
 //*******************************************************************************/
 //uint32_t STMFLASH_ReadWord(uint32_t faddr)
 //{
@@ -24,32 +24,32 @@
 //}  
 
 ///******************************************************************************
-//* º¯  Êı£ºvoid STMFLASH_Write(u32 WriteAddr,u32 *pBuffer,u32 NumToWrite)	
-//* ¹¦¡¡ÄÜ£º´ÓÖ¸¶¨µØÖ·¿ªÊ¼Ğ´ÈëÖ¸¶¨³¤¶ÈµÄÊı¾İ 
-//* ²Î  Êı£ºWriteAddr:ÆğÊ¼µØÖ·(´ËµØÖ·±ØĞëÎª4µÄ±¶Êı!!)
-//*         pBuffer:Êı¾İÖ¸Õë
-//*         NumToWrite:×Ö(32Î»)Êı(¾ÍÊÇÒªĞ´ÈëµÄ32Î»Êı¾İµÄ¸öÊı.) 
-//* ·µ»ØÖµ£ºÎŞ
-//* ±¸  ×¢£ºSTM32F1µÄFlashÎ´Ğ´ÉÈÇøÄ¬ÈÏÊÇ0xFFF...F
+//* å‡½  æ•°ï¼švoid STMFLASH_Write(u32 WriteAddr,u32 *pBuffer,u32 NumToWrite)	
+//* åŠŸã€€èƒ½ï¼šä»æŒ‡å®šåœ°å€å¼€å§‹å†™å…¥æŒ‡å®šé•¿åº¦çš„æ•°æ® 
+//* å‚  æ•°ï¼šWriteAddr:èµ·å§‹åœ°å€(æ­¤åœ°å€å¿…é¡»ä¸º4çš„å€æ•°!!)
+//*         pBuffer:æ•°æ®æŒ‡é’ˆ
+//*         NumToWrite:å­—(32ä½)æ•°(å°±æ˜¯è¦å†™å…¥çš„32ä½æ•°æ®çš„ä¸ªæ•°.) 
+//* è¿”å›å€¼ï¼šæ— 
+//* å¤‡  æ³¨ï¼šSTM32F1çš„Flashæœªå†™æ‰‡åŒºé»˜è®¤æ˜¯0xFFF...F
 //*******************************************************************************/
 //void STMFLASH_Write(u32 WriteAddr,u32 *pBuffer,u32 NumToWrite)	
 //{ 
 //	FLASH_Status status = FLASH_COMPLETE;
 //	u32 addrx=0;
 //	u32 endaddr=0;	
-//	if(WriteAddr<STM32_FLASH_BASE||(WriteAddr>=(STM32_FLASH_BASE+1024*128)))return;	//·Ç·¨µØÖ·
-//	FLASH_Unlock();					 //½âËø 
+//	if(WriteAddr<STM32_FLASH_BASE||(WriteAddr>=(STM32_FLASH_BASE+1024*128)))return;	//éæ³•åœ°å€
+//	FLASH_Unlock();					 //è§£é” 
 // 
-//	addrx=WriteAddr;				 //Ğ´ÈëµÄÆğÊ¼µØÖ·
-//	endaddr=WriteAddr+NumToWrite*4;	 //Ğ´ÈëµÄ½áÊøµØÖ·
-//	if(addrx<0X08020000)			       //Ö»ÓĞÖ÷´æ´¢Çø,²ÅĞèÒªÖ´ĞĞ²Á³ı²Ù×÷!!
+//	addrx=WriteAddr;				 //å†™å…¥çš„èµ·å§‹åœ°å€
+//	endaddr=WriteAddr+NumToWrite*4;	 //å†™å…¥çš„ç»“æŸåœ°å€
+//	if(addrx<0X08020000)			       //åªæœ‰ä¸»å­˜å‚¨åŒº,æ‰éœ€è¦æ‰§è¡Œæ“¦é™¤æ“ä½œ!!
 //	{
-//		while(addrx<endaddr)		       //É¨ÇåÒ»ÇĞÕÏ°­.(¶Ô·ÇFFFFFFFFµÄµØ·½,ÏÈ²Á³ı)
+//		while(addrx<endaddr)		       //æ‰«æ¸…ä¸€åˆ‡éšœç¢.(å¯¹éFFFFFFFFçš„åœ°æ–¹,å…ˆæ“¦é™¤)
 //		{
-//			if(STMFLASH_ReadWord(addrx)!=0XFFFFFFFF)//ÓĞ·Ç0XFFFFFFFFµÄµØ·½,Òª²Á³ıÕâ¸öÒ³
+//			if(STMFLASH_ReadWord(addrx)!=0XFFFFFFFF)//æœ‰é0XFFFFFFFFçš„åœ°æ–¹,è¦æ“¦é™¤è¿™ä¸ªé¡µ
 //			{   
 //				status=FLASH_ErasePage(FLASH_SAVE_ADDR);
-//				if(status!=FLASH_COMPLETE)break;	    //·¢Éú´íÎóÁË
+//				if(status!=FLASH_COMPLETE)break;	    //å‘ç”Ÿé”™è¯¯äº†
 //			}
 //			else 
 //			addrx+=4;
@@ -57,36 +57,36 @@
 //	}
 //	if(status==FLASH_COMPLETE)
 //	{
-//		while(WriteAddr<endaddr) //Ğ´Êı¾İ
+//		while(WriteAddr<endaddr) //å†™æ•°æ®
 //		{
-//			if(FLASH_ProgramWord(WriteAddr,*pBuffer)!=FLASH_COMPLETE) //Ğ´ÈëÊı¾İ
+//			if(FLASH_ProgramWord(WriteAddr,*pBuffer)!=FLASH_COMPLETE) //å†™å…¥æ•°æ®
 //			{ 
-//				break; //Ğ´ÈëÒì³£
+//				break; //å†™å…¥å¼‚å¸¸
 //			}
 //			WriteAddr+=4;
 //			pBuffer++;
 //		} 
 //	}
 //	
-//	FLASH_Lock(); //ÉÏËø
+//	FLASH_Lock(); //ä¸Šé”
 //} 
 
 ///******************************************************************************
-//* º¯  Êı£ºvoid STMFLASH_Read(u32 ReadAddr,u32 *pBuffer,u32 NumToRead)  
-//* ¹¦¡¡ÄÜ£º´ÓÖ¸¶¨µØÖ·¿ªÊ¼¶Á³öÖ¸¶¨³¤¶ÈµÄÊı¾İ
-//* ²Î  Êı£ºReadAddr:ÆğÊ¼µØÖ·
-//*         pBuffer:Êı¾İÖ¸Õë
-//*         NumToRead:×Ö(4Î»)Êı
-//* ·µ»ØÖµ£ºÎŞ
-//* ±¸  ×¢£ºÎŞ
+//* å‡½  æ•°ï¼švoid STMFLASH_Read(u32 ReadAddr,u32 *pBuffer,u32 NumToRead)  
+//* åŠŸã€€èƒ½ï¼šä»æŒ‡å®šåœ°å€å¼€å§‹è¯»å‡ºæŒ‡å®šé•¿åº¦çš„æ•°æ®
+//* å‚  æ•°ï¼šReadAddr:èµ·å§‹åœ°å€
+//*         pBuffer:æ•°æ®æŒ‡é’ˆ
+//*         NumToRead:å­—(4ä½)æ•°
+//* è¿”å›å€¼ï¼šæ— 
+//* å¤‡  æ³¨ï¼šæ— 
 //*******************************************************************************/
 //void STMFLASH_Read(u32 ReadAddr,u32 *pBuffer,u32 NumToRead)   	
 //{
 //	u32 i;
 //	for(i=0;i<NumToRead;i++)
 //	{
-//		pBuffer[i]=STMFLASH_ReadWord(ReadAddr);//¶ÁÈ¡4¸ö×Ö½Ú.
-//		ReadAddr+=4;//Æ«ÒÆ4¸ö×Ö½Ú.	
+//		pBuffer[i]=STMFLASH_ReadWord(ReadAddr);//è¯»å–4ä¸ªå­—èŠ‚.
+//		ReadAddr+=4;//åç§»4ä¸ªå­—èŠ‚.	
 //	}
 //}
 

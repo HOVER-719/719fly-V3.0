@@ -1,9 +1,9 @@
 /************************************************************************************************
-* ³ÌĞò°æ±¾£ºV2.1
-* ³ÌĞòÈÕÆÚ£º2021-12-8
-* ³ÌĞò×÷Õß£º719·ÉĞĞÆ÷ÊµÑéÊÒ£º 
-*						ÕÅÈó
-*						Ñî³¿Ñô
+* ç¨‹åºç‰ˆæœ¬ï¼šV2.1
+* ç¨‹åºæ—¥æœŸï¼š2021-12-8
+* ç¨‹åºä½œè€…ï¼š719é£è¡Œå™¨å®éªŒå®¤ï¼š 
+*						å¼ æ¶¦
+*						æ¨æ™¨é˜³
 ************************************************************************************************/
 #include "rc.h"
 
@@ -14,7 +14,7 @@ TIM_ICUserValueTypeDef TIM_ICUserValueStructure_4;
 TIM_ICUserValueTypeDef TIM_ICUserValueStructure_5;
 RC_TYPE RC_Control;
 
-//GPIO³õÊ¼»¯
+//GPIOåˆå§‹åŒ–
 static void GENERAL_TIM_GPIO_Config(void)
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
@@ -26,80 +26,80 @@ static void GENERAL_TIM_GPIO_Config(void)
 }
 
 
-//¶¨Ê±Æ÷³õÊ¼»¯
+//å®šæ—¶å™¨åˆå§‹åŒ–
 static void GENERAL_TIM_Mode_Config(void)
 {
-	GENERAL_TIM_APB1Clock_FUN(GENERAL_TIM2_CLK ,ENABLE);												//¿ªÆô¶¨Ê±Æ÷Ê±ÖÓ£¬ÄÚ²¿Ê±ÖÓCK_INT=72M
-	GENERAL_TIM_APB2Clock_FUN(GENERAL_TIM1_CLK ,ENABLE);												//¿ªÆô¶¨Ê±Æ÷Ê±ÖÓ£¬ÄÚ²¿Ê±ÖÓCK_INT=72M
-	//Ê±»ù½á¹¹Ìå³õÊ¼»¯
+	GENERAL_TIM_APB1Clock_FUN(GENERAL_TIM2_CLK ,ENABLE);												//å¼€å¯å®šæ—¶å™¨æ—¶é’Ÿï¼Œå†…éƒ¨æ—¶é’ŸCK_INT=72M
+	GENERAL_TIM_APB2Clock_FUN(GENERAL_TIM1_CLK ,ENABLE);												//å¼€å¯å®šæ—¶å™¨æ—¶é’Ÿï¼Œå†…éƒ¨æ—¶é’ŸCK_INT=72M
+	//æ—¶åŸºç»“æ„ä½“åˆå§‹åŒ–
 	    //TIM2
 	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;														
-	TIM_TimeBaseStructure.TIM_Period = GENERAL_TIM_Period ;										//×Ô¶¯ÖØ×°ÔØ¼Ä´æÆ÷Öµ£¬ÀÛ¼ÆTIM_Period+1¸öÆµÂÊºó²úÉúÒ»¸ö¸üĞÂ»òÖĞ¶Ï
-	TIM_TimeBaseStructure.TIM_Prescaler = GENERAL_TIM_Prescaler;							//Çı¶¯CNT¼ÆÊıÆ÷Ê±ÖÓ=Fck_int/(psc+1)
-	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;										//Ê±ÖÓ·ÖÆµ
-	TIM_TimeBaseStructure.TIM_CounterMode= TIM_CounterMode_Up;								//ÏòÉÏ¼ÆÊıÄ£Ê½
-	TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;													//ÖØ¸´¼ÆÊıÆ÷µÄÖµ
-	TIM_TimeBaseInit(TIM2 ,&TIM_TimeBaseStructure);										//³õÊ¼»¯¶¨Ê±Æ÷
+	TIM_TimeBaseStructure.TIM_Period = GENERAL_TIM_Period ;										//è‡ªåŠ¨é‡è£…è½½å¯„å­˜å™¨å€¼ï¼Œç´¯è®¡TIM_Period+1ä¸ªé¢‘ç‡åäº§ç”Ÿä¸€ä¸ªæ›´æ–°æˆ–ä¸­æ–­
+	TIM_TimeBaseStructure.TIM_Prescaler = GENERAL_TIM_Prescaler;							//é©±åŠ¨CNTè®¡æ•°å™¨æ—¶é’Ÿ=Fck_int/(psc+1)
+	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;										//æ—¶é’Ÿåˆ†é¢‘
+	TIM_TimeBaseStructure.TIM_CounterMode= TIM_CounterMode_Up;								//å‘ä¸Šè®¡æ•°æ¨¡å¼
+	TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;													//é‡å¤è®¡æ•°å™¨çš„å€¼
+	TIM_TimeBaseInit(TIM2 ,&TIM_TimeBaseStructure);										//åˆå§‹åŒ–å®šæ—¶å™¨
 			//TIM1
 	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure2;														
-	TIM_TimeBaseStructure2.TIM_Period = GENERAL_TIM_Period ;										//×Ô¶¯ÖØ×°ÔØ¼Ä´æÆ÷Öµ£¬ÀÛ¼ÆTIM_Period+1¸öÆµÂÊºó²úÉúÒ»¸ö¸üĞÂ»òÖĞ¶Ï
-	TIM_TimeBaseStructure2.TIM_Prescaler = GENERAL_TIM_Prescaler;							//Çı¶¯CNT¼ÆÊıÆ÷Ê±ÖÓ=Fck_int/(psc+1)
-	TIM_TimeBaseStructure2.TIM_ClockDivision = TIM_CKD_DIV1;										//Ê±ÖÓ·ÖÆµ
-	TIM_TimeBaseStructure2.TIM_CounterMode= TIM_CounterMode_Up;								//ÏòÉÏ¼ÆÊıÄ£Ê½
-	TIM_TimeBaseStructure2.TIM_RepetitionCounter = 0;													//ÖØ¸´¼ÆÊıÆ÷µÄÖµ
-	TIM_TimeBaseInit(TIM1 ,&TIM_TimeBaseStructure2);										//³õÊ¼»¯¶¨Ê±Æ÷
+	TIM_TimeBaseStructure2.TIM_Period = GENERAL_TIM_Period ;										//è‡ªåŠ¨é‡è£…è½½å¯„å­˜å™¨å€¼ï¼Œç´¯è®¡TIM_Period+1ä¸ªé¢‘ç‡åäº§ç”Ÿä¸€ä¸ªæ›´æ–°æˆ–ä¸­æ–­
+	TIM_TimeBaseStructure2.TIM_Prescaler = GENERAL_TIM_Prescaler;							//é©±åŠ¨CNTè®¡æ•°å™¨æ—¶é’Ÿ=Fck_int/(psc+1)
+	TIM_TimeBaseStructure2.TIM_ClockDivision = TIM_CKD_DIV1;										//æ—¶é’Ÿåˆ†é¢‘
+	TIM_TimeBaseStructure2.TIM_CounterMode= TIM_CounterMode_Up;								//å‘ä¸Šè®¡æ•°æ¨¡å¼
+	TIM_TimeBaseStructure2.TIM_RepetitionCounter = 0;													//é‡å¤è®¡æ•°å™¨çš„å€¼
+	TIM_TimeBaseInit(TIM1 ,&TIM_TimeBaseStructure2);										//åˆå§‹åŒ–å®šæ—¶å™¨
 	
-	//ÊäÈë²¶»ñ    ´Ë´¦Î´ÅäÖÃÊäÈë²¶»ñµÄ´¥·¢·½Ê½£¨ÉÏÉıÑØ²¶»ñ/ÏÂ½µÑØ²¶»ñ£©£¬ÒòÎªĞèÒªÔÚÖĞ¶Ï·şÎñº¯ÊıÀï½øĞĞ·­×ª£¨ÉÏÉıÑØ/ÏÂ½µÑØ´¥·¢ÊäÈë²¶»ñ->ÊäÈë²¶»ñ´¥·¢ÖĞ¶Ï£©
+	//è¾“å…¥æ•è·    æ­¤å¤„æœªé…ç½®è¾“å…¥æ•è·çš„è§¦å‘æ–¹å¼ï¼ˆä¸Šå‡æ²¿æ•è·/ä¸‹é™æ²¿æ•è·ï¼‰ï¼Œå› ä¸ºéœ€è¦åœ¨ä¸­æ–­æœåŠ¡å‡½æ•°é‡Œè¿›è¡Œç¿»è½¬ï¼ˆä¸Šå‡æ²¿/ä¸‹é™æ²¿è§¦å‘è¾“å…¥æ•è·->è¾“å…¥æ•è·è§¦å‘ä¸­æ–­ï¼‰
 		//TIM2CH1
 	TIM_ICInitTypeDef TIM_ICInitStructure;
-	TIM_ICInitStructure.TIM_Channel = GENERAL_TIM_CHANNEL_1;									//ÅäÖÃÊäÈë²¶»ñµÄÍ¨µÀ
-	TIM_ICInitStructure.TIM_ICPolarity = GENERAL_TIM_START_ICPolarity ;				//ÊäÈë²¶»ñĞÅºÅ¼«ĞÔ
-	TIM_ICInitStructure.TIM_ICSelection = TIM_ICSelection_DirectTI;						//ÊäÈëÍ¨µÀºÍ²¶»ñÍ¨µÀÓ³Éä¹ØÏµ
-	TIM_ICInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;											//ÊäÈëµÄ±»²¶»ñĞÅºÅµÄ·ÖÆµÏµÊı
-	TIM_ICInitStructure.TIM_ICFilter = 0;																			//ÊäÈëµÄ±»²¶»ñĞÅºÅµÄÂË²¨ÏµÊı
-	TIM_ICInit(TIM2 , &TIM_ICInitStructure);														//¶¨Ê±Æ÷ÊäÈë²¶»ñ³õÊ¼»¯
+	TIM_ICInitStructure.TIM_Channel = GENERAL_TIM_CHANNEL_1;									//é…ç½®è¾“å…¥æ•è·çš„é€šé“
+	TIM_ICInitStructure.TIM_ICPolarity = GENERAL_TIM_START_ICPolarity ;				//è¾“å…¥æ•è·ä¿¡å·ææ€§
+	TIM_ICInitStructure.TIM_ICSelection = TIM_ICSelection_DirectTI;						//è¾“å…¥é€šé“å’Œæ•è·é€šé“æ˜ å°„å…³ç³»
+	TIM_ICInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;											//è¾“å…¥çš„è¢«æ•è·ä¿¡å·çš„åˆ†é¢‘ç³»æ•°
+	TIM_ICInitStructure.TIM_ICFilter = 0;																			//è¾“å…¥çš„è¢«æ•è·ä¿¡å·çš„æ»¤æ³¢ç³»æ•°
+	TIM_ICInit(TIM2 , &TIM_ICInitStructure);														//å®šæ—¶å™¨è¾“å…¥æ•è·åˆå§‹åŒ–
 		//TIM2CH2
-	TIM_ICInitStructure.TIM_Channel = GENERAL_TIM_CHANNEL_2;									//ÅäÖÃÊäÈë²¶»ñµÄÍ¨µÀ
-	TIM_ICInitStructure.TIM_ICPolarity = GENERAL_TIM_START_ICPolarity ;				//ÊäÈë²¶»ñĞÅºÅ¼«ĞÔ
-	TIM_ICInitStructure.TIM_ICSelection = TIM_ICSelection_DirectTI;						//ÊäÈëÍ¨µÀºÍ²¶»ñÍ¨µÀÓ³Éä¹ØÏµ
-	TIM_ICInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;											//ÊäÈëµÄ±»²¶»ñĞÅºÅµÄ·ÖÆµÏµÊı
-	TIM_ICInitStructure.TIM_ICFilter = 0;																			//ÊäÈëµÄ±»²¶»ñĞÅºÅµÄÂË²¨ÏµÊı
-	TIM_ICInit(TIM2 , &TIM_ICInitStructure);														//¶¨Ê±Æ÷ÊäÈë²¶»ñ³õÊ¼»¯
+	TIM_ICInitStructure.TIM_Channel = GENERAL_TIM_CHANNEL_2;									//é…ç½®è¾“å…¥æ•è·çš„é€šé“
+	TIM_ICInitStructure.TIM_ICPolarity = GENERAL_TIM_START_ICPolarity ;				//è¾“å…¥æ•è·ä¿¡å·ææ€§
+	TIM_ICInitStructure.TIM_ICSelection = TIM_ICSelection_DirectTI;						//è¾“å…¥é€šé“å’Œæ•è·é€šé“æ˜ å°„å…³ç³»
+	TIM_ICInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;											//è¾“å…¥çš„è¢«æ•è·ä¿¡å·çš„åˆ†é¢‘ç³»æ•°
+	TIM_ICInitStructure.TIM_ICFilter = 0;																			//è¾“å…¥çš„è¢«æ•è·ä¿¡å·çš„æ»¤æ³¢ç³»æ•°
+	TIM_ICInit(TIM2 , &TIM_ICInitStructure);														//å®šæ—¶å™¨è¾“å…¥æ•è·åˆå§‹åŒ–
 		//TIM2CH3
-	TIM_ICInitStructure.TIM_Channel = GENERAL_TIM_CHANNEL_3;									//ÅäÖÃÊäÈë²¶»ñµÄÍ¨µÀ
-	TIM_ICInitStructure.TIM_ICPolarity = GENERAL_TIM_START_ICPolarity ;				//ÊäÈë²¶»ñĞÅºÅ¼«ĞÔ
-	TIM_ICInitStructure.TIM_ICSelection = TIM_ICSelection_DirectTI;						//ÊäÈëÍ¨µÀºÍ²¶»ñÍ¨µÀÓ³Éä¹ØÏµ
-	TIM_ICInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;											//ÊäÈëµÄ±»²¶»ñĞÅºÅµÄ·ÖÆµÏµÊı
-	TIM_ICInitStructure.TIM_ICFilter = 0;																			//ÊäÈëµÄ±»²¶»ñĞÅºÅµÄÂË²¨ÏµÊı
-	TIM_ICInit(TIM2 , &TIM_ICInitStructure);														//¶¨Ê±Æ÷ÊäÈë²¶»ñ³õÊ¼»¯
+	TIM_ICInitStructure.TIM_Channel = GENERAL_TIM_CHANNEL_3;									//é…ç½®è¾“å…¥æ•è·çš„é€šé“
+	TIM_ICInitStructure.TIM_ICPolarity = GENERAL_TIM_START_ICPolarity ;				//è¾“å…¥æ•è·ä¿¡å·ææ€§
+	TIM_ICInitStructure.TIM_ICSelection = TIM_ICSelection_DirectTI;						//è¾“å…¥é€šé“å’Œæ•è·é€šé“æ˜ å°„å…³ç³»
+	TIM_ICInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;											//è¾“å…¥çš„è¢«æ•è·ä¿¡å·çš„åˆ†é¢‘ç³»æ•°
+	TIM_ICInitStructure.TIM_ICFilter = 0;																			//è¾“å…¥çš„è¢«æ•è·ä¿¡å·çš„æ»¤æ³¢ç³»æ•°
+	TIM_ICInit(TIM2 , &TIM_ICInitStructure);														//å®šæ—¶å™¨è¾“å…¥æ•è·åˆå§‹åŒ–
 		//TIM2CH4
-	TIM_ICInitStructure.TIM_Channel = GENERAL_TIM_CHANNEL_4;									//ÅäÖÃÊäÈë²¶»ñµÄÍ¨µÀ
-	TIM_ICInitStructure.TIM_ICPolarity = GENERAL_TIM_START_ICPolarity ;				//ÊäÈë²¶»ñĞÅºÅ¼«ĞÔ
-	TIM_ICInitStructure.TIM_ICSelection = TIM_ICSelection_DirectTI;						//ÊäÈëÍ¨µÀºÍ²¶»ñÍ¨µÀÓ³Éä¹ØÏµ
-	TIM_ICInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;											//ÊäÈëµÄ±»²¶»ñĞÅºÅµÄ·ÖÆµÏµÊı
-	TIM_ICInitStructure.TIM_ICFilter = 0;																			//ÊäÈëµÄ±»²¶»ñĞÅºÅµÄÂË²¨ÏµÊı
-	TIM_ICInit(TIM2 , &TIM_ICInitStructure);														//¶¨Ê±Æ÷ÊäÈë²¶»ñ³õÊ¼»¯
+	TIM_ICInitStructure.TIM_Channel = GENERAL_TIM_CHANNEL_4;									//é…ç½®è¾“å…¥æ•è·çš„é€šé“
+	TIM_ICInitStructure.TIM_ICPolarity = GENERAL_TIM_START_ICPolarity ;				//è¾“å…¥æ•è·ä¿¡å·ææ€§
+	TIM_ICInitStructure.TIM_ICSelection = TIM_ICSelection_DirectTI;						//è¾“å…¥é€šé“å’Œæ•è·é€šé“æ˜ å°„å…³ç³»
+	TIM_ICInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;											//è¾“å…¥çš„è¢«æ•è·ä¿¡å·çš„åˆ†é¢‘ç³»æ•°
+	TIM_ICInitStructure.TIM_ICFilter = 0;																			//è¾“å…¥çš„è¢«æ•è·ä¿¡å·çš„æ»¤æ³¢ç³»æ•°
+	TIM_ICInit(TIM2 , &TIM_ICInitStructure);														//å®šæ—¶å™¨è¾“å…¥æ•è·åˆå§‹åŒ–
 		//TIM1CH1
-	TIM_ICInitStructure.TIM_Channel = GENERAL_TIM_CHANNEL_1;									//ÅäÖÃÊäÈë²¶»ñµÄÍ¨µÀ
-	TIM_ICInitStructure.TIM_ICPolarity = GENERAL_TIM_START_ICPolarity ;				//ÊäÈë²¶»ñĞÅºÅ¼«ĞÔ
-	TIM_ICInitStructure.TIM_ICSelection = TIM_ICSelection_DirectTI;						//ÊäÈëÍ¨µÀºÍ²¶»ñÍ¨µÀÓ³Éä¹ØÏµ
-	TIM_ICInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;											//ÊäÈëµÄ±»²¶»ñĞÅºÅµÄ·ÖÆµÏµÊı
-	TIM_ICInitStructure.TIM_ICFilter = 0;																			//ÊäÈëµÄ±»²¶»ñĞÅºÅµÄÂË²¨ÏµÊı
-	TIM_ICInit(TIM1 , &TIM_ICInitStructure);														//¶¨Ê±Æ÷ÊäÈë²¶»ñ³õÊ¼»¯
+	TIM_ICInitStructure.TIM_Channel = GENERAL_TIM_CHANNEL_1;									//é…ç½®è¾“å…¥æ•è·çš„é€šé“
+	TIM_ICInitStructure.TIM_ICPolarity = GENERAL_TIM_START_ICPolarity ;				//è¾“å…¥æ•è·ä¿¡å·ææ€§
+	TIM_ICInitStructure.TIM_ICSelection = TIM_ICSelection_DirectTI;						//è¾“å…¥é€šé“å’Œæ•è·é€šé“æ˜ å°„å…³ç³»
+	TIM_ICInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;											//è¾“å…¥çš„è¢«æ•è·ä¿¡å·çš„åˆ†é¢‘ç³»æ•°
+	TIM_ICInitStructure.TIM_ICFilter = 0;																			//è¾“å…¥çš„è¢«æ•è·ä¿¡å·çš„æ»¤æ³¢ç³»æ•°
+	TIM_ICInit(TIM1 , &TIM_ICInitStructure);														//å®šæ—¶å™¨è¾“å…¥æ•è·åˆå§‹åŒ–
 	
 	
 	
-	//Çå³ı¸üĞÂºÍ²¶»ñÖĞ¶Ï±êÖ¾Î»
+	//æ¸…é™¤æ›´æ–°å’Œæ•è·ä¸­æ–­æ ‡å¿—ä½
 			//TIM2
 	TIM_ClearFlag(TIM2 , TIM_FLAG_Update|TIM_IT_CC1|TIM_IT_CC2|TIM_IT_CC3|TIM_IT_CC4 );					
 			//TIM1
 	TIM_ClearFlag(TIM1 , TIM_FLAG_Update|TIM_IT_CC1 );					
-	//¿ªÆô¸üĞÂºÍ²¶»ñÖĞ¶Ï
+	//å¼€å¯æ›´æ–°å’Œæ•è·ä¸­æ–­
 			//TIM2
 	TIM_ITConfig(TIM2 ,TIM_IT_Update|TIM_IT_CC1|TIM_IT_CC2|TIM_IT_CC3|TIM_IT_CC4 ,ENABLE);			
 			//TIM1
 	TIM_ITConfig(TIM1 ,TIM_IT_Update|TIM_IT_CC1,ENABLE);			
-	//Ê¹ÄÜ¼ÆÊıÆ÷
+	//ä½¿èƒ½è®¡æ•°å™¨
 			//TIM2
 	TIM_Cmd(TIM2 ,ENABLE);																						
 			//TIM1

@@ -1,15 +1,15 @@
 /************************************************************************************************
-* ³ÌĞò°æ±¾£ºV2.1
-* ³ÌĞòÈÕÆÚ£º2021-12-8
-* ³ÌĞò×÷Õß£º719·ÉĞĞÆ÷ÊµÑéÊÒ£º 
-*						ÕÅÈó
-*						Ñî³¿Ñô
+* ç¨‹åºç‰ˆæœ¬ï¼šV2.1
+* ç¨‹åºæ—¥æœŸï¼š2021-12-8
+* ç¨‹åºä½œè€…ï¼š719é£è¡Œå™¨å®éªŒå®¤ï¼š 
+*						å¼ æ¶¦
+*						æ¨æ™¨é˜³
 ************************************************************************************************/
 #ifndef   _RC_H
 #define   _RC_H
 #include "stm32f10x_tim.h"
 #include "main.h"
-//Í¨ÓÃ¶¨Ê±Æ÷²ÎÊı¶¨ÒåTIM2
+//é€šç”¨å®šæ—¶å™¨å‚æ•°å®šä¹‰TIM2
 
 #define GENERAL_TIM2        									TIM2
 #define GENERAL_TIM1        									TIM1
@@ -20,7 +20,7 @@
 #define GENERAL_TIM_Period 									0XFFFF
 #define GENERAL_TIM_Prescaler 							(72-1)
 
-//TIMÊäÈë²¶»ñÍ¨µÀGPIOºê¶¨Òå
+//TIMè¾“å…¥æ•è·é€šé“GPIOå®å®šä¹‰
 
 #define GENERAL_TIM_GPIO_CLK 								RCC_APB2Periph_GPIOA
 #define GENERAL_TIM_PORT 										GPIOA
@@ -35,7 +35,7 @@
 #define GENERAL_TIM_CHANNEL_4 							TIM_Channel_4
 
 
-//ÖĞ¶Ïºê¶¨Òå
+//ä¸­æ–­å®å®šä¹‰
 
 #define GENERAL_TIM_IT_CC1 									TIM_IT_CC1
 #define GENERAL_TIM_IT_CC2 									TIM_IT_CC2
@@ -47,7 +47,7 @@
 #define GENERAL_TIM1_INT_FUN 								TIM1_CC_IRQHandler
 
 
-//»ñÈ¡²¶»ñ¼Ä´æÆ÷Öµº¯Êıºê¶¨Òå
+//è·å–æ•è·å¯„å­˜å™¨å€¼å‡½æ•°å®å®šä¹‰
 
 #define GENERAL_TIM_GetCapture1_FUN 				TIM_GetCapture1
 
@@ -55,7 +55,7 @@
 #define GENERAL_TIM_GetCapture3_FUN TIM_GetCapture3
 #define GENERAL_TIM_GetCapture4_FUN TIM_GetCapture4
 
-//²¶»ñĞÅºÅ¼«ĞÔº¯Êıºê¶¨Òå
+//æ•è·ä¿¡å·ææ€§å‡½æ•°å®å®šä¹‰
 
 #define GENERAL_TIM_OC1PolarityConfig_FUN 	TIM_OC1PolarityConfig
 
@@ -63,7 +63,7 @@
 #define GENERAL_TIM_OC3PolarityConfig_FUN TIM_OC3PolarityConfig
 #define GENERAL_TIM_OC4PolarityConfig_FUN TIM_OC4PolarityConfig
 
-//²âÁ¿ÆğÊ¼ºÍ½áÊø±ßÑØ
+//æµ‹é‡èµ·å§‹å’Œç»“æŸè¾¹æ²¿
 
 #define GENERAL_TIM_START_ICPolarity 				TIM_ICPolarity_Rising
 #define GENERAL_TIM_END_ICPolarity 					TIM_ICPolarity_Falling

@@ -1,9 +1,9 @@
 /************************************************************************************************
-* ³ÌĞò°æ±¾£ºV2.1
-* ³ÌĞòÈÕÆÚ£º2021-12-8
-* ³ÌĞò×÷Õß£º719·ÉĞĞÆ÷ÊµÑéÊÒ£º 
-*						ÕÅÈó
-*						Ñî³¿Ñô
+* ç¨‹åºç‰ˆæœ¬ï¼šV2.1
+* ç¨‹åºæ—¥æœŸï¼š2021-12-8
+* ç¨‹åºä½œè€…ï¼š719é£è¡Œå™¨å®éªŒå®¤ï¼š 
+*						å¼ æ¶¦
+*						æ¨æ™¨é˜³
 ************************************************************************************************/
 #ifndef   _IIC_H
 #define   _IIC_H
@@ -15,15 +15,15 @@
 #define SDA_L         GPIOB->BRR  = GPIO_Pin_7
 #define SDA_read      ((GPIOB->IDR & GPIO_Pin_7)!=0)?1:0
 
-void IIC_GPIO_Init(void);        //³õÊ¼»¯IICµÄIO¿Ú				 
-void IIC_Start(void);			 //·¢ËÍIIC¿ªÊ¼ĞÅºÅ
-void IIC_Stop(void);	  	  	 //·¢ËÍIICÍ£Ö¹ĞÅºÅ
-void IIC_Ack(void);				 //IIC·¢ËÍACKĞÅºÅ
-void IIC_NAck(void);			 //IIC²»·¢ËÍACKĞÅºÅ
-uint8_t IIC_WaitAck(void); 		 //IICµÈ´ıACKĞÅºÅ
+void IIC_GPIO_Init(void);        //åˆå§‹åŒ–IICçš„IOå£				 
+void IIC_Start(void);			 //å‘é€IICå¼€å§‹ä¿¡å·
+void IIC_Stop(void);	  	  	 //å‘é€IICåœæ­¢ä¿¡å·
+void IIC_Ack(void);				 //IICå‘é€ACKä¿¡å·
+void IIC_NAck(void);			 //IICä¸å‘é€ACKä¿¡å·
+uint8_t IIC_WaitAck(void); 		 //IICç­‰å¾…ACKä¿¡å·
 
-void IIC_SendByte(uint8_t data);  //IIC·¢ËÍÒ»¸ö×Ö½Ú
-uint8_t IIC_ReadByte(uint8_t ack);//IIC¶ÁÈ¡Ò»¸ö×Ö½Ú
+void IIC_SendByte(uint8_t data);  //IICå‘é€ä¸€ä¸ªå­—èŠ‚
+uint8_t IIC_ReadByte(uint8_t ack);//IICè¯»å–ä¸€ä¸ªå­—èŠ‚
 
 uint8_t IIC_ReadByteFromSlave(uint8_t I2C_Addr,uint8_t reg,uint8_t *buf);
 uint8_t IIC_ReadMultByteFromSlave(uint8_t dev, uint8_t reg, uint8_t length, uint8_t *data);

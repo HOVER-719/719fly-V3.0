@@ -1,9 +1,9 @@
 /*******************************************************************************************
-* ³ÌĞò°æ±¾£ºV1.0
-* ³ÌĞòÈÕÆÚ£º2020-9-20
-* ³ÌĞò×÷Õß£º719·ÉĞĞÆ÷ÊµÑéÊÒ£º 
-*						ÕÅÈó
-*						Ñî³¿Ñô
+* ç¨‹åºç‰ˆæœ¬ï¼šV1.0
+* ç¨‹åºæ—¥æœŸï¼š2020-9-20
+* ç¨‹åºä½œè€…ï¼š719é£è¡Œå™¨å®éªŒå®¤ï¼š 
+*						å¼ æ¶¦
+*						æ¨æ™¨é˜³
 *******************************************************************************************/
 #include "structconfig.h"
 #include "power.h"
@@ -14,20 +14,20 @@
 
 BATT_TYPE BAT=
 {
-	.BattAdc = 0,        //µç³ØµçÑ¹²É¼¯ADCÖµ
-	.BattRealV = 3.31f,  //Êµ¼Ê²âÁ¿µÄ·É»ú¹©µçµçÑ¹ (×¢Òâ´ËµçÑ¹±ØĞëÇ×²â·ñÔò²âÁ¿µÄµçÑ¹²»×¼)
-	.BattMeasureV = 0,   //³ÌĞò²âÁ¿µÄÊµ¼Êµç³ØµçÑ¹
-	.BattAlarmV = 3.2f,  //µç³ØµÍµçÑ¹±¨¾¯Ë²Ê±Öµ (Õâ¸öÖµĞèÒª¸ù¾İ»úÉí²»Í¬ÖØÁ¿Êµ²â£¬Êµ²â380mhÊÇ2.8v)
-	.BattFullV = 4.2f,   //µç³Ø³äÂúµçÖµ 4.2V
+	.BattAdc = 0,        //ç”µæ± ç”µå‹é‡‡é›†ADCå€¼
+	.BattRealV = 3.31f,  //å®é™…æµ‹é‡çš„é£æœºä¾›ç”µç”µå‹ (æ³¨æ„æ­¤ç”µå‹å¿…é¡»äº²æµ‹å¦åˆ™æµ‹é‡çš„ç”µå‹ä¸å‡†)
+	.BattMeasureV = 0,   //ç¨‹åºæµ‹é‡çš„å®é™…ç”µæ± ç”µå‹
+	.BattAlarmV = 3.2f,  //ç”µæ± ä½ç”µå‹æŠ¥è­¦ç¬æ—¶å€¼ (è¿™ä¸ªå€¼éœ€è¦æ ¹æ®æœºèº«ä¸åŒé‡é‡å®æµ‹ï¼Œå®æµ‹380mhæ˜¯2.8v)
+	.BattFullV = 4.2f,   //ç”µæ± å……æ»¡ç”µå€¼ 4.2V
 };
 uint8_t BATT_LEDflag = 0;
 
 /******************************************************************************************
-* º¯  Êı£ºvoid BATT_Init(void)
-* ¹¦  ÄÜ£ºµçÑ¹¼ì²âÒı½Å³õÊ¼»¯ ÒÔ¼°ADC1³õÊ¼»¯
-* ²Î  Êı£ºÎŞ
-* ·µ»ØÖµ£ºÎŞ
-* ±¸  ×¢£ºÎŞ
+* å‡½  æ•°ï¼švoid BATT_Init(void)
+* åŠŸ  èƒ½ï¼šç”µå‹æ£€æµ‹å¼•è„šåˆå§‹åŒ– ä»¥åŠADC1åˆå§‹åŒ–
+* å‚  æ•°ï¼šæ— 
+* è¿”å›å€¼ï¼šæ— 
+* å¤‡  æ³¨ï¼šæ— 
 *******************************************************************************************/
 void BATT_Init(void)
 {
@@ -37,62 +37,62 @@ void BATT_Init(void)
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA|RCC_APB2Periph_ADC1, ENABLE); 
 	RCC_ADCCLKConfig(RCC_PCLK2_Div6);
 	
-	//Ä£ÄâÊäÈëÄ£Ê½Ñ¡Ôñ       
+	//æ¨¡æ‹Ÿè¾“å…¥æ¨¡å¼é€‰æ‹©       
 	GPIO_InitStruct.GPIO_Pin=GPIO_Pin_1;
-	GPIO_InitStruct.GPIO_Mode=GPIO_Mode_AIN; //Ä£ÄâÊäÈë
+	GPIO_InitStruct.GPIO_Mode=GPIO_Mode_AIN; //æ¨¡æ‹Ÿè¾“å…¥
 	GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-	ADC_InitStruct.ADC_Mode=ADC_Mode_Independent;						//¶ÀÁ¢Ä£Ê½
-	ADC_InitStruct.ADC_DataAlign=ADC_DataAlign_Right;					//Êı¾İÓÒ¶ÔÆë
-	ADC_InitStruct.ADC_NbrOfChannel=1;									//1¸öÊı¾İÍ¨µÀ
-	ADC_InitStruct.ADC_ScanConvMode=DISABLE;							//É¨Ãè×ª»»Ä£Ê½Ê§ÄÜ
-	ADC_InitStruct.ADC_ExternalTrigConv=ADC_ExternalTrigConv_None;		//Íâ²¿´¥·¢Ê§ÄÜ
-	ADC_InitStruct.ADC_ContinuousConvMode=DISABLE;						//Á¬Ğø×ª»»Ê§ÄÜ
+	ADC_InitStruct.ADC_Mode=ADC_Mode_Independent;						//ç‹¬ç«‹æ¨¡å¼
+	ADC_InitStruct.ADC_DataAlign=ADC_DataAlign_Right;					//æ•°æ®å³å¯¹é½
+	ADC_InitStruct.ADC_NbrOfChannel=1;									//1ä¸ªæ•°æ®é€šé“
+	ADC_InitStruct.ADC_ScanConvMode=DISABLE;							//æ‰«æè½¬æ¢æ¨¡å¼å¤±èƒ½
+	ADC_InitStruct.ADC_ExternalTrigConv=ADC_ExternalTrigConv_None;		//å¤–éƒ¨è§¦å‘å¤±èƒ½
+	ADC_InitStruct.ADC_ContinuousConvMode=DISABLE;						//è¿ç»­è½¬æ¢å¤±èƒ½
 	ADC_Init(ADC1,&ADC_InitStruct);
 	
-	ADC_Cmd(ADC1, ENABLE); //Ê¹ÄÜADC1
+	ADC_Cmd(ADC1, ENABLE); //ä½¿èƒ½ADC1
 	
-	ADC_RegularChannelConfig(ADC1,ADC_Channel_1,1,ADC_SampleTime_239Cycles5);	//¹æÔò×é×ª»»Í¨µÀ
+	ADC_RegularChannelConfig(ADC1,ADC_Channel_1,1,ADC_SampleTime_239Cycles5);	//è§„åˆ™ç»„è½¬æ¢é€šé“
 }
 
 /******************************************************************************************
-* º¯  Êı£ºuint16_t Get_BatteryAdc(uint8_t ch)
-* ¹¦  ÄÜ£º»ñÈ¡µç³Ø²ÉÑùµãµçÑ¹µÄADCÖµ
-* ²Î  Êı£ºch  ADC²ÉÑùÍ¨µÀ
-* ·µ»ØÖµ£º·µ»ØÍ¨µÀADÖµ
-* ±¸  ×¢£ºµç³ØµçÑ¹²ÉÑùµãµÄADCÖµ£¬µç³ØµçÑ¹²ÉÑùµçÂ·¼ûÔ­ÀíÍ¼
+* å‡½  æ•°ï¼šuint16_t Get_BatteryAdc(uint8_t ch)
+* åŠŸ  èƒ½ï¼šè·å–ç”µæ± é‡‡æ ·ç‚¹ç”µå‹çš„ADCå€¼
+* å‚  æ•°ï¼šch  ADCé‡‡æ ·é€šé“
+* è¿”å›å€¼ï¼šè¿”å›é€šé“ADå€¼
+* å¤‡  æ³¨ï¼šç”µæ± ç”µå‹é‡‡æ ·ç‚¹çš„ADCå€¼ï¼Œç”µæ± ç”µå‹é‡‡æ ·ç”µè·¯è§åŸç†å›¾
 *******************************************************************************************/
 uint16_t Get_BatteryAdc(uint8_t ch)
 {
 	ADC_RegularChannelConfig(ADC1, ch, 1, ADC_SampleTime_239Cycles5);
-	ADC_SoftwareStartConvCmd(ADC1,ENABLE);	//Èí¼ş´¥·¢×ª»»Ê¹ÄÜ
-	while(!ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC));	//µÈ´ı×ª»»½áÊø
-	return ADC_GetConversionValue(ADC1);	//·µ»Ø×ª»»½á¹ûµÄÖµ
+	ADC_SoftwareStartConvCmd(ADC1,ENABLE);	//è½¯ä»¶è§¦å‘è½¬æ¢ä½¿èƒ½
+	while(!ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC));	//ç­‰å¾…è½¬æ¢ç»“æŸ
+	return ADC_GetConversionValue(ADC1);	//è¿”å›è½¬æ¢ç»“æœçš„å€¼
 }		
 
 /******************************************************************************************
-* º¯  Êı£ºvoid BATT_GetVoltage(void)
-* ¹¦  ÄÜ£º»ñÈ¡µç³ØµçÑ¹
-* ²Î  Êı£ºÎŞ
-* ·µ»ØÖµ£ºÎŞ
-* ±¸  ×¢£ºµç³ØµçÑ¹ = ADC¼ì²âµçÑ¹*2 ¾ßÌåÔ­Àí¿É¿´Ô­ÀíÍ¼
+* å‡½  æ•°ï¼švoid BATT_GetVoltage(void)
+* åŠŸ  èƒ½ï¼šè·å–ç”µæ± ç”µå‹
+* å‚  æ•°ï¼šæ— 
+* è¿”å›å€¼ï¼šæ— 
+* å¤‡  æ³¨ï¼šç”µæ± ç”µå‹ = ADCæ£€æµ‹ç”µå‹*2 å…·ä½“åŸç†å¯çœ‹åŸç†å›¾
 *******************************************************************************************/
 void BATT_GetVoltage(void)
 {
 	float V;
-	Aver_Filter((float)Get_BatteryAdc(ADC_Channel_1),&BAT.BattAdc,6); //»¬¶¯ÂË²¨µçÑ¹Öµ£¬Ìá¸ß¾«¶È
+	Aver_Filter((float)Get_BatteryAdc(ADC_Channel_1),&BAT.BattAdc,6); //æ»‘åŠ¨æ»¤æ³¢ç”µå‹å€¼ï¼Œæé«˜ç²¾åº¦
 	if(BAT.BattAdc)
 	V = BAT.BattAdc * BAT.BattRealV / 4095.0f;
-	BAT.BattMeasureV = 2*V; //¸ù¾İÔ­Àíµç×è·ÖÑ¹£¬¿ÉÖª µç³ØÊµ¼ÊµçÑ¹ = ADC²àÁ¿µçÑ¹ * 2
+	BAT.BattMeasureV = 2*V; //æ ¹æ®åŸç†ç”µé˜»åˆ†å‹ï¼Œå¯çŸ¥ ç”µæ± å®é™…ç”µå‹ = ADCä¾§é‡ç”µå‹ * 2
 //	printf("Test Voltage :%0.2f   temp:%0.0f \r\n ",BAT.BattMeasureV,BAT.BattAdc);
 }
 
 /******************************************************************************************
-* º¯  Êı£ºvoid LowVoltage_Alarm(void)
-* ¹¦  ÄÜ£ºµÍµçÁ¿±¨¾¯
-* ²Î  Êı£ºÎŞ
-* ·µ»ØÖµ£ºÎŞ
-* ±¸  ×¢£ºÎŞ
+* å‡½  æ•°ï¼švoid LowVoltage_Alarm(void)
+* åŠŸ  èƒ½ï¼šä½ç”µé‡æŠ¥è­¦
+* å‚  æ•°ï¼šæ— 
+* è¿”å›å€¼ï¼šæ— 
+* å¤‡  æ³¨ï¼šæ— 
 *******************************************************************************************/
 void LowVoltage_Alarm(void)
 {
@@ -100,7 +100,7 @@ void LowVoltage_Alarm(void)
 	BATT_GetVoltage();
 	if(Airplane_Enable)
 	{
-		if(BAT.BattMeasureV < BAT.BattAlarmV)//·ÉĞĞÊ±²âÁ¿
+		if(BAT.BattMeasureV < BAT.BattAlarmV)//é£è¡Œæ—¶æµ‹é‡
 		{
 			if(cnt1++>10)
 			{
@@ -115,7 +115,7 @@ void LowVoltage_Alarm(void)
 		}
 	}else
 	{
-		if(BAT.BattMeasureV < 3.7f)//ÂäµØÊ±²âÁ¿£¨380mhÊ±ÊÇ3.5V£©
+		if(BAT.BattMeasureV < 3.7f)//è½åœ°æ—¶æµ‹é‡ï¼ˆ380mhæ—¶æ˜¯3.5Vï¼‰
 		{
 			if(cnt++>10)
 			{
