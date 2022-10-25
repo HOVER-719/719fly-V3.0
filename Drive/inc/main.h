@@ -30,11 +30,13 @@
 #include "filter.h"
 #include "math.h"
 #include "Kalman.h"
+#include "FreeRTOS.h"
+#include "task.h"
 
 
 #include "oled.h"
 void System_Init(void);
-void Task_Schedule(void);
+TaskFunction_t Task_Schedule(void);
 
 
 #endif

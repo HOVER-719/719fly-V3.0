@@ -17,6 +17,9 @@ V2.3更新说明：
 ************************************************************************************************/
 
 #include "main.h"
+#include "FreeRTOS.h"
+#include "task.h"
+#include "stdint.h"
 
 /************************************************************************************************
 * 函  数：int main(void)
@@ -25,12 +28,57 @@ V2.3更新说明：
 * 返回值：无
 * 备  注：本程序为STM32飞控新生比赛精简版
 ************************************************************************************************/
-int main(void)
+
+#define ITM_PORT8(n)         (*(volatile unsigned char *)(0xe0000000 + 4*(n)))
+#define ITM_PORT16(n)        (*(volatile unsigned short *)(0xe0000000 + 4*(n)))
+#define ITM_PORT32(n)        (*(volatile unsigned long *)(0xe0000000 + 4*(n)))
+#define DEMCR                (*(volatile unsigned long *)(0xE000EDFC))
+#define TRCENA               0X01000000
+
+int fputc(int ch, FILE *f)
+{
+    if(DEMCR & TRCENA)
+    {
+        while(ITM_PORT32(0) == 0);
+        ITM_PORT8(0) = ch;
+    }
+    return ch;
+}
+
+TaskFunction_t led_test()
+{
+    static uint32_t clock = 0;
+    while (1)
+    {
+        if(clock % 2 == 0)
+        {
+            LEDR_H;
+            LEDG_H;
+            LEDB_H;
+        }
+        else
+        {
+            LEDR_L;
+            LEDG_L;
+            LEDB_L;
+        }
+        clock++;
+        printf("start main sdf \n\r");
+        vTaskDelay(pdMS_TO_TICKS(1000));
+    }
+
+    return 0;
+}
+
+void main(void)
 {
     System_Init();//系统初始化
 
-    while(1)
-    {
-        Task_Schedule();//任务调度
-    }
+    xTaskCreate(Task_Schedule, "task", 1024, NULL, configMAX_PRIORITIES-1, NULL);//任务调度
+    vTaskStartScheduler();
+
+    while(1);
+    // {
+    //     Task_Schedule();
+    // }
 }

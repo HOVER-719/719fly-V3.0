@@ -20,8 +20,8 @@ extern uint8_t Init_Flag;
 void System_Init(void)
 {
     LED_Init();                                        //״ָ̬ʾ�Ƴ�ʼ��
-    NvicConfig();                                 //ϵͳ�ж����ȼ������������жϳ�ʼ����
-    Delay_Init();                                 //ϵͳ��ʱ��ʼ��
+    // NvicConfig();                                 //ϵͳ�ж����ȼ������������жϳ�ʼ����
+    // Delay_Init();                                 //ϵͳ��ʱ��ʼ��
     USART_init(115200);                        //���Դ��ڳ�ʼ��
     IIC_GPIO_Init();                             //ģ��IIC��ʼ��
     TIM_Init();                                        //ϵͳʱ����ʼ����TIM4��Ϊϵͳʱ��
@@ -43,7 +43,7 @@ void System_Init(void)
 * ����ֵ����
 * ��  ע��������ΪSTM32�ɿ��������������
 ************************************************************************************************/
-void Task_Schedule(void)
+TaskFunction_t Task_Schedule(void)
 {
     if(IMU_Scan)                                                                                                                 //100Hz
     {
@@ -107,6 +107,7 @@ void Task_Schedule(void)
 
         }
     }
+    return 0;
 }
 
 
