@@ -10,14 +10,14 @@
 #define   _LED_H
 
 #include "main.h"
-#define LEDR_L GPIOB->BSRR |= GPIO_Pin_12 //配置LED引脚为 高电平
-#define LEDR_H GPIOB->BRR  |= GPIO_Pin_12 //配置LED引脚为 低电平
+#define LEDR_H GPIOB->BSRR |= GPIO_Pin_12 //配置LED引脚为 高电平
+#define LEDR_L GPIOB->BRR  |= GPIO_Pin_12 //配置LED引脚为 低电平
 
-#define LEDG_L GPIOB->BSRR |= GPIO_Pin_13 //配置LED引脚为 高电平
-#define LEDG_H GPIOB->BRR  |= GPIO_Pin_13 //配置LED引脚为 低电平
+#define LEDG_H GPIOB->BSRR |= GPIO_Pin_13 //配置LED引脚为 高电平
+#define LEDG_L GPIOB->BRR  |= GPIO_Pin_13 //配置LED引脚为 低电平
 
-#define LEDB_L GPIOB->BSRR |= GPIO_Pin_14 //配置LED引脚为 高电平
-#define LEDB_H GPIOB->BRR  |= GPIO_Pin_14 //配置LED引脚为 低电平
+#define LEDB_H GPIOB->BSRR |= GPIO_Pin_14 //配置LED引脚为 高电平
+#define LEDB_L GPIOB->BRR  |= GPIO_Pin_14 //配置LED引脚为 低电平
 
 void LED_Init(void);
 void LEDR_1(void);
