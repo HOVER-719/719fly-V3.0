@@ -19,7 +19,8 @@ V2.3更新说明：
 #include "main.h"
 #include "FreeRTOS.h"
 #include "task.h"
-#include "stdint.h"
+#include <stdint.h>
+#include "system.h"
 
 /************************************************************************************************
 * 函  数：int main(void)
@@ -45,40 +46,13 @@ int fputc(int ch, FILE *f)
     return ch;
 }
 
-TaskFunction_t led_test()
-{
-    static uint32_t clock = 0;
-    while (1)
-    {
-        if(clock % 2 == 0)
-        {
-            LEDR_H;
-            LEDG_H;
-            LEDB_H;
-        }
-        else
-        {
-            LEDR_L;
-            LEDG_L;
-            LEDB_L;
-        }
-        clock++;
-        printf("start main sdf \n\r");
-        vTaskDelay(pdMS_TO_TICKS(1000));
-    }
-
-    return 0;
-}
-
-void main(void)
+int main(void)
 {
     System_Init();//系统初始化
 
-    xTaskCreate(Task_Schedule, "task", 1024, NULL, configMAX_PRIORITIES-1, NULL);//任务调度
+    xTaskCreate((TaskFunction_t)Task_Schedule, "task", 1024, NULL, 0, NULL);
+
     vTaskStartScheduler();
 
     while(1);
-    // {
-    //     Task_Schedule();
-    // }
 }

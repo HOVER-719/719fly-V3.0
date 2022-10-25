@@ -36,7 +36,6 @@
 
 #include "oled.h"
 void System_Init(void);
-TaskFunction_t Task_Schedule(void);
 
 
 #endif

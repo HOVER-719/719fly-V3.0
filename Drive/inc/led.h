@@ -10,6 +10,9 @@
 #define   _LED_H
 
 #include "main.h"
+#include "FreeRTOS.h"
+#include "task.h"
+
 #define LEDR_H GPIOB->BSRR |= GPIO_Pin_12 //配置LED引脚为 高电平
 #define LEDR_L GPIOB->BRR  |= GPIO_Pin_12 //配置LED引脚为 低电平
 
@@ -31,5 +34,8 @@ void LEDG_3(void);
 void LEDB_1(void);
 void LEDB_2(void);
 void LEDB_3(void);
+
+TaskFunction_t led_task(void);
+
 #endif
 

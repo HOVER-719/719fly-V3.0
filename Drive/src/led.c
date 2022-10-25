@@ -148,3 +148,27 @@ void LEDB_3(void)
     LEDB_H ;
     Delay_ms (100);
 }
+
+
+TaskFunction_t led_task()
+{
+    static uint32_t clock = 0;
+    while (1)
+    {
+        vTaskDelay(pdMS_TO_TICKS(1000));
+        if(clock % 2 == 0)
+        {
+            LEDR_H;
+            LEDG_H;
+            LEDB_H;
+        }
+        else
+        {
+            LEDR_L;
+            LEDG_L;
+            LEDB_L;
+        }
+        clock++;
+        printf("led heart beat \n\r");
+    }
+}
