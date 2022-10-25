@@ -43,6 +43,9 @@
  * These settings should not be altered.
  *-----------------------------------------------------------
  */
+#define vPortSVCHandler SVC_Handler
+#define xPortSysTickHandler SysTick_Handler
+#define xPortPendSVHandler PendSV_Handler
 
 /* Type definitions. */
     #define portCHAR          char
