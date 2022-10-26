@@ -5,7 +5,7 @@
 *                        张润
 *                        杨晨阳
 *******************************************************************************************/
-#include "paramsave.h"
+#include "structconfig.h"
 #include "flash.h"
 #include "pid.h"
 #include "usart.h"
@@ -15,6 +15,9 @@
 #define INT161(dwTemp)       (*((int16_t *)(&dwTemp) + 1))
 #define INT162(dwTemp)       (*((int16_t *)(&dwTemp) + 2))
 #define INT163(dwTemp)       (*((int16_t *)(&dwTemp) + 3))
+
+PID_TYPE PID_ALT_Rate;
+PID_TYPE PID_ALT;
 
 PID_SAVE PIDflash;
 

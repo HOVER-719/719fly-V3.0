@@ -192,7 +192,7 @@ void MPU6050_Init(void)
 {
     MPU6050_Check();                                                                                         //检查MPU6050是否连接
     MPU6050_WriteByte(MPU6050_RA_PWR_MGMT_1, 0x80);                         //复位MPU6050
-    Delay_ms(100);
+    //Delay_ms(100);
     MPU6050_WriteByte(MPU6050_RA_PWR_MGMT_1, 0x01);                         //唤醒MPU6050，并选择陀螺仪x轴PLL为时钟源
     MPU6050_WriteByte(MPU6050_RA_INT_ENABLE, 0x00);                         //禁止中断
     MPU6050_WriteByte(MPU6050_RA_GYRO_CONFIG, 0x18);                         //陀螺仪满量程+-2000度/秒 (最低分辨率 = 2^15/2000 = 16.4LSB/度/秒

@@ -34,5 +34,6 @@ void LEDB_2(void);
 void LEDB_3(void);
 
 void led_task(void);
+void led_test(void);
 
 #endif

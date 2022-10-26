@@ -149,13 +149,76 @@ void LEDB_3(void)
     Delay_ms (100);
 }
 
+extern uint8_t Init_Flag;
 
 void led_task()
+{
+    while(1)
+    {
+        TickType_t xLastWakeTime;
+        xLastWakeTime = xTaskGetTickCount();
+        vTaskDelayUntil(&xLastWakeTime, pdMS_TO_TICKS(100));
+        if( Init_Flag == 0 )
+        {
+            LEDR_H;
+            LEDG_H;
+            LEDB_H;
+            if(loop)
+            {
+                loop=0;
+                LEDR_H;
+            }
+            else
+            {
+                loop=1;
+                LEDR_L;
+            }
+        }
+        if( lock && Init_Flag == 1 )
+        {
+            LEDR_H;
+            LEDG_H;
+            LEDB_H;
+            if(loop)
+            {
+                loop=0;
+                LEDG_H;
+            }
+            else
+            {
+                loop=1;
+                LEDG_L;
+            }
+        }
+        if( !lock && Init_Flag == 1)
+        {
+            LEDR_H;
+            LEDG_H;
+            LEDB_H;
+            if(loop)
+            {
+                loop=0;
+
+                LEDB_H;
+            }
+            else
+            {
+                loop=1;
+
+                LEDB_L;
+            }
+        }
+    }
+}
+
+void led_test()
 {
     static uint32_t clock = 0;
     while (1)
     {
-        vTaskDelay(pdMS_TO_TICKS(1000));
+        TickType_t xLastWakeTime;
+        xLastWakeTime = xTaskGetTickCount();
+        vTaskDelayUntil(&xLastWakeTime, pdMS_TO_TICKS(1000));
         if(clock % 2 == 0)
         {
             LEDR_H;
