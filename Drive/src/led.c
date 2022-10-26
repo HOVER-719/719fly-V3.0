@@ -150,7 +150,7 @@ void LEDB_3(void)
 }
 
 
-TaskFunction_t led_task()
+void led_task()
 {
     static uint32_t clock = 0;
     while (1)

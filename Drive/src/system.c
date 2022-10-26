@@ -51,13 +51,13 @@ static uint8_t task_creat_list(const task_list_t task_list[])
     for(uint32_t num = 0; num < list_num; num++)
     {
         cur_task = (task_list_t *)&task_list[num];
-        ret = xTaskCreate((TaskFunction_t)cur_task->task_func, cur_task->name, cur_task->stack_size, NULL, cur_task->priority, NULL);
+        ret = xTaskCreate(cur_task->task_func, cur_task->name, cur_task->stack_size, NULL, cur_task->priority, NULL);
         printf("create task %s %s\r\n", cur_task->name, ret == true ? "success" : "false");
     }
     return 0;
 }
 
-TaskFunction_t Task_Schedule()
+void Task_Schedule(void* pvParameters)
 {
     task_creat_list(high_frequent_task_list);
     //task_creat_list(mid_frequent_task_list);
@@ -65,7 +65,6 @@ TaskFunction_t Task_Schedule()
 
     vTaskDelete(NULL);
 
-    return 0;
     // if(IMU_Scan)                                                                                                                 //100Hz
     // {
     //     IMU_Scan  = 0;                                                                                                    //��־λ����

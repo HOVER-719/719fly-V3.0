@@ -50,7 +50,7 @@ int main(void)
 {
     System_Init();//系统初始化
 
-    xTaskCreate((TaskFunction_t)Task_Schedule, "task", 1024, NULL, 0, NULL);
+    xTaskCreate(Task_Schedule, "task", 1024, NULL, 0, NULL);
 
     vTaskStartScheduler();
 
