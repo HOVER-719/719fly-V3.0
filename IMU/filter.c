@@ -1,3 +1,4 @@
+//git测试
 /************************************************************************************************
 * 程序版本：V2.1
 * 程序日期：2021-12-8
@@ -355,23 +356,26 @@ void limit_filter(float T,float hz,_lf_t *data,float in)
 
 /*************************************巴特沃斯滤波************************************************/
 Butter_Parameter Butter_80HZ_Parameter_Acce,Butter_60HZ_Parameter_Acce,Butter_51HZ_Parameter_Acce,
-                Butter_30HZ_Parameter_Acce,Butter_20HZ_Parameter_Acce,Butter_15HZ_Parameter_Acce,
-                Butter_10HZ_Parameter_Acce,Butter_5HZ_Parameter_Acce,Butter_2HZ_Parameter_Acce;
+                 Butter_30HZ_Parameter_Acce,Butter_20HZ_Parameter_Acce,Butter_15HZ_Parameter_Acce,
+                 Butter_10HZ_Parameter_Acce,Butter_5HZ_Parameter_Acce,Butter_2HZ_Parameter_Acce,
+				 Butter_1HZ_Parameter_Acce;
 
 /****************************************
 Butterworth低通滤波器参数初始化：http://blog.csdn.net/u011992534/article/details/73743955
 ***************************************/
 void Butterworth_Parameter_Init(void)
 {
-    Set_Cutoff_Frequency(200, 80,&Butter_80HZ_Parameter_Acce);
-    Set_Cutoff_Frequency(200, 60,&Butter_60HZ_Parameter_Acce);
-    Set_Cutoff_Frequency(200, 51,&Butter_51HZ_Parameter_Acce);
-    Set_Cutoff_Frequency(200, 30,&Butter_30HZ_Parameter_Acce);
-    Set_Cutoff_Frequency(200, 20,&Butter_20HZ_Parameter_Acce);
-    Set_Cutoff_Frequency(200, 15,&Butter_15HZ_Parameter_Acce);
-    Set_Cutoff_Frequency(200, 10,&Butter_10HZ_Parameter_Acce);
-    Set_Cutoff_Frequency(200, 5 ,&Butter_5HZ_Parameter_Acce);
-    Set_Cutoff_Frequency(200, 2 ,&Butter_2HZ_Parameter_Acce);
+  Set_Cutoff_Frequency(200, 80,&Butter_80HZ_Parameter_Acce);
+  Set_Cutoff_Frequency(200, 60,&Butter_60HZ_Parameter_Acce);
+  Set_Cutoff_Frequency(200, 51,&Butter_51HZ_Parameter_Acce);
+  Set_Cutoff_Frequency(200, 30,&Butter_30HZ_Parameter_Acce);
+  Set_Cutoff_Frequency(200, 20,&Butter_20HZ_Parameter_Acce);
+  Set_Cutoff_Frequency(200, 15,&Butter_15HZ_Parameter_Acce);
+  Set_Cutoff_Frequency(200, 10,&Butter_10HZ_Parameter_Acce);
+  Set_Cutoff_Frequency(200, 5 ,&Butter_5HZ_Parameter_Acce);
+  Set_Cutoff_Frequency(200, 2 ,&Butter_2HZ_Parameter_Acce);
+  Set_Cutoff_Frequency(200, 1 ,&Butter_1HZ_Parameter_Acce);
+
 }
 
 /*************************************************
